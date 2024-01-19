@@ -44,6 +44,9 @@ export default createStore({
     },
     setUser: (state, user) => {
       state.user = user;//set user data
+    },
+    setTodos: (state, todos) => {
+      state.todos = todos;//set user data
     }
   },
   actions: {
@@ -65,6 +68,16 @@ export default createStore({
       const user = JSON.parse(localStorage.getItem('user') as string);//load user data
       if (user) {
         context.commit('setUser', user);
+      }
+    },
+    saveTodos(context, todos) {
+      localStorage.setItem('todos', JSON.stringify(todos));//save task list data
+      context.commit('setTodos', todos);
+    },
+    loadTodos(context) {
+      const todos = JSON.parse(localStorage.getItem('todos') as string);//load task list data
+      if (todos) {
+        context.commit('setTodos', todos);
       }
     }
   },
