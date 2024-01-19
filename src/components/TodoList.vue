@@ -18,19 +18,19 @@ import store from '@/store';
 import { defineComponent } from 'vue';
 
 export enum repeatFrequency {
-  Daily = 1,
+  Daily = 1,//daily gets 1x xp, weekly gets 2x xp, monthly gets 3x xp, yearly gets 4x xp, one-time gets 5x xp multiplier
   Weekly = 2,
   Monthly = 3,
   Yearly = 4,
   Once = 5
 }
 export enum difficulty {
-  Easy = 1,
+  Easy = 1,//easy gets 1x xp, medium gets 2x xp, hard gets 3x xp multiplier
   Medium = 2,
   Hard = 3
 }
 export enum priority {
-  Low = 1,
+  Low = 1,//low gets 1x xp, medium gets 2x xp, hard gets 3x xp multiplier
   Medium = 2,
   High = 3
 }
@@ -51,13 +51,13 @@ export default defineComponent({
   },
   computed: {
     todos() {
-      return store.getters.getTodos;
+      return store.getters.getTodos;//get todos
     },
     levels() {
-      return store.getters.getLevel;
+      return store.getters.getLevel;//get current level
     },
     xps() {
-      return store.getters.getXp;
+      return store.getters.getXp;//get current xp
     }
   },
   methods: {

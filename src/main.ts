@@ -3,4 +3,4 @@ import App from './App.vue';
 import store from './store';
 
 createApp({render: () => h(App)}).use(store).mount('#app');
-store.dispatch("loadUser");
+store.dispatch("loadUser");//load user data

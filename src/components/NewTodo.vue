@@ -41,18 +41,18 @@ export default defineComponent ({
     data() {
         return {
             task: "",
-            dueDate: currentLocalDate.toISOString().split('T')[0],
+            dueDate: currentLocalDate.toISOString().split('T')[0],//set default due date to today
             priority: priority.Low,
             difficulty: difficulty.Easy,
             repeatOften: 1,
             repeatFrequency: repeatFrequency.Once,
-            newId: 0,
+            newId: 0,//initial id is 0
             completed: false
         };
     },
     mounted() {
         const dueDateInput = document.getElementById('dueDate') as HTMLInputElement;
-        dueDateInput.min = currentLocalDate.toISOString().split('T')[0];
+        dueDateInput.min = currentLocalDate.toISOString().split('T')[0];//minimum due date must be today
     },
     methods: {
         addTodo: function(): void | todoTask[] {
