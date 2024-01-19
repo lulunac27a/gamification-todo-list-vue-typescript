@@ -42,10 +42,10 @@ export default defineComponent ({
         return {
             task: "",
             dueDate: currentLocalDate.toISOString().split('T')[0],//set default due date to today
-            priority: priority.Low,
-            difficulty: difficulty.Easy,
+            priority: priority.Low,//set default priority is low
+            difficulty: difficulty.Easy,//set default difficulty is easy
             repeatOften: 1,
-            repeatFrequency: repeatFrequency.Once,
+            repeatFrequency: repeatFrequency.Once,//set default task repetition to one-time
             newId: 0,//initial id is 0
             completed: false
         };
