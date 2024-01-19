@@ -4,10 +4,10 @@
     <p>Level: {{ levels }}</p><br/>
     <p>XP: {{ xps }}</p><br/>
     <ul class="todos">
-      <li v-for="todo in todos" :key="todo.id" class="todo">
+      <li v-for="todo in todos" :key="todo.newId" class="todo">
         {{ todo.task }}
-        <button @click="completeTodo(todo.id)">Complete</button>
-        <button @click="deleteTodo(todo.id)">Delete</button><br/>
+        <button @click="completeTodo(todo.newId)">Complete</button>
+        <button @click="deleteTodo(todo.newId)">Delete</button><br/>
       </li>
     </ul>
   </div>
