@@ -62,10 +62,10 @@ export default defineComponent({
   },
   methods: {
     completeTodo: function (id: number) {
-      store.dispatch("completeTodo", id);
+      store.dispatch("completeTask", id);
     },
     deleteTodo: function (id: number) {
-      store.dispatch("deleteTodo", id);
+      store.dispatch("deleteTask", id);
     }
   }
 });

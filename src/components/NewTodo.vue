@@ -56,7 +56,7 @@ export default defineComponent ({
     },
     methods: {
         addTodo: function(): void | todoTask[] {
-            store.dispatch("createTodo", this);
+            store.dispatch("createTask", this);
             this.newId++;
             this.task = "";
             this.dueDate = currentLocalDate.toISOString().split('T')[0];

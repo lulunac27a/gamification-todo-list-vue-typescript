@@ -47,14 +47,14 @@ export default createStore({
     }
   },
   actions: {
-    createTodo: (context, payload) => {
+    createTask: (context, payload) => {
       context.commit('create_Todo', payload);
     },
-    completeTodo: (context, payload) => {
+    completeTask: (context, payload) => {
       context.commit('complete_Todo', payload);
       context.commit('updateXp', payload);
     },
-    deleteTodo: (context, payload) => {
+    deleteTask: (context, payload) => {
       context.commit('delete_Todo', payload);
     },
     saveUser(context, user) {
