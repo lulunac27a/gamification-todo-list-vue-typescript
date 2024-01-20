@@ -19,7 +19,9 @@
           ><span v-if="todo.repeatFrequency == 3">Month</span
           ><span v-if="todo.repeatFrequency == 4">Year</span
           ><span v-if="todo.repeatFrequency == 5">Once</span
-          ><span v-if="todo.repeatOften > 1">s</span></span
+          ><span v-if="todo.repeatOften > 1 && todo.repeatFrequency != 5"
+            >s</span
+          ></span
         >
         <button @click="completeTodo(todo.newId)">Complete</button>
         <button @click="deleteTodo(todo.newId)">Delete</button><br />
