@@ -14,9 +14,6 @@ export default createStore({
     getLevel: (state) => state.user.level, //get user level
   },
   mutations: {
-    addXp: (state, amount: number) => {
-      state.user.xp += amount; //add specified amount of xp
-    },
     updateXp: (state, payload) => {
       const task = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload
