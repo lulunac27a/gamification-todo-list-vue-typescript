@@ -13,8 +13,8 @@
           }"
           >{{ todo.task }}: Due {{ todo.dueDate }} Priority:
           {{ todo.priority }} Difficulty: {{ todo.difficulty }} Repeat:
-          <span v-if="todo.repeatFrequency != 5">{{ todo.repeatOften }}</span>
-          <span v-if="todo.repeatFrequency == 1">Day</span
+          <span v-if="todo.repeatFrequency != 5">{{ todo.repeatOften }}</span
+          >&nbsp;<span v-if="todo.repeatFrequency == 1">Day</span
           ><span v-if="todo.repeatFrequency == 2">Week</span
           ><span v-if="todo.repeatFrequency == 3">Month</span
           ><span v-if="todo.repeatFrequency == 4">Year</span
