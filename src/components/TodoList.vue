@@ -5,7 +5,7 @@
     <p>XP: {{ xps }}</p><br/>
     <ul class="todos">
       <li v-for="todo in todos" :key="todo.newId" class="todo">
-        {{ todo.task }}
+        <span v-bind:class="{ 'overdue': new Date(todo.dueDate+' 23:59:59.999') < new Date()}">{{ todo.task }}: Due {{ todo.dueDate }} Priority: {{ todo.priority }} Difficulty: {{ todo.difficulty }} Repeat: <span v-if="todo.repeatFrequency != 5">{{ todo.repeatOften }}</span> <span v-if="todo.repeatFrequency == 1">Day</span><span v-if="todo.repeatFrequency == 2">Week</span><span v-if="todo.repeatFrequency == 3">Month</span><span v-if="todo.repeatFrequency == 4">Year</span><span v-if="todo.repeatFrequency == 5">Once</span><span v-if="todo.repeatOften > 1">s</span></span>
         <button @click="completeTodo(todo.newId)">Complete</button>
         <button @click="deleteTodo(todo.newId)">Delete</button><br/>
       </li>

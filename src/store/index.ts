@@ -30,7 +30,9 @@ export default createStore({
         priority: payload.priority as number,
         difficulty: payload.difficulty as number,
         xp: payload.xp as number,
-        completed: payload.completed as boolean
+        completed: payload.completed as boolean,
+        repeatOften: payload.repeatOften as number,
+        repeatFrequency: payload.repeatFrequency as number
       };
       state.todos.unshift(createTask);
     },
