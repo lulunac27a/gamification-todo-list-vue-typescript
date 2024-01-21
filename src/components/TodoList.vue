@@ -5,6 +5,7 @@
     <br />
     <p>XP: {{ xps }}</p>
     <br />
+    <ve-progress :progress="progresses">Level {{ levels }}</ve-progress>
     <ul class="todos">
       <li v-for="todo in todos" :key="todo.newId" class="todo">
         <span
@@ -75,6 +76,9 @@ export default defineComponent({
     },
     xps() {
       return store.getters.getXp; //get current xp
+    },
+    progresses() {
+      return store.getters.getProgress; //get curent progress
     },
   },
   methods: {

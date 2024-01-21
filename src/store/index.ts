@@ -6,12 +6,14 @@ export default createStore({
     user: {
       level: 0,
       xp: 0,
+      progress: 0,
     },
   },
   getters: {
     getTodos: (state) => state.todos, //get task list
     getXp: (state) => state.user.xp, //get user xp
     getLevel: (state) => state.user.level, //get user level
+    getProgress: (state) => state.user.progress, //get user level progress
   },
   mutations: {
     updateXp: (state, payload) => {
@@ -20,6 +22,11 @@ export default createStore({
       );
       const xp = Math.max(task.difficulty * task.priority, 1); //get at least 1 xp when the task is completed
       state.user.xp += xp;
+      state.user.level = Math.floor(Math.pow(state.user.xp, 1 / 3)); //calculate level based on how many xp
+      state.user.progress =
+        ((state.user.xp - Math.pow(state.user.level, 3)) /
+          (Math.pow(state.user.level + 1, 3) - Math.pow(state.user.level, 3))) *
+        100; //calculate level progress
     },
     create_Todo: (state, payload) => {
       const createTask = {
