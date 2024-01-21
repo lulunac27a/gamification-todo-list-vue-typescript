@@ -22,7 +22,7 @@ export default createStore({
       );
       const xp = Math.max(task.difficulty * task.priority, 1); //get at least 1 xp when the task is completed
       state.user.xp += xp;
-      state.user.level = Math.floor(Math.pow(state.user.xp, 1 / 3)); //calculate level based on how many xp
+      state.user.level = Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16)); //calculate level based on how many xp
       state.user.progress =
         ((state.user.xp - Math.pow(state.user.level, 3)) /
           (Math.pow(state.user.level + 1, 3) - Math.pow(state.user.level, 3))) *
