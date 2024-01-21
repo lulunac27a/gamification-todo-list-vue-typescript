@@ -4,9 +4,9 @@ export default createStore({
   state: {
     todos: [] as any[],
     user: {
-      level: 0,
-      xp: 0,
-      progress: 0,
+      level: 0 as number,
+      xp: 0 as number,
+      progress: 0 as number,
     },
   },
   getters: {
@@ -20,7 +20,16 @@ export default createStore({
       const task = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload
       );
-      const xp = Math.max(task.difficulty * task.priority, 1); //get at least 1 xp when the task is completed
+      const daysToDue: number =
+        (Number(new Date(task.dueDate + " 23:59:59.999")) -
+          Number(new Date().setHours(23, 59, 59, 999))) /
+        (1000 * 24 * 60 * 60); //calculate number of days until the task is due
+      const dateMultiplier: number =
+        daysToDue < 0 ? 0.5 : 1 + 1 / (daysToDue + 1); //if task is overdue, xp multiplier is half the amount, else xp multiplier bonus increases when task gets closer to due date
+      const xp: number = Math.max(
+        Math.floor(task.difficulty * task.priority * dateMultiplier),
+        1
+      ); //get at least 1 xp when the task is completed
       state.user.xp += xp;
       state.user.level = Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16)); //calculate level based on how many xp
       state.user.progress =
