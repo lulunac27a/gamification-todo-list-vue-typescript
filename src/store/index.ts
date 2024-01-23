@@ -91,6 +91,7 @@ export default createStore({
         completed: payload.completed as boolean,
         repeatOften: payload.repeatOften as number,
         repeatFrequency: payload.repeatFrequency as number,
+        timesCompleted: payload.timesCompleted as number,
       };
       state.todos.unshift(createTask);
     },
@@ -98,7 +99,11 @@ export default createStore({
       const item = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload
       );
-      item.completed = !item.completed; //complete task item
+      if (item.repeatFrequency == 5) {
+        item.completed = !item.completed; //complete task item
+      } else {
+        item.timesCompleted++; //increment number of times task has been completed by 1
+      }
     },
     delete_Todo: (state, payload) => {
       const index = state.todos.findIndex(

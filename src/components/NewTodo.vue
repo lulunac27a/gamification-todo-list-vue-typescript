@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="addTodo">
+    <!--all fields are required-->
     Name:<br />
     <input
       class="todo-input"
@@ -9,7 +10,7 @@
       v-model="task"
       required
     /><br />
-    Due date:<br />
+    Due date:<br /><!--task due date must be on or after today date-->
     <input
       class="todo-input"
       id="dueDate"
@@ -71,6 +72,7 @@ export interface todoTask {
   repeatFrequency: number;
   newId: number;
   completed: boolean;
+  timesCompleted: number;
 }
 const currentUtcDate: Date = new Date();
 const currentLocalDate: Date = new Date(
@@ -89,7 +91,8 @@ export default defineComponent({
       repeatOften: 1,
       repeatFrequency: repeatFrequency.Once, //set default task repetition to one-time
       newId: 0, //initial id is 0
-      completed: false,
+      completed: false, //task not completed if task is created
+      timesCompleted: 0,
     };
   },
   mounted() {
@@ -107,6 +110,7 @@ export default defineComponent({
       this.repeatOften = 1;
       this.repeatFrequency = repeatFrequency.Once;
       this.completed = false;
+      this.timesCompleted = 0;
     },
   },
 });

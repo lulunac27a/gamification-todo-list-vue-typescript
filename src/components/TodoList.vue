@@ -5,15 +5,21 @@
     <br />
     <p>XP: {{ xps }}</p>
     <br />
-    <ve-progress :progress="progresses">Level {{ levels }}</ve-progress>
+    <!--show circular progress bar filled with level progress--><ve-progress
+      :progress="progresses"
+      >Level {{ levels }}</ve-progress
+    >
     <ul class="todos">
+      <!--repeat for each tasks-->
       <li v-for="todo in todos" :key="todo.newId" class="todo">
         <span
           v-bind:class="{
             overdue: new Date(todo.dueDate + ' 23:59:59.999') < new Date(),
           }"
-          >{{ todo.task }}: Due {{ todo.dueDate }} Priority:
-          {{ todo.priority }} Difficulty: {{ todo.difficulty }} Repeat:
+          >{{ todo.task }}: Due {{ todo.dueDate }} Priority:{{
+            todo.priority
+          }}
+          Difficulty: {{ todo.difficulty }} Repeat:
           <span v-if="todo.repeatFrequency != 5">{{ todo.repeatOften }}</span
           >&nbsp;<span v-if="todo.repeatFrequency == 1">Day</span
           ><span v-if="todo.repeatFrequency == 2">Week</span
@@ -24,7 +30,12 @@
             >s</span
           ></span
         >
-        <button @click="completeTodo(todo.newId)">Complete</button>
+        <!--don't show if one-time task is completed--><button
+          v-if="!todo.completed"
+          @click="completeTodo(todo.newId)"
+        >
+          Complete
+        </button>
         <button @click="deleteTodo(todo.newId)">Delete</button><br />
       </li>
     </ul>
@@ -66,6 +77,7 @@ export default defineComponent({
     level: Number,
     xp: Number,
     completed: Boolean,
+    timesCompleted: Number,
   },
   computed: {
     todos() {
