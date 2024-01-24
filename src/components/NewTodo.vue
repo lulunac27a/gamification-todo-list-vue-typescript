@@ -73,6 +73,7 @@ export interface todoTask {
   newId: number;
   completed: boolean;
   timesCompleted: number;
+  originalDueDate: Date;
 }
 const currentUtcDate: Date = new Date();
 const currentLocalDate: Date = new Date(
@@ -93,6 +94,7 @@ export default defineComponent({
       newId: 0, //initial id is 0
       completed: false, //task not completed if task is created
       timesCompleted: 0,
+      originalDueDate: currentLocalDate.toISOString().split("T")[0],
     };
   },
   mounted() {
@@ -101,6 +103,7 @@ export default defineComponent({
   },
   methods: {
     addTodo: function (): void | todoTask[] {
+      this.originalDueDate = this.dueDate; //set task original due date to entered task due date
       store.dispatch("createTask", this);
       this.newId++;
       this.task = "";
@@ -111,6 +114,7 @@ export default defineComponent({
       this.repeatFrequency = repeatFrequency.Once;
       this.completed = false;
       this.timesCompleted = 0;
+      this.originalDueDate = currentLocalDate.toISOString().split("T")[0];
     },
   },
 });

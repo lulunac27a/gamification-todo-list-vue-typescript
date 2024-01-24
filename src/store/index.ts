@@ -92,6 +92,7 @@ export default createStore({
         repeatOften: payload.repeatOften as number,
         repeatFrequency: payload.repeatFrequency as number,
         timesCompleted: payload.timesCompleted as number,
+        originalDueDate: payload.originalDueDate as Date,
       };
       state.todos.unshift(createTask);
     },
@@ -100,9 +101,132 @@ export default createStore({
         (todo: { newId: number }) => todo.newId === payload
       );
       if (item.repeatFrequency == 5) {
+        //if task is a one-time only
         item.completed = !item.completed; //complete task item
       } else {
         item.timesCompleted++; //increment number of times task has been completed by 1
+        if (item.repeatFrequency == 1) {
+          const newDueDate: Date = new Date(
+            new Date(item.originalDueDate + " 23:59:59.999").setDate(
+              new Date(item.originalDueDate + " 23:59:59.999").getDate() +
+                item.timesCompleted * item.repeatOften
+            )
+          ); //get new due date
+          const adjustedNewDueDate: Date = new Date(
+            newDueDate.setMinutes(
+              newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
+            )
+          ); //convert to local timezone
+          item.dueDate = adjustedNewDueDate.toISOString().split("T")[0]; //convert due date to YYYY-MM-DD string
+        } else if (item.repeatFrequency == 2) {
+          const newDueDate: Date = new Date(
+            new Date(item.originalDueDate + " 23:59:59.999").setDate(
+              new Date(item.originalDueDate + " 23:59:59.999").getDate() +
+                item.timesCompleted * item.repeatOften * 7
+            )
+          );
+          const adjustedNewDueDate: Date = new Date(
+            newDueDate.setMinutes(
+              newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
+            )
+          );
+          item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
+        } else if (item.repeatFrequency == 3) {
+          const monthsAfter: Date = new Date(
+            new Date(item.originalDueDate + " 23:59:59.999").setMonth(
+              new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
+                item.timesCompleted * item.repeatOften
+            )
+          );
+          if (
+            monthsAfter.getMonth() !=
+            (new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
+              item.timesCompleted * item.repeatOften) %
+              12
+          ) {
+            //if task due date is more than days of the month, set to last day of month
+            const newDueDate: Date = new Date(
+              new Date(item.originalDueDate + " 23:59:59.999").getFullYear(),
+              new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
+                item.timesCompleted * item.repeatOften +
+                1,
+              0,
+              23,
+              59,
+              59,
+              999
+            );
+            const adjustedNewDueDate: Date = new Date(
+              newDueDate.setMinutes(
+                newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
+              )
+            );
+            item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
+          } else {
+            const newDueDate: Date = new Date(
+              new Date(item.originalDueDate + " 23:59:59.999").getFullYear(),
+              new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
+                item.timesCompleted * item.repeatOften,
+              new Date(item.originalDueDate + " 23:59:59.999").getDate(),
+              23,
+              59,
+              59,
+              999
+            );
+            const adjustedNewDueDate: Date = new Date(
+              newDueDate.setMinutes(
+                newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
+              )
+            );
+            item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
+          }
+        } else {
+          const yearsAfter: Date = new Date(
+            new Date(item.originalDueDate + " 23:59:59.999").setFullYear(
+              new Date(item.originalDueDate + " 23:59:59.999").getFullYear() +
+                item.timesCompleted * item.repeatOften
+            )
+          );
+          if (
+            yearsAfter.getMonth() !=
+            new Date(item.originalDueDate + " 23:59:59.999").getMonth()
+          ) {
+            //if task due date don't have leap year, set task due date to February 28
+            const newDueDate: Date = new Date(
+              new Date(item.originalDueDate + " 23:59:59.999").getFullYear() +
+                item.timesCompleted * item.repeatOften,
+              new Date(item.originalDueDate + " 23:59:59.999").getMonth() + 1,
+              0,
+              23,
+              59,
+              59,
+              999
+            );
+            const adjustedNewDueDate: Date = new Date(
+              newDueDate.setMinutes(
+                newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
+              )
+            );
+            item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
+          } else {
+            const newDueDate: Date = new Date(
+              new Date(item.originalDueDate + " 23:59:59.999").getFullYear() +
+                item.timesCompleted * item.repeatOften,
+              new Date(item.originalDueDate + " 23:59:59.999").getMonth(),
+              new Date(item.originalDueDate + " 23:59:59.999").getDate(),
+              23,
+              59,
+              59,
+              999
+            );
+            const adjustedNewDueDate: Date = new Date(
+              newDueDate.setMinutes(
+                newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
+              )
+            );
+            item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
+          }
+        }
       }
     },
     delete_Todo: (state, payload) => {

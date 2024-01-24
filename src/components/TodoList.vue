@@ -78,6 +78,7 @@ export default defineComponent({
     xp: Number,
     completed: Boolean,
     timesCompleted: Number,
+    originalDueDate: Date,
   },
   computed: {
     todos() {
