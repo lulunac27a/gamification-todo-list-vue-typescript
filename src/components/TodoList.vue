@@ -82,7 +82,9 @@ export default defineComponent({
   },
   computed: {
     todos() {
-      return store.getters.getTodos; //get todos
+      return store.getters.getTodos.sort((a: any, b: any) =>
+        a.dueDate.localeCompare(b.dueDate)
+      ); //get todos and sort tasks by due date with the top one the oldest
     },
     levels() {
       return store.getters.getLevel; //get current level
