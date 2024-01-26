@@ -1,24 +1,24 @@
-# typescript-app
+# Vue gamification todo list app with Vuex, SCSS and TypeScript
 
-## Project setup
+## Setup the application
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Serve the application
 
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Build the application to compile and minify the code
 
 ```
 npm run build
 ```
 
-### Lints and fixes files
+### Lint code to check for errors and warnings
 
 ```
 npm run lint
