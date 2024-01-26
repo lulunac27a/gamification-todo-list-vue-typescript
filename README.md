@@ -1,5 +1,8 @@
 # Vue gamification todo list app with Vuex, SCSS and TypeScript
 
+This application is a todo list with task repetition with level and experience points and it stores to local storage using `vuex-persistedstate`
+
+
 ## Setup the application
 
 ```
