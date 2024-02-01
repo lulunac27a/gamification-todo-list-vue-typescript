@@ -16,7 +16,7 @@
       id="dueDate"
       type="date"
       placeholder="Enter due date"
-      v-model="dueDate"
+      v-model="originalDueDate"
       required
     /><br />
     Priority:<br />
@@ -91,10 +91,10 @@ export default defineComponent({
       difficulty: difficulty.Easy, //set default difficulty is easy
       repeatOften: 1,
       repeatFrequency: repeatFrequency.Once, //set default task repetition to one-time
-      newId: 0, //initial id is 0
+      newId: 0, //initial task id is 0
       completed: false, //task not completed if task is created
       timesCompleted: 0,
-      originalDueDate: currentLocalDate.toISOString().split("T")[0],
+      originalDueDate: currentLocalDate.toISOString().split("T")[0], //set default original task due date to today
     };
   },
   mounted() {
@@ -103,7 +103,7 @@ export default defineComponent({
   },
   methods: {
     addTodo: function (): void | todoTask[] {
-      this.originalDueDate = this.dueDate; //set task original due date to entered task due date
+      this.dueDate = this.originalDueDate; //set task due date to entered task original due date
       store.dispatch("createTask", this);
       this.newId++;
       this.task = "";
