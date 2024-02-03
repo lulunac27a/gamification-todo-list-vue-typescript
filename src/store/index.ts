@@ -5,7 +5,7 @@ export default createStore({
   state: {
     todos: [] as any[],
     user: {
-      level: 0 as number,
+      level: 1 as number, //set level to 1 as total xp is 0 when state is created
       xp: 0 as number,
       progress: 0 as number,
     },
@@ -75,11 +75,16 @@ export default createStore({
         1
       ); //get at least 1 xp when the task is completed
       state.user.xp += xp; //get amount of xp earned based on task difficulty, task priority, task due date and task repetition
-      state.user.level = Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16)); //calculate level based on how many xp
+      state.user.level = Math.max(
+        1,
+        Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16))
+      ); //calculate level based on how many xp and set level to 1 if total xp is 0
       state.user.progress =
-        ((state.user.xp - Math.pow(state.user.level, 3)) /
-          (Math.pow(state.user.level + 1, 3) - Math.pow(state.user.level, 3))) *
-        100; //calculate level progress
+        ((state.user.xp -
+          Math.pow(state.user.level == 1 ? 0 : state.user.level, 3)) /
+          (Math.pow(state.user.level + 1, 3) -
+            Math.pow(state.user.level == 1 ? 0 : state.user.level, 3))) *
+        100; //calculate level progress and if level is 1 set total xp at the start of level 1 to 0 xp
     },
     create_Todo: (state, payload) => {
       const createTask = {
