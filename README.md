@@ -13,6 +13,7 @@ This application is a todo list with task repetition with level and experience p
 ## Setup the application
 
 ```
+git clone https://github.com/lulunac27a/gamification-todo-list-vue-typescript.git
 npm install
 ```
 
