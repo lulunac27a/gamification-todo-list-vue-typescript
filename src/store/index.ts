@@ -239,10 +239,14 @@ export default createStore({
       const index = state.todos.findIndex(
         (todo: { newId: number }) => todo.newId === payload
       );
-      const deleteTask: boolean = confirm(
-        `Do you want to delete the task ${state.todos[index].task}?\nThis action cannot be undone.`
-      );
-      if (deleteTask) {
+      let deleteTask;
+      if (!state.todos[index].completed) {
+        //don't ask for confirmation when one-time task is completed
+        deleteTask = confirm(
+          `Do you want to delete the task ${state.todos[index].task}?\nThis action cannot be undone.`
+        ) as boolean; //ask user to confirm task deletion
+      }
+      if (deleteTask || state.todos[index].completed) {
         state.todos.splice(index, 1); //delete task item
       }
     },
