@@ -239,7 +239,12 @@ export default createStore({
       const index = state.todos.findIndex(
         (todo: { newId: number }) => todo.newId === payload
       );
-      state.todos.splice(index, 1); //delete task item
+      const deleteTask: boolean = confirm(
+        `Do you want to delete the task ${state.todos[index].task}?\nThis action cannot be undone.`
+      );
+      if (deleteTask) {
+        state.todos.splice(index, 1); //delete task item
+      }
     },
     setUser: (state, user) => {
       state.user = user; //set user data
