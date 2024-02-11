@@ -3,6 +3,7 @@ import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
   state: {
+    //eslint-disable-next-line
     todos: [] as any[],
     user: {
       level: 1 as number, //set level to 1 as total xp is 0 when state is created
@@ -247,6 +248,7 @@ export default createStore({
         ) as boolean; //ask user to confirm task deletion
       }
       if (deleteTask || state.todos[index].completed) {
+        //delete task if one-time task is completed when the delete button is clicked or when user confirms deletion alert
         state.todos.splice(index, 1); //delete task item
       }
     },

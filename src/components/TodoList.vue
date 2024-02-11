@@ -80,6 +80,7 @@ export default defineComponent({
   },
   computed: {
     todos() {
+      //eslint-disable-next-line
       return store.getters.getTodos.sort((a: any, b: any) =>
         a.dueDate.localeCompare(b.dueDate)
       ); //get todos and sort tasks by due date with the top one the oldest
