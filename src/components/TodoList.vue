@@ -1,14 +1,12 @@
 <template>
   <div class="todo-app">
-    <h1>Todo List</h1>
     <p>Level: {{ levels }}</p>
-    <br />
     <p>XP: {{ xps }}</p>
-    <br />
     <!--show circular progress bar filled with level progress--><ve-progress
       :progress="progresses"
       >Level {{ levels }}</ve-progress
     >
+    <h3>Task list</h3>
     <ul class="todos">
       <!--repeat for each tasks-->
       <li v-for="todo in todos" :key="todo.newId" class="todo">

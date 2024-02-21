@@ -1,6 +1,6 @@
 {
   "name": "typescript-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vue/cli": "^5.0.8",
     "core-js": "^3.8.3",
     "vue": "^3.4.15",
     "vue-ellipse-progress": "^2.1.2",
