@@ -18,6 +18,9 @@ export default createStore({
     getProgress: (state) => state.user.progress, //get user level progress
   },
   mutations: {
+    /**
+     * Update user XP state when user presses Complete button to complete the task.
+     */
     updateXp: (state, payload) => {
       const task = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload
@@ -88,6 +91,9 @@ export default createStore({
         100; //calculate level progress and if level is 1 set total xp at the start of level 1 to 0 xp
     },
     create_Todo: (state, payload) => {
+      /**
+       * Create the task when user presses the Add Todo button.
+       */
       const createTask = {
         newId: payload.newId as number,
         task: payload.task as string,
@@ -104,6 +110,9 @@ export default createStore({
       state.todos.unshift(createTask);
     },
     complete_Todo: (state, payload) => {
+      /**
+       * Complete the task when user presses the Complete button.
+       */
       const item = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload
       );
@@ -237,6 +246,9 @@ export default createStore({
       }
     },
     delete_Todo: (state, payload) => {
+      /**
+       * Delete the task when user confirms task deletion alert after pressing the Delete button.
+       */
       const index = state.todos.findIndex(
         (todo: { newId: number }) => todo.newId === payload
       );
@@ -256,35 +268,58 @@ export default createStore({
       state.user = user; //set user data
     },
     setTodos: (state, todos) => {
-      state.todos = todos; //set user data
+      state.todos = todos; //set todos data
     },
   },
   actions: {
     createTask: (context, payload) => {
+      /**
+       * Action to create the task.
+       */
       context.commit("create_Todo", payload);
     },
     completeTask: (context, payload) => {
+      /**
+       * Action to complete the task.
+       */
       context.commit("complete_Todo", payload);
       context.commit("updateXp", payload);
     },
     deleteTask: (context, payload) => {
+      /**
+       * Action to delete the task.
+       */
       context.commit("delete_Todo", payload);
     },
     saveUser(context, user) {
+      /**
+       * Action to save user data to local storage.
+       * @param user the user data
+       */
       localStorage.setItem("user", JSON.stringify(user)); //save user data
       context.commit("setUser", user);
     },
     loadUser(context) {
+      /**
+       * Action to load user data from local storage.
+       */
       const user = JSON.parse(localStorage.getItem("user") as string); //load user data
       if (user) {
         context.commit("setUser", user);
       }
     },
     saveTodos(context, todos) {
+      /**
+       * Action to save task list data to local storage.
+       * @param todos the task list data
+       */
       localStorage.setItem("todos", JSON.stringify(todos)); //save task list data
       context.commit("setTodos", todos);
     },
     loadTodos(context) {
+      /**
+       * Action to load task list data to local storage.
+       */
       const todos = JSON.parse(localStorage.getItem("todos") as string); //load task list data
       if (todos) {
         context.commit("setTodos", todos);

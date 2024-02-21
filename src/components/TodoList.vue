@@ -96,9 +96,17 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Complete task based on task ID.
+     * @param id task id
+     */
     completeTodo: function (id: number) {
       store.dispatch("completeTask", id);
     },
+    /**
+     * Delete task based on task ID.
+     * @param id task id
+     */
     deleteTodo: function (id: number) {
       store.dispatch("deleteTask", id);
     },

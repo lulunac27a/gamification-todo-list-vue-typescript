@@ -64,16 +64,16 @@ import { difficulty, priority, repeatFrequency } from "./TodoList.vue";
 import { defineComponent } from "vue";
 
 export interface todoTask {
-  task: string;
-  dueDate: Date;
-  priority: number;
-  difficulty: number;
-  repeatOften: number;
-  repeatFrequency: number;
-  newId: number;
-  completed: boolean;
-  timesCompleted: number;
-  originalDueDate: Date;
+  task: string; //task name
+  dueDate: Date; //task due date
+  priority: number; //task priority
+  difficulty: number; //task difficulty
+  repeatOften: number; //task repetition number of days/weeks/months/years
+  repeatFrequency: number; //task repetition frequency
+  newId: number; //task id
+  completed: boolean; //task completed or not
+  timesCompleted: number; //times task has been completed
+  originalDueDate: Date; //task original due date
 }
 const currentUtcDate: Date = new Date();
 const currentLocalDate: Date = new Date(
@@ -102,6 +102,9 @@ export default defineComponent({
     dueDateInput.min = currentLocalDate.toISOString().split("T")[0]; //minimum due date must be today
   },
   methods: {
+    /**
+     * Add task to todo list when user presses the Add Todo button.
+     */
     addTodo: function (): void | todoTask[] {
       this.dueDate = this.originalDueDate; //set task due date to entered task original due date
       store.dispatch("createTask", this);
