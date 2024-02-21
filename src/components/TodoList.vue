@@ -98,14 +98,14 @@ export default defineComponent({
   methods: {
     /**
      * Complete task based on task ID.
-     * @param id task id
+     * @param id task ID
      */
     completeTodo: function (id: number) {
       store.dispatch("completeTask", id);
     },
     /**
      * Delete task based on task ID.
-     * @param id task id
+     * @param id task ID
      */
     deleteTodo: function (id: number) {
       store.dispatch("deleteTask", id);
