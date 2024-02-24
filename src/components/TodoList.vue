@@ -1,10 +1,10 @@
 <template>
   <div class="todo-app">
-    <p>Level: {{ levels }}</p>
-    <p>XP: {{ xps }}</p>
+    <p>Level: {{ levels.toLocaleString("en-US") }}</p>
+    <p>XP: {{ xps.toLocaleString("en-US") }}</p>
     <!--show circular progress bar filled with level progress--><ve-progress
       :progress="progresses"
-      >Level {{ levels }}</ve-progress
+      >Level {{ levels.toLocaleString("en-US") }}</ve-progress
     >
     <h3>Task list</h3>
     <ul class="todos">

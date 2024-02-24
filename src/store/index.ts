@@ -282,8 +282,8 @@ export default createStore({
       /**
        * Action to complete the task.
        */
-      context.commit("complete_Todo", payload);
       context.commit("updateXp", payload);
+      context.commit("complete_Todo", payload);
     },
     deleteTask: (context, payload) => {
       /**
