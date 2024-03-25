@@ -40,6 +40,7 @@
       v-model="repeatOften"
       required
       min="1"
+      step="1"
     /><br />
     Repeat frequency:<br />
     <select
