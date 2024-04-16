@@ -33,6 +33,7 @@ export default createStore({
         daysToDue < 0 ? -3 / (daysToDue - 1) : 1 + 1 / (daysToDue + 1); //if task is overdue, xp multiplier is less than 1 that decreases over time when task is overdue, else xp multiplier bonus increases (more than 1) when task gets closer to due date
       let streakMultiplier: number; //calculate task streak multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
       let repeatMultiplier: number; //calculate task repetition multiplier based on task repetition occurance and task repetition frequency
+      //calculate task repeition multiplier
       if (task.repeatFrequency == 1) {
         //if task repetition is daily
         if (task.repeatOften < 7) {
@@ -73,6 +74,7 @@ export default createStore({
         //if task repetition is one-time
         repeatMultiplier = 5; //get 5x xp multiplier for one-time tasks
       }
+      //calculate task streak
       if (daysToDue < 0) {
         //if task is overdue
         task.streak = 0; //reset task streak to 0
@@ -80,8 +82,9 @@ export default createStore({
         //if task is completed before due date (not overdue)
         task.streak++; //increase task streak
       }
-      if (task.streak == 0) {
-        streakMultiplier = 1; //1x task streak multiplier
+      //calculate task streak multiplier
+      if (task.streak == 0 || task.repeatFreqnency == 5) {
+        streakMultiplier = 1; //1x task streak multiplier if task streak is 0 or completed a one-time task
       } else if (task.streak < 5) {
         streakMultiplier = 1.1 + 0.05 * (task.streak - 1); //1.1x task streak multiplier from 1 streak plus 0.05x streak multiplier for each task streak
       } else if (task.streak < 10) {
@@ -101,6 +104,7 @@ export default createStore({
       } else {
         streakMultiplier = 3; //3x task streak multiplier from 1000 task streak
       }
+      //calculate amount of xp earned when task is completed
       const xp: number = Math.max(
         Math.floor(
           task.difficulty *
