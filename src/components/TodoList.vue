@@ -14,8 +14,9 @@
           v-bind:class="{
             overdue: new Date(todo.dueDate + ' 23:59:59.999') < new Date(),
           }"
-          >{{ todo.task }}: Due {{ todo.dueDate }} Priority:
-          {{ todo.priority }} Difficulty: {{ todo.difficulty }} Repeat:
+          >{{ todo.task }}: Streak: {{ todo.streak }} Due
+          {{ todo.dueDate }} Priority: {{ todo.priority }} Difficulty:
+          {{ todo.difficulty }} Repeat:
           <span v-if="todo.repeatFrequency != 5">{{ todo.repeatOften }}</span
           >&nbsp;<span v-if="todo.repeatFrequency == 1">Day</span
           ><span v-if="todo.repeatFrequency == 2">Week</span
@@ -74,6 +75,7 @@ export default defineComponent({
     xp: Number,
     completed: Boolean,
     timesCompleted: Number,
+    streak: Number,
     originalDueDate: Date,
   },
   computed: {

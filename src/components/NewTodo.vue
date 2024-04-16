@@ -74,6 +74,7 @@ export interface todoTask {
   newId: number; //task id
   completed: boolean; //task completed or not
   timesCompleted: number; //times task has been completed
+  streak: number; //task completion streak
   originalDueDate: Date; //task original due date
 }
 const currentUtcDate: Date = new Date();
@@ -95,6 +96,7 @@ export default defineComponent({
       newId: 0, //initial task id is 0
       completed: false, //task not completed if task is created
       timesCompleted: 0,
+      streak: 0, //set default task streak to 0
       originalDueDate: currentLocalDate.toISOString().split("T")[0], //set default original task due date to today
     };
   },
@@ -118,6 +120,7 @@ export default defineComponent({
       this.repeatFrequency = repeatFrequency.Once;
       this.completed = false;
       this.timesCompleted = 0;
+      this.streak = 0;
       this.originalDueDate = currentLocalDate.toISOString().split("T")[0];
     },
   },
