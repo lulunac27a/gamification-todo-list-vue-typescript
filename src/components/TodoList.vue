@@ -2,6 +2,7 @@
   <div class="todo-app">
     <p>Level: {{ levels.toLocaleString("en-US") }}</p>
     <p>XP: {{ xps.toLocaleString("en-US") }}</p>
+    <p>Daily Streak: {{ dailyStreaks.toLocaleString("en-US") }}</p>
     <!--show circular progress bar filled with level progress--><ve-progress
       :progress="progresses"
       >Level {{ levels.toLocaleString("en-US") }}</ve-progress
@@ -14,10 +15,13 @@
           v-bind:class="{
             overdue: new Date(todo.dueDate + ' 23:59:59.999') < new Date(),
           }"
-          >{{ todo.task }}: <br />Streak: {{ todo.streak }} <br />Due date:
+          >{{ todo.task }} <br />Streak:
+          {{ todo.streak.toLocaleString("en-US") }} <br />Due date:
           {{ todo.dueDate }} <br />Priority: {{ todo.priority }}
           <br />Difficulty: {{ todo.difficulty }} <br />Repeat:
-          <span v-if="todo.repeatFrequency != 5">{{ todo.repeatOften }}</span
+          <span v-if="todo.repeatFrequency != 5">{{
+            todo.repeatOften.toLocaleString("en-US")
+          }}</span
           >&nbsp;<span v-if="todo.repeatFrequency == 1">Day</span
           ><span v-if="todo.repeatFrequency == 2">Week</span
           ><span v-if="todo.repeatFrequency == 3">Month</span
@@ -76,6 +80,7 @@ export default defineComponent({
     completed: Boolean,
     timesCompleted: Number,
     streak: Number,
+    dailyStreak: Number,
     originalDueDate: Date,
   },
   computed: {
@@ -92,7 +97,13 @@ export default defineComponent({
       return store.getters.getXp; //get current xp
     },
     progresses() {
-      return store.getters.getProgress; //get curent progress
+      return store.getters.getProgress; //get current progress
+    },
+    dailyStreaks() {
+      return store.getters.getDailyStreak; //get current daily streak
+    },
+    lastCompletedDates() {
+      return store.getters.getLastCompletionDate; //get current last completion date
     },
   },
   methods: {

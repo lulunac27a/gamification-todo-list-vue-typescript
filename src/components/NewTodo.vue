@@ -75,7 +75,7 @@ export interface todoTask {
   completed: boolean; //task completed or not
   timesCompleted: number; //times task has been completed
   streak: number; //task completion streak
-  originalDueDate: Date; //task original due date
+  originalDueDate: Date; //task original due date in YYYY-MM-DD string
 }
 const currentUtcDate: Date = new Date();
 const currentLocalDate: Date = new Date(
