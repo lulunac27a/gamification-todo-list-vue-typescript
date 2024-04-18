@@ -6,7 +6,7 @@ export default createStore({
     //eslint-disable-next-line
     todos: [] as any[],
     user: {
-      level: 1 as number, //set level to 1 as total xp is 0 when state is created
+      level: 1 as number, //set level to 1 as total XP is 0 when state is created
       xp: 0 as number,
       progress: 0 as number,
       dailyStreak: 0 as number, //set daily streak to 0 and last completion date to undefined when state is created
@@ -15,7 +15,7 @@ export default createStore({
   },
   getters: {
     getTodos: (state) => state.todos, //get task list
-    getXp: (state) => state.user.xp, //get user xp
+    getXp: (state) => state.user.xp, //get user XP
     getLevel: (state) => state.user.level, //get user level
     getProgress: (state) => state.user.progress, //get user level progress
     getDailyStreak: (state) => state.user.dailyStreak, //get user daily streak
@@ -34,50 +34,50 @@ export default createStore({
           Number(new Date().setHours(23, 59, 59, 999))) /
         (1000 * 60 * 60 * 24); //calculate number of days until the task is due
       const dateMultiplier: number =
-        daysToDue < 0 ? -3 / (daysToDue - 1) : 1 + 1 / (daysToDue + 1); //if task is overdue, xp multiplier is less than 1 that decreases over time when task is overdue, else xp multiplier bonus increases (more than 1) when task gets closer to due date
-      let streakMultiplier: number; //calculate task streak xp multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
-      let repeatMultiplier: number; //calculate task repetition xp multiplier based on task repetition occurance and task repetition frequency
-      let dailyStreakMultiplier: number; //calculate daily streak xp multiplier based on daily streak
-      //calculate task repetition xp multiplier
+        daysToDue < 0 ? -3 / (daysToDue - 1) : 1 + 1 / (daysToDue + 1); //if task is overdue, XP multiplier is less than 1 that decreases over time when task is overdue, else XP multiplier bonus increases (more than 1) when task gets closer to due date
+      let streakMultiplier: number; //calculate task streak XP multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
+      let repeatMultiplier: number; //calculate task repetition XP multiplier based on task repetition occurance and task repetition frequency
+      let dailyStreakMultiplier: number; //calculate daily streak XP multiplier based on daily streak
+      //calculate task repetition XP multiplier
       if (task.repeatFrequency == 1) {
         //if task repetition is daily
         if (task.repeatOften < 7) {
           //7 days is 1 week
-          repeatMultiplier = 1 + (task.repeatOften - 1) / (7 - 1); //1x xp multiplier for daily tasks (1 day) to 2x xp multiplier for weekly tasks (7 days)
+          repeatMultiplier = 1 + (task.repeatOften - 1) / (7 - 1); //1x XP multiplier for daily tasks (1 day) to 2x XP multiplier for weekly tasks (7 days)
         } else if (task.repeatOften < 30) {
           //approximately 30 days is 1 month
-          repeatMultiplier = 2 + (task.repeatOften - 7) / (30 - 7); //2x xp multiplier for weekly tasks (7 days) to 3x xp multiplier for monthly tasks (approximately 30 days)
+          repeatMultiplier = 2 + (task.repeatOften - 7) / (30 - 7); //2x XP multiplier for weekly tasks (7 days) to 3x XP multiplier for monthly tasks (approximately 30 days)
         } else if (task.repeatOften < 365) {
           //approximately 365 days is 1 year
-          repeatMultiplier = 3 + (task.repeatOften - 30) / (365 - 30); //3x xp multiplier for monthly tasks (approximately 30 days) to 4x xp multiplier for yearly tasks (approximately 365 days)
+          repeatMultiplier = 3 + (task.repeatOften - 30) / (365 - 30); //3x XP multiplier for monthly tasks (approximately 30 days) to 4x XP multiplier for yearly tasks (approximately 365 days)
         } else {
-          repeatMultiplier = 5 - 365 / task.repeatOften; //4x xp multiplier for yearly tasks (approximately 365 days) to 5x xp multiplier for one-time tasks
+          repeatMultiplier = 5 - 365 / task.repeatOften; //4x XP multiplier for yearly tasks (approximately 365 days) to 5x XP multiplier for one-time tasks
         }
       } else if (task.repeatFrequency == 2) {
         //if task repetition is weekly
         if (task.repeatOften < 4) {
           //approximately 4 weeks is 1 month
-          repeatMultiplier = 2 + (task.repeatOften - 1) / (4 - 1); //2x xp multiplier for weekly tasks (1 week) to 3x xp multiplier for monthly tasks (approximately 4 weeks)
+          repeatMultiplier = 2 + (task.repeatOften - 1) / (4 - 1); //2x XP multiplier for weekly tasks (1 week) to 3x XP multiplier for monthly tasks (approximately 4 weeks)
         } else if (task.repeatOften < 52) {
           //approximately 52 weeks is 1 year
-          repeatMultiplier = 3 + (task.repeatOften - 4) / (52 - 4); //3x xp multiplier for monthly tasks (approximately 4 weeks) to 4x xp multiplier for yearly tasks (approximately 52 weeks)
+          repeatMultiplier = 3 + (task.repeatOften - 4) / (52 - 4); //3x XP multiplier for monthly tasks (approximately 4 weeks) to 4x XP multiplier for yearly tasks (approximately 52 weeks)
         } else {
-          repeatMultiplier = 5 - 52 / task.repeatOften; //4x xp multiplier for yearly tasks (approximately 52 weeks) to 5x xp multiplier for one-time tasks
+          repeatMultiplier = 5 - 52 / task.repeatOften; //4x XP multiplier for yearly tasks (approximately 52 weeks) to 5x XP multiplier for one-time tasks
         }
       } else if (task.repeatFrequency == 3) {
         //if task repetition is monthly
         if (task.repeatOften < 12) {
           //12 months is 1 year
-          repeatMultiplier = 3 + (task.repeatOften - 1) / (12 - 1); //3x xp multiplier for monthly tasks (1 month) to 4x xp multiplier for yearly tasks (12 months)
+          repeatMultiplier = 3 + (task.repeatOften - 1) / (12 - 1); //3x XP multiplier for monthly tasks (1 month) to 4x XP multiplier for yearly tasks (12 months)
         } else {
-          repeatMultiplier = 5 - 12 / task.repeatOften; //4x xp multiplier for yearly tasks (12 months) to 5x xp multiplier for one-time tasks
+          repeatMultiplier = 5 - 12 / task.repeatOften; //4x XP multiplier for yearly tasks (12 months) to 5x XP multiplier for one-time tasks
         }
       } else if (task.repeatFrequency == 4) {
         //if task repetition is yearly
-        repeatMultiplier = 5 - 1 / task.repeatOften; //4x xp multiplier for yearly tasks (1 year) to 5x xp multiplier for one-time tasks
+        repeatMultiplier = 5 - 1 / task.repeatOften; //4x XP multiplier for yearly tasks (1 year) to 5x XP multiplier for one-time tasks
       } else {
         //if task repetition is one-time
-        repeatMultiplier = 5; //get 5x xp multiplier for one-time tasks
+        repeatMultiplier = 5; //get 5x XP multiplier for one-time tasks
       }
       //calculate task streak
       if (daysToDue < 0) {
@@ -103,25 +103,25 @@ export default createStore({
       ) {
         state.user.dailyStreak++; //increase daily streak
       }
-      //calculate daily streak xp multiplier
+      //calculate daily streak XP multiplier
       if (state.user.dailyStreak == (0 || 1)) {
-        dailyStreakMultiplier = 1; //1x daily streak xp multiplier if daily streak is 0 or 1
+        dailyStreakMultiplier = 1; //1x daily streak XP multiplier if daily streak is 0 or 1
       } else if (state.user.dailyStreak < 3) {
-        dailyStreakMultiplier = 1 + 0.1 * (state.user.dailyStreak - 1); //1x daily streak xp multiplier from 1 streak plus 0.1x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1 + 0.1 * (state.user.dailyStreak - 1); //1x daily streak XP multiplier from 1 streak plus 0.1x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 7) {
-        dailyStreakMultiplier = 1.2 + 0.05 * (state.user.dailyStreak - 3); //1.2x daily streak xp multiplier from 3 streak plus 0.05x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.2 + 0.05 * (state.user.dailyStreak - 3); //1.2x daily streak XP multiplier from 3 streak plus 0.05x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 14) {
-        dailyStreakMultiplier = 1.4 + 0.03 * (state.user.dailyStreak - 7); //1.4x daily streak xp multiplier from 7 streak plus 0.03x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.4 + 0.03 * (state.user.dailyStreak - 7); //1.4x daily streak XP multiplier from 7 streak plus 0.03x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 30) {
-        dailyStreakMultiplier = 1.61 + 0.02 * (state.user.dailyStreak - 14); //1.61x daily streak xp multiplier from 14 streak plus 0.02x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.61 + 0.02 * (state.user.dailyStreak - 14); //1.61x daily streak XP multiplier from 14 streak plus 0.02x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 90) {
-        dailyStreakMultiplier = 1.89 + 0.01 * (state.user.dailyStreak - 30); //1.89x daily streak xp multiplier from 30 streak plus 0.01x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.89 + 0.01 * (state.user.dailyStreak - 30); //1.89x daily streak XP multiplier from 30 streak plus 0.01x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 180) {
-        dailyStreakMultiplier = 2.49 + 0.005 * (state.user.dailyStreak - 90); //2.49x daily streak xp multiplier from 90 streak plus 0.005x streak multiplier for each daily streak
+        dailyStreakMultiplier = 2.49 + 0.005 * (state.user.dailyStreak - 90); //2.49x daily streak XP multiplier from 90 streak plus 0.005x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 365) {
-        dailyStreakMultiplier = 2.94 + 0.002 * (state.user.dailyStreak - 180); //2.94x daily streak xp multiplier from 30 streak plus 0.002x streak multiplier for each daily streak
+        dailyStreakMultiplier = 2.94 + 0.002 * (state.user.dailyStreak - 180); //2.94x daily streak XP multiplier from 30 streak plus 0.002x streak multiplier for each daily streak
       } else {
-        dailyStreakMultiplier = 3.31; //3.31x daily streak xp multiplier from 365 daily streak
+        dailyStreakMultiplier = 3.31; //3.31x daily streak XP multiplier from 365 daily streak
       }
       //set last completion date to today
       state.user.lastCompletionDate = new Date(
@@ -131,29 +131,29 @@ export default createStore({
       )
         .toISOString()
         .split("T")[0];
-      //calculate task streak xp multiplier
+      //calculate task streak XP multiplier
       if (task.streak == 0 || task.repeatFrequency == 5) {
-        streakMultiplier = 1; //1x task streak multiplier if task streak is 0 or completed a one-time task
+        streakMultiplier = 1; //1x task streak XP multiplier if task streak is 0 or completed a one-time task
       } else if (task.streak < 5) {
-        streakMultiplier = 1.1 + 0.05 * (task.streak - 1); //1.1x task streak xp multiplier from 1 streak plus 0.05x streak multiplier for each task streak
+        streakMultiplier = 1.1 + 0.05 * (task.streak - 1); //1.1x task streak XP multiplier from 1 streak plus 0.05x streak multiplier for each task streak
       } else if (task.streak < 10) {
-        streakMultiplier = 1.3 + 0.04 * (task.streak - 5); //1.3x task streak xp multiplier from 5 streak plus 0.04x streak multiplier for each task streak
+        streakMultiplier = 1.3 + 0.04 * (task.streak - 5); //1.3x task streak XP multiplier from 5 streak plus 0.04x streak multiplier for each task streak
       } else if (task.streak < 20) {
-        streakMultiplier = 1.5 + 0.02 * (task.streak - 10); //1.5x task streak xp multiplier from 10 streak plus 0.02x streak multiplier for each task streak
+        streakMultiplier = 1.5 + 0.02 * (task.streak - 10); //1.5x task streak XP multiplier from 10 streak plus 0.02x streak multiplier for each task streak
       } else if (task.streak < 50) {
-        streakMultiplier = 1.7 + 0.01 * (task.streak - 20); //1.7x task streak xp multiplier from 20 streak plus 0.01x streak multiplier for each task streak
+        streakMultiplier = 1.7 + 0.01 * (task.streak - 20); //1.7x task streak XP multiplier from 20 streak plus 0.01x streak multiplier for each task streak
       } else if (task.streak < 100) {
-        streakMultiplier = 2 + 0.005 * (task.streak - 50); //2x task streak xp multiplier from 50 streak plus 0.005x streak multiplier for each task streak
+        streakMultiplier = 2 + 0.005 * (task.streak - 50); //2x task streak XP multiplier from 50 streak plus 0.005x streak multiplier for each task streak
       } else if (task.streak < 200) {
-        streakMultiplier = 2.25 + 0.0025 * (task.streak - 100); //2.25x task streak xp multiplier from 100 streak plus 0.0025x streak multiplier for each task streak
+        streakMultiplier = 2.25 + 0.0025 * (task.streak - 100); //2.25x task streak XP multiplier from 100 streak plus 0.0025x streak multiplier for each task streak
       } else if (task.streak < 500) {
-        streakMultiplier = 2.5 + 0.001 * (task.streak - 200); //2.5x task streak xp multiplier from 200 streak plus 0.001x streak multiplier for each task streak
+        streakMultiplier = 2.5 + 0.001 * (task.streak - 200); //2.5x task streak XP multiplier from 200 streak plus 0.001x streak multiplier for each task streak
       } else if (task.streak < 1000) {
-        streakMultiplier = 2.8 + 0.0004 * (task.streak - 500); //2.8x task streak xp multiplier from 500 task streak plus 0.0004x streak multiplier for each task streak
+        streakMultiplier = 2.8 + 0.0004 * (task.streak - 500); //2.8x task streak XP multiplier from 500 task streak plus 0.0004x streak multiplier for each task streak
       } else {
-        streakMultiplier = 3; //3x task streak xp multiplier from 1000 task streak
+        streakMultiplier = 3; //3x task streak XP multiplier from 1000 task streak
       }
-      //calculate amount of xp earned when task is completed
+      //calculate amount of XP earned when task is completed
       const xp: number = Math.max(
         Math.floor(
           task.difficulty *
@@ -164,18 +164,18 @@ export default createStore({
             dailyStreakMultiplier
         ),
         1
-      ); //get at least 1 xp when the task is completed
-      state.user.xp += xp; //get amount of xp earned based on task difficulty, task priority, task due date, task repetition, task streak and daily streak multipliers
+      ); //get at least 1 XP when the task is completed
+      state.user.xp += xp; //get amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak and daily streak multipliers
       state.user.level = Math.max(
         1,
         Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16))
-      ); //calculate level based on how many xp and set level to 1 if total xp is 0
+      ); //calculate level based on how many XP and set level to 1 if total XP is 0
       state.user.progress =
         ((state.user.xp -
           Math.pow(state.user.level == 1 ? 0 : state.user.level, 3)) /
           (Math.pow(state.user.level + 1, 3) -
             Math.pow(state.user.level == 1 ? 0 : state.user.level, 3))) *
-        100; //calculate level progress and if level is 1 set total xp at the start of level 1 to 0 xp
+        100; //calculate level progress and if level is 1 set total XP at the start of level 1 to 0 XP
     },
     create_Todo: (state, payload) => {
       /**
