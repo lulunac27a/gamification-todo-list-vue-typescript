@@ -36,7 +36,7 @@ export default createStore({
       const dateMultiplier: number =
         daysToDue < 0 ? -3 / (daysToDue - 1) : 1 + 1 / (daysToDue + 1); //if task is overdue, XP multiplier is less than 1 that decreases over time when task is overdue, else XP multiplier bonus increases (more than 1) when task gets closer to due date
       let streakMultiplier: number; //calculate task streak XP multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
-      let repeatMultiplier: number; //calculate task repetition XP multiplier based on task repetition occurance and task repetition frequency
+      let repeatMultiplier: number; //calculate task repetition XP multiplier based on task repetition occurrence and task repetition frequency
       let dailyStreakMultiplier: number; //calculate daily streak XP multiplier based on daily streak
       //calculate task repetition XP multiplier
       if (task.repeatFrequency == 1) {
@@ -112,7 +112,7 @@ export default createStore({
         //1 week is 7 days
         dailyStreakMultiplier = 1.2 + 0.05 * (state.user.dailyStreak - 3); //1.2x daily streak XP multiplier from 3 streak plus 0.05x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 14) {
-        //2 weks is 14 days
+        //2 weeks is 14 days
         dailyStreakMultiplier = 1.4 + 0.03 * (state.user.dailyStreak - 7); //1.4x daily streak XP multiplier from 7 streak plus 0.03x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 30) {
         //1 month is approximately 30 days
