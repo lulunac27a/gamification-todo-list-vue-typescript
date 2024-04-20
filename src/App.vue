@@ -25,4 +25,4 @@ export default defineComponent({
 });
 </script>
 
-<link lang="scss" href="./App.scss" />
+<link lang="scss" src="./App.scss" />
