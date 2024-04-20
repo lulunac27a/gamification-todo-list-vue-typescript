@@ -102,7 +102,7 @@ export default defineComponent({
   },
   mounted() {
     const dueDateInput = document.getElementById("dueDate") as HTMLInputElement;
-    dueDateInput.min = currentLocalDate.toISOString().split("T")[0]; //minimum due date must be today
+    dueDateInput.min = currentLocalDate.toISOString().split("T")[0]; //task minimum due date must be today
   },
   methods: {
     /**

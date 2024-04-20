@@ -184,6 +184,7 @@ export default createStore({
         1
       ); //get at least 1 XP when the task is completed
       state.user.xp += xp; //get amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak and daily streak multipliers
+      alert(`Task ${task.task} completed!\nYou earned ${xp} XP!`); //alert user to show how many XP they earned after completing the task
       state.user.level = Math.max(
         1,
         Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16))
