@@ -34,7 +34,7 @@ export default createStore({
           Number(new Date().setHours(23, 59, 59, 999))) /
         (1000 * 60 * 60 * 24); //calculate number of days until the task is due
       const dateMultiplier: number =
-        daysToDue < 0 ? -3 / (daysToDue - 1) : 1 + 1 / (daysToDue + 1); //if task is overdue, XP multiplier is less than 1 that decreases over time when task is overdue, else XP multiplier bonus increases (more than 1) when task gets closer to due date
+        daysToDue < 0 ? -2 / (daysToDue - 1) : 1 + 1 / (daysToDue + 1); //if task is overdue, XP multiplier is less than 1 that decreases over time when task is overdue, else XP multiplier bonus increases (more than 1) when task gets closer to due date
       let streakMultiplier: number; //calculate task streak XP multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
       let repeatMultiplier: number; //calculate task repetition XP multiplier based on task repetition occurrence and task repetition frequency
       let dailyStreakMultiplier: number; //calculate daily streak XP multiplier based on daily streak
