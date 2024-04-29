@@ -3,6 +3,7 @@
     <p>Level: {{ levels.toLocaleString("en-US") }}</p>
     <p>XP: {{ xps.toLocaleString("en-US") }}</p>
     <p>Daily Streak: {{ dailyStreaks.toLocaleString("en-US") }}</p>
+    <p>Score: {{ scores.toLocaleString("en-US") }}</p>
     <!--show circular progress bar filled with level progress--><ve-progress
       :progress="progresses"
       >Level {{ levels.toLocaleString("en-US") }}</ve-progress
@@ -98,6 +99,9 @@ export default defineComponent({
     },
     progresses() {
       return store.getters.getProgress; //get current progress
+    },
+    scores() {
+      return store.getters.getScore; //get current score
     },
     dailyStreaks() {
       return store.getters.getDailyStreak; //get current daily streak

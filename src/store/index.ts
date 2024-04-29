@@ -9,6 +9,7 @@ export default createStore({
       level: 1 as number, //set level to 1 as total XP is 0 when state is created
       xp: 0 as number,
       progress: 0 as number,
+      score: 0 as number, //set score to 0 when state is created
       dailyStreak: 0 as number, //set daily streak to 0 and last completion date to undefined when state is created
       lastCompletionDate: undefined as string | undefined, //last completion date in YYYY-MM-DD string
     },
@@ -18,6 +19,7 @@ export default createStore({
     getXp: (state) => state.user.xp, //get user XP
     getLevel: (state) => state.user.level, //get user level
     getProgress: (state) => state.user.progress, //get user level progress
+    getScore: (state) => state.user.score, //get user score
     getDailyStreak: (state) => state.user.dailyStreak, //get user daily streak
     getLastCompletionDate: (state) => state.user.lastCompletionDate, //get user last completion date
   },
@@ -38,6 +40,7 @@ export default createStore({
       let streakMultiplier: number; //calculate task streak XP multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
       let repeatMultiplier: number; //calculate task repetition XP multiplier based on task repetition occurrence and task repetition frequency
       let dailyStreakMultiplier: number; //calculate daily streak XP multiplier based on daily streak
+      let levelMultiplier: number; //calculate level score multiplier based on user level
       //calculate task repetition XP multiplier
       if (task.repeatFrequency == 1) {
         //if task repetition is daily
@@ -171,7 +174,39 @@ export default createStore({
       } else {
         streakMultiplier = 3.8; //3.8x task streak XP multiplier from 10000 task streak
       }
-      //calculate amount of XP earned when task is completed
+      //calculate level score multiplier based on user level
+      if (state.user.level == 1) {
+        levelMultiplier = 1; //1x level score multiplier if user level is 1
+      } else if (state.user.level < 3) {
+        levelMultiplier = 1 + 0.1 * (state.user.level - 1); //1x level score multiplier from level 1 plus 0.1x level score multiplier for each level
+      } else if (state.user.level < 5) {
+        levelMultiplier = 1.2 + 0.05 * (state.user.level - 3); //1.2x level score multiplier from level 3 plus 0.05x level score multiplier for each level
+      } else if (state.user.level < 10) {
+        levelMultiplier = 1.3 + 0.04 * (state.user.level - 5); //1.3x level score multiplier from level 5 plus 0.04x level score multiplier for each level
+      } else if (state.user.level < 20) {
+        levelMultiplier = 1.5 + 0.03 * (state.user.level - 10); //1.5x level score multiplier from level 1 plus 0.03x level score multiplier for each level
+      } else if (state.user.level < 50) {
+        levelMultiplier = 1.8 + 0.02 * (state.user.level - 20); //1.8x level score multiplier from level 20 plus 0.02x level score multiplier for each level
+      } else if (state.user.level < 100) {
+        levelMultiplier = 2.4 + 0.012 * (state.user.level - 50); //2.4x level score multiplier from level 50 plus 0.012x level score multiplier for each level
+      } else if (state.user.level < 200) {
+        levelMultiplier = 3 + 0.01 * (state.user.level - 100); //3x level score multiplier from level 100 plus 0.01x level score multiplier for each level
+      } else if (state.user.level < 300) {
+        levelMultiplier = 4 + 0.005 * (state.user.level - 200); //4x level score multiplier from level 200 plus 0.005x level score multiplier for each level
+      } else if (state.user.level < 500) {
+        levelMultiplier = 4.5 + 0.0025 * (state.user.level - 300); //4.5x level score multiplier from level 300 plus 0.0025x level score multiplier for each level
+      } else if (state.user.level < 1000) {
+        levelMultiplier = 5 + 0.002 * (state.user.level - 500); //5x level score multiplier from level 500 plus 0.002x level score multiplier for each level
+      } else if (state.user.level < 2000) {
+        levelMultiplier = 6 + 0.001 * (state.user.level - 1000); //6x level score multiplier from level 1000 plus 0.001x level score multiplier for each level
+      } else if (state.user.level < 5000) {
+        levelMultiplier = 7 + 0.0005 * (state.user.level - 2000); //7x level score multiplier from level 2000 plus 0.0005x level score multiplier for each level
+      } else if (state.user.level < 10000) {
+        levelMultiplier = 8.5 + 0.0002 * (state.user.level - 5000); //8.5x level score multiplier from level 5000 plus 0.0002x level score multiplier for each level
+      } else {
+        levelMultiplier = 9.5; //9.5 level score multiplier from level 10000
+      }
+      //calculate amount of XP earned and points earned when task is completed
       const xp: number = Math.max(
         Math.floor(
           task.difficulty *
@@ -184,7 +219,22 @@ export default createStore({
         1
       ); //get at least 1 XP when the task is completed
       state.user.xp += xp; //get amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak and daily streak multipliers
-      alert(`Task ${task.task} completed!\nYou earned ${xp} XP!`); //alert user to show how many XP they earned after completing the task
+      const score: number = Math.max(
+        Math.floor(
+          task.difficulty *
+            task.priority *
+            dateMultiplier *
+            repeatMultiplier *
+            streakMultiplier *
+            dailyStreakMultiplier *
+            levelMultiplier
+        ),
+        1
+      ); //get at least 1 point when the task is completed
+      state.user.score += score; //get amount of points earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and user level multipliers
+      alert(
+        `Task ${task.task} completed!\nYou earned ${xp} XP!\nYou earned ${score} points!`
+      ); //alert user to show how many XP they earned and points earned after completing the task
       //check if user has leveled up
       const userLevel: number = state.user.level; //set userLevel variable before calculating user level state
       state.user.level = Math.max(
