@@ -116,27 +116,33 @@ export default createStore({
         dailyStreakMultiplier = 1.2 + 0.05 * (state.user.dailyStreak - 3); //1.2x daily streak XP multiplier from 3 streak plus 0.05x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 14) {
         //2 weeks is 14 days
-        dailyStreakMultiplier = 1.4 + 0.03 * (state.user.dailyStreak - 7); //1.4x daily streak XP multiplier from 7 streak plus 0.03x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.4 + 0.04 * (state.user.dailyStreak - 7); //1.4x daily streak XP multiplier from 7 streak plus 0.04x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 30) {
         //1 month is approximately 30 days
-        dailyStreakMultiplier = 1.61 + 0.02 * (state.user.dailyStreak - 14); //1.61x daily streak XP multiplier from 14 streak plus 0.02x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.68 + 0.03 * (state.user.dailyStreak - 14); //1.68x daily streak XP multiplier from 14 streak plus 0.03x streak multiplier for each daily streak
+      } else if (state.user.dailyStreak < 60) {
+        //2 months is approximately 60 days
+        dailyStreakMultiplier = 2.16 + 0.02 * (state.user.dailyStreak - 30); //2.16x daily streak XP multiplier from 30 streak plus 0.02x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 90) {
         //3 months is approximately 90 days
-        dailyStreakMultiplier = 1.89 + 0.01 * (state.user.dailyStreak - 30); //1.89x daily streak XP multiplier from 30 streak plus 0.01x streak multiplier for each daily streak
+        dailyStreakMultiplier = 2.76 + 0.015 * (state.user.dailyStreak - 60); //2.76x daily streak XP multiplier from 60 streak plus 0.015x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 180) {
         //6 months is approximately 180 days
-        dailyStreakMultiplier = 2.49 + 0.005 * (state.user.dailyStreak - 90); //2.49x daily streak XP multiplier from 90 streak plus 0.005x streak multiplier for each daily streak
+        dailyStreakMultiplier = 3.21 + 0.01 * (state.user.dailyStreak - 90); //3.21x daily streak XP multiplier from 90 streak plus 0.01x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 365) {
         //1 year is approximately 365 days
-        dailyStreakMultiplier = 2.94 + 0.002 * (state.user.dailyStreak - 180); //2.94x daily streak XP multiplier from 180 streak plus 0.002x streak multiplier for each daily streak
+        dailyStreakMultiplier = 4.11 + 0.005 * (state.user.dailyStreak - 180); //4.11x daily streak XP multiplier from 180 streak plus 0.005x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 730) {
         //2 years is approximately 730 days
-        dailyStreakMultiplier = 3.31 + 0.001 * (state.user.dailyStreak - 365); //3.31x daily streak XP multiplier from 365 streak plus 0.001x streak multiplier for each daily streak
+        dailyStreakMultiplier = 5.035 + 0.003 * (state.user.dailyStreak - 365); //5.035x daily streak XP multiplier from 365 streak plus 0.003x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 1461) {
         //4 years is approximately 1461 days
-        dailyStreakMultiplier = 3.675 + 0.0005 * (state.user.dailyStreak - 730); //3.675x daily streak XP multiplier from 730 streak plus 0.0005x streak multiplier for each daily streak
+        dailyStreakMultiplier = 6.13 + 0.002 * (state.user.dailyStreak - 730); //6.13x daily streak XP multiplier from 730 streak plus 0.002x streak multiplier for each daily streak
+      } else if (state.user.dailyStreak < 3652) {
+        //10 years is approximately 3652 days
+        dailyStreakMultiplier = 7.592 + 0.001 * (state.user.dailyStreak - 1461); //7.592x daily streak XP multiplier from 1461 streak plus 0.001x streak multiplier for each daily streak
       } else {
-        dailyStreakMultiplier = 4.0405; //4.0405x daily streak XP multiplier from 365 daily streak
+        dailyStreakMultiplier = 9.783; //9.783x daily streak XP multiplier from 3652 daily streak
       }
       //set last completion date to today
       state.user.lastCompletionDate = new Date(
@@ -154,25 +160,25 @@ export default createStore({
       } else if (task.streak < 10) {
         streakMultiplier = 1.3 + 0.04 * (task.streak - 5); //1.3x task streak XP multiplier from 5 streak plus 0.04x streak multiplier for each task streak
       } else if (task.streak < 20) {
-        streakMultiplier = 1.5 + 0.02 * (task.streak - 10); //1.5x task streak XP multiplier from 10 streak plus 0.02x streak multiplier for each task streak
+        streakMultiplier = 1.5 + 0.03 * (task.streak - 10); //1.5x task streak XP multiplier from 10 streak plus 0.03x streak multiplier for each task streak
       } else if (task.streak < 50) {
-        streakMultiplier = 1.7 + 0.01 * (task.streak - 20); //1.7x task streak XP multiplier from 20 streak plus 0.01x streak multiplier for each task streak
+        streakMultiplier = 1.8 + 0.02 * (task.streak - 20); //1.8x task streak XP multiplier from 20 streak plus 0.02x streak multiplier for each task streak
       } else if (task.streak < 100) {
-        streakMultiplier = 2 + 0.005 * (task.streak - 50); //2x task streak XP multiplier from 50 streak plus 0.005x streak multiplier for each task streak
+        streakMultiplier = 2.4 + 0.01 * (task.streak - 50); //2.4x task streak XP multiplier from 50 streak plus 0.01x streak multiplier for each task streak
       } else if (task.streak < 200) {
-        streakMultiplier = 2.25 + 0.0025 * (task.streak - 100); //2.25x task streak XP multiplier from 100 streak plus 0.0025x streak multiplier for each task streak
+        streakMultiplier = 2.9 + 0.005 * (task.streak - 100); //2.9x task streak XP multiplier from 100 streak plus 0.005x streak multiplier for each task streak
       } else if (task.streak < 500) {
-        streakMultiplier = 2.5 + 0.001 * (task.streak - 200); //2.5x task streak XP multiplier from 200 streak plus 0.001x streak multiplier for each task streak
+        streakMultiplier = 3.4 + 0.002 * (task.streak - 200); //3.4x task streak XP multiplier from 200 streak plus 0.002x streak multiplier for each task streak
       } else if (task.streak < 1000) {
-        streakMultiplier = 2.8 + 0.0004 * (task.streak - 500); //2.8x task streak XP multiplier from 500 task streak plus 0.0004x streak multiplier for each task streak
+        streakMultiplier = 4 + 0.001 * (task.streak - 500); //4x task streak XP multiplier from 500 task streak plus 0.001x streak multiplier for each task streak
       } else if (task.streak < 2000) {
-        streakMultiplier = 3 + 0.00025 * (task.streak - 1000); //3x task streak XP multiplier from 1000 task streak plus 0.00025x streak multiplier for each task streak
+        streakMultiplier = 4.5 + 0.0005 * (task.streak - 1000); //4.5x task streak XP multiplier from 1000 task streak plus 0.0005x streak multiplier for each task streak
       } else if (task.streak < 5000) {
-        streakMultiplier = 3.25 + 0.0001 * (task.streak - 2000); //3.25x task streak XP multiplier from 2000 task streak plus 0.0001x streak multiplier for each task streak
+        streakMultiplier = 5 + 0.0002 * (task.streak - 2000); //5x task streak XP multiplier from 2000 task streak plus 0.0002x streak multiplier for each task streak
       } else if (task.streak < 10000) {
-        streakMultiplier = 3.55 + 0.00005 * (task.streak - 5000); //3.55x task streak XP multiplier from 5000 task streak plus 0.00005x streak multiplier for each task streak
+        streakMultiplier = 5.6 + 0.0001 * (task.streak - 5000); //5.6x task streak XP multiplier from 5000 task streak plus 0.0001x streak multiplier for each task streak
       } else {
-        streakMultiplier = 3.8; //3.8x task streak XP multiplier from 10000 task streak
+        streakMultiplier = 6.1; //6.1x task streak XP multiplier from 10000 task streak
       }
       //calculate level score multiplier based on user level
       if (state.user.level == 1) {
