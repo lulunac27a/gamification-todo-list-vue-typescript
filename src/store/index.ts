@@ -42,7 +42,7 @@ export default createStore({
       let dailyStreakMultiplier: number; //calculate daily streak XP multiplier based on daily streak
       let levelMultiplier: number; //calculate level score multiplier based on user level
       //calculate task repetition XP multiplier
-      if (task.repeatFrequency == 1) {
+      if (task.repeatFrequency === 1) {
         //if task repetition is daily
         if (task.repeatOften < 7) {
           //7 days is 1 week
@@ -56,7 +56,7 @@ export default createStore({
         } else {
           repeatMultiplier = 5 - 365 / task.repeatOften; //4x XP multiplier for yearly tasks (approximately 365 days) to 5x XP multiplier for one-time tasks
         }
-      } else if (task.repeatFrequency == 2) {
+      } else if (task.repeatFrequency === 2) {
         //if task repetition is weekly
         if (task.repeatOften < 4) {
           //approximately 4 weeks is 1 month
@@ -67,7 +67,7 @@ export default createStore({
         } else {
           repeatMultiplier = 5 - 52 / task.repeatOften; //4x XP multiplier for yearly tasks (approximately 52 weeks) to 5x XP multiplier for one-time tasks
         }
-      } else if (task.repeatFrequency == 3) {
+      } else if (task.repeatFrequency === 3) {
         //if task repetition is monthly
         if (task.repeatOften < 12) {
           //12 months is 1 year
@@ -75,7 +75,7 @@ export default createStore({
         } else {
           repeatMultiplier = 5 - 12 / task.repeatOften; //4x XP multiplier for yearly tasks (12 months) to 5x XP multiplier for one-time tasks
         }
-      } else if (task.repeatFrequency == 4) {
+      } else if (task.repeatFrequency === 4) {
         //if task repetition is yearly
         repeatMultiplier = 5 - 1 / task.repeatOften; //4x XP multiplier for yearly tasks (1 year) to 5x XP multiplier for one-time tasks
       } else {
@@ -93,7 +93,7 @@ export default createStore({
       //calculate daily streak
       const currentDate: Date = new Date();
       if (
-        state.user.lastCompletionDate == undefined ||
+        state.user.lastCompletionDate === undefined ||
         new Date(currentDate.setDate(currentDate.getDate() - 1)) >
           new Date(state.user.lastCompletionDate + " 23:59:59.999")
       ) {
@@ -101,13 +101,13 @@ export default createStore({
         state.user.dailyStreak = 1; //reset daily streak to 1
       } else if (
         Number(new Date(currentDate.setHours(23, 59, 59, 999))) -
-          Number(new Date(state.user.lastCompletionDate + " 23:59:59.999")) ==
+          Number(new Date(state.user.lastCompletionDate + " 23:59:59.999")) ===
         1000 * 60 * 60 * 24
       ) {
         state.user.dailyStreak++; //increase daily streak
       }
       //calculate daily streak XP multiplier
-      if (state.user.dailyStreak == (0 || 1)) {
+      if (state.user.dailyStreak === (0 || 1)) {
         dailyStreakMultiplier = 1; //1x daily streak XP multiplier if daily streak is 0 or 1
       } else if (state.user.dailyStreak < 3) {
         dailyStreakMultiplier = 1 + 0.1 * (state.user.dailyStreak - 1); //1x daily streak XP multiplier from 1 streak plus 0.1x streak multiplier for each daily streak
@@ -153,7 +153,7 @@ export default createStore({
         .toISOString()
         .split("T")[0];
       //calculate task streak XP multiplier
-      if (task.streak == 0 || task.repeatFrequency == 5) {
+      if (task.streak === 0 || task.repeatFrequency === 5) {
         streakMultiplier = 1; //1x task streak XP multiplier if task streak is 0 or completed a one-time task
       } else if (task.streak < 5) {
         streakMultiplier = 1.1 + 0.05 * (task.streak - 1); //1.1x task streak XP multiplier from 1 streak plus 0.05x streak multiplier for each task streak
@@ -181,7 +181,7 @@ export default createStore({
         streakMultiplier = 6.1; //6.1x task streak XP multiplier from 10000 task streak
       }
       //calculate level score multiplier based on user level
-      if (state.user.level == 1) {
+      if (state.user.level === 1) {
         levelMultiplier = 1; //1x level score multiplier if user level is 1
       } else if (state.user.level < 3) {
         levelMultiplier = 1 + 0.1 * (state.user.level - 1); //1x level score multiplier from level 1 plus 0.1x level score multiplier for each level
@@ -252,9 +252,9 @@ export default createStore({
       }
       state.user.progress =
         ((state.user.xp -
-          Math.pow(state.user.level == 1 ? 0 : state.user.level, 3)) /
+          Math.pow(state.user.level === 1 ? 0 : state.user.level, 3)) /
           (Math.pow(state.user.level + 1, 3) -
-            Math.pow(state.user.level == 1 ? 0 : state.user.level, 3))) *
+            Math.pow(state.user.level === 1 ? 0 : state.user.level, 3))) *
         100; //calculate level progress and if level is 1 set total XP at the start of level 1 to 0 XP
     },
     create_Todo: (state, payload) => {
@@ -284,12 +284,12 @@ export default createStore({
       const item = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload
       );
-      if (item.repeatFrequency == 5) {
+      if (item.repeatFrequency === 5) {
         //if task is a one-time only
         item.completed = !item.completed; //complete task item
       } else {
         item.timesCompleted++; //increment number of times task has been completed by 1
-        if (item.repeatFrequency == 1) {
+        if (item.repeatFrequency === 1) {
           //if task repeat frequency is daily
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
@@ -303,7 +303,7 @@ export default createStore({
             )
           ); //convert to local timezone
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0]; //convert due date to YYYY-MM-DD string
-        } else if (item.repeatFrequency == 2) {
+        } else if (item.repeatFrequency === 2) {
           //if task repeat frequency is weekly
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
@@ -317,7 +317,7 @@ export default createStore({
             )
           );
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
-        } else if (item.repeatFrequency == 3) {
+        } else if (item.repeatFrequency === 3) {
           //if task repeat frequency is monthly
           const monthsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setMonth(
@@ -326,7 +326,7 @@ export default createStore({
             )
           );
           if (
-            monthsAfter.getMonth() !=
+            monthsAfter.getMonth() !==
             (new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
               item.timesCompleted * item.repeatOften) %
               12
@@ -367,7 +367,7 @@ export default createStore({
             );
             item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
           }
-        } else if (item.repeatFrequency == 4) {
+        } else if (item.repeatFrequency === 4) {
           //if task repeat frequency is yearly
           const yearsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setFullYear(
@@ -376,7 +376,7 @@ export default createStore({
             )
           );
           if (
-            yearsAfter.getMonth() !=
+            yearsAfter.getMonth() !==
             new Date(item.originalDueDate + " 23:59:59.999").getMonth()
           ) {
             //if task due date don't have leap year, set task due date to February 28
