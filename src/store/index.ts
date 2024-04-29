@@ -290,6 +290,7 @@ export default createStore({
       } else {
         item.timesCompleted++; //increment number of times task has been completed by 1
         if (item.repeatFrequency == 1) {
+          //if task repeat frequency is daily
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
               new Date(item.originalDueDate + " 23:59:59.999").getDate() +
@@ -303,6 +304,7 @@ export default createStore({
           ); //convert to local timezone
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0]; //convert due date to YYYY-MM-DD string
         } else if (item.repeatFrequency == 2) {
+          //if task repeat frequency is weekly
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
               new Date(item.originalDueDate + " 23:59:59.999").getDate() +
@@ -316,6 +318,7 @@ export default createStore({
           );
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
         } else if (item.repeatFrequency == 3) {
+          //if task repeat frequency is monthly
           const monthsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setMonth(
               new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
@@ -364,7 +367,8 @@ export default createStore({
             );
             item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
           }
-        } else {
+        } else if (item.repeatFrequency == 4) {
+          //if task repeat frequency is yearly
           const yearsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setFullYear(
               new Date(item.originalDueDate + " 23:59:59.999").getFullYear() +
