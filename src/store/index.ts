@@ -239,7 +239,9 @@ export default createStore({
       ); //get at least 1 point when the task is completed
       state.user.score += score; //get amount of points earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and user level multipliers
       alert(
-        `Task ${task.task} completed!\nYou earned ${xp} XP!\nYou earned ${score} points!`
+        `Task ${task.task} completed!\nYou earned ${xp.toLocaleString(
+          "en-US"
+        )} XP!\nYou earned ${score.toLocaleString("en-US")} points!`
       ); //alert user to show how many XP they earned and points earned after completing the task
       //check if user has leveled up
       const userLevel: number = state.user.level; //set userLevel variable before calculating user level state
@@ -248,7 +250,11 @@ export default createStore({
         Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16))
       ); //calculate level based on how many XP and set level to 1 if total XP is 0
       if (state.user.level > userLevel) {
-        alert(`Level Up!\nYou are now level ${state.user.level}!`); //alert user when user levels up
+        alert(
+          `Level Up!\nYou are now level ${state.user.level.toLocaleString(
+            "en-US"
+          )}!`
+        ); //alert user when user levels up
       }
       state.user.progress =
         ((state.user.xp -
