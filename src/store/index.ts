@@ -11,6 +11,7 @@ export default createStore({
       progress: 0 as number,
       score: 0 as number, //set score to 0 when state is created
       dailyStreak: 0 as number, //set daily streak to 0 and last completion date to undefined when state is created
+      tasksCompletedToday: 0 as number, //set tasks completed in a day (today) to 0
       lastCompletionDate: undefined as string | undefined, //last completion date in YYYY-MM-DD string
     },
   },
@@ -21,6 +22,7 @@ export default createStore({
     getProgress: (state) => state.user.progress, //get user level progress
     getScore: (state) => state.user.score, //get user score
     getDailyStreak: (state) => state.user.dailyStreak, //get user daily streak
+    getTasksCompletedToday: (state) => state.user.tasksCompletedToday, //get user tasks completed in a day
     getLastCompletionDate: (state) => state.user.lastCompletionDate, //get user last completion date
   },
   mutations: {
@@ -41,6 +43,7 @@ export default createStore({
       let repeatMultiplier: number; //calculate task repetition XP multiplier based on task repetition occurrence and task repetition frequency
       let dailyStreakMultiplier: number; //calculate daily streak XP multiplier based on daily streak
       let levelMultiplier: number; //calculate level score multiplier based on user level
+      let dayTasksMultiplier: number; //calculate XP multiplier for tasks completed in a day
       //calculate task repetition XP multiplier
       if (task.repeatFrequency === 1) {
         //if task repetition is daily
@@ -91,20 +94,29 @@ export default createStore({
         task.streak++; //increase task streak
       }
       //calculate daily streak
-      const currentDate: Date = new Date();
       if (
         state.user.lastCompletionDate === undefined ||
-        new Date(currentDate.setDate(currentDate.getDate() - 1)) >
+        new Date(new Date().setDate(new Date().getDate() - 1)) >
           new Date(state.user.lastCompletionDate + " 23:59:59.999")
       ) {
         //if user last completion date is before yesterday or undefined (no user task completed yet)
         state.user.dailyStreak = 1; //reset daily streak to 1
       } else if (
-        Number(new Date(currentDate.setHours(23, 59, 59, 999))) -
+        Number(new Date(new Date().setHours(23, 59, 59, 999))) -
           Number(new Date(state.user.lastCompletionDate + " 23:59:59.999")) ===
         1000 * 60 * 60 * 24
       ) {
         state.user.dailyStreak++; //increase daily streak
+      }
+      //calculate number of tasks completed in a day
+      if (
+        state.user.lastCompletionDate === undefined ||
+        Number(new Date(state.user.lastCompletionDate + " 23:59:59.999")) !==
+          Number(new Date(new Date().setHours(23, 59, 59, 999)))
+      ) {
+        state.user.tasksCompletedToday = 1; //reset tasks completed in a day to 1
+      } else {
+        state.user.tasksCompletedToday++; //increase tasks completed in a day by 1
       }
       //calculate daily streak XP multiplier
       if (state.user.dailyStreak === (0 || 1)) {
@@ -144,10 +156,11 @@ export default createStore({
       } else {
         dailyStreakMultiplier = 9.783; //9.783x daily streak XP multiplier from 3652 daily streak
       }
+
       //set last completion date to today
       state.user.lastCompletionDate = new Date(
-        currentDate.setMinutes(
-          currentDate.getMinutes() - currentDate.getTimezoneOffset()
+        new Date().setMinutes(
+          new Date().getMinutes() - new Date().getTimezoneOffset()
         )
       )
         .toISOString()
@@ -179,6 +192,33 @@ export default createStore({
         streakMultiplier = 5.6 + 0.0001 * (task.streak - 5000); //5.6x task streak XP multiplier from 5000 task streak plus 0.0001x streak multiplier for each task streak
       } else {
         streakMultiplier = 6.1; //6.1x task streak XP multiplier from 10000 task streak
+      }
+      //calculate multiplier based on tasks completed in a day
+      if (state.user.tasksCompletedToday === 1) {
+        dayTasksMultiplier = 1; //1x multiplier for 1 task completed in a day
+      } else if (state.user.tasksCompletedToday < 5) {
+        dayTasksMultiplier = 1 + 0.125 * (state.user.tasksCompletedToday - 1); //1x multiplier plus 0.125x multiplier for each task completed in a day from 1 task
+      } else if (state.user.tasksCompletedToday < 10) {
+        dayTasksMultiplier = 1.5 + 0.1 * (state.user.tasksCompletedToday - 5); //1.5x multiplier plus 0.1x multiplier for each task completed in a day from 5 tasks
+      } else if (state.user.tasksCompletedToday < 20) {
+        dayTasksMultiplier = 2 + 0.05 * (state.user.tasksCompletedToday - 10); //2x multiplier plus 0.05x multiplier for each task completed in a day from 10 tasks
+      } else if (state.user.tasksCompletedToday < 50) {
+        dayTasksMultiplier =
+          2.5 + 0.025 * (state.user.tasksCompletedToday - 20); //2.5x multiplier plus 0.025x multiplier for each task completed in a day from 20 tasks
+      } else if (state.user.tasksCompletedToday < 100) {
+        dayTasksMultiplier =
+          3.25 + 0.01 * (state.user.tasksCompletedToday - 50); //3.25x multiplier plus 0.01x multiplier for each task completed in a day from 50 tasks
+      } else if (state.user.tasksCompletedToday < 200) {
+        dayTasksMultiplier =
+          3.75 + 0.005 * (state.user.tasksCompletedToday - 100); //3.75x multiplier plus 0.1x multiplier for each task completed in a day from 100 tasks
+      } else if (state.user.tasksCompletedToday < 500) {
+        dayTasksMultiplier =
+          4.25 + 0.002 * (state.user.tasksCompletedToday - 200); //4.25x multiplier plus 0.00x multiplier for each task completed in a day from 5 tasks
+      } else if (state.user.tasksCompletedToday < 1000) {
+        dayTasksMultiplier =
+          4.85 + 0.001 * (state.user.tasksCompletedToday - 500); //4.85x multiplier plus 0.00x multiplier for each task completed in a day from 5 tasks
+      } else {
+        dayTasksMultiplier = 5.35; //5.35x multiplier from 1001 tasks
       }
       //calculate level score multiplier based on user level
       if (state.user.level === 1) {
@@ -220,7 +260,8 @@ export default createStore({
             dateMultiplier *
             repeatMultiplier *
             streakMultiplier *
-            dailyStreakMultiplier
+            dailyStreakMultiplier *
+            dayTasksMultiplier
         ),
         1
       ); //get at least 1 XP when the task is completed
@@ -233,6 +274,7 @@ export default createStore({
             repeatMultiplier *
             streakMultiplier *
             dailyStreakMultiplier *
+            dayTasksMultiplier *
             levelMultiplier
         ),
         1

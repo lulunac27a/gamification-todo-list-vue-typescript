@@ -3,6 +3,9 @@
     <p>Level: {{ levels.toLocaleString("en-US") }}</p>
     <p>XP: {{ xps.toLocaleString("en-US") }}</p>
     <p>Daily Streak: {{ dailyStreaks.toLocaleString("en-US") }}</p>
+    <p>
+      Tasks Completed Today: {{ tasksCompletedTodays.toLocaleString("en-US") }}
+    </p>
     <p>Score: {{ scores.toLocaleString("en-US") }}</p>
     <!--show circular progress bar filled with level progress--><ve-progress
       :progress="progresses"
@@ -105,6 +108,9 @@ export default defineComponent({
     },
     dailyStreaks() {
       return store.getters.getDailyStreak; //get current daily streak
+    },
+    tasksCompletedTodays() {
+      return store.getters.getTasksCompletedToday; //get tasks completed in a day (today)
     },
     lastCompletedDates() {
       return store.getters.getLastCompletionDate; //get current last completion date
