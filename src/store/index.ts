@@ -11,7 +11,8 @@ export default createStore({
       progress: 0 as number,
       score: 0 as number, //set score to 0 when state is created
       dailyStreak: 0 as number, //set daily streak to 0 and last completion date to undefined when state is created
-      tasksCompletedToday: 0 as number, //set tasks completed in a day (today) to 0
+      tasksCompletedToday: 0 as number, //set number of tasks completed in a day (today) to 0
+      totalTasksCompleted: 0 as number, //set total number of tasks completed to 0
       lastCompletionDate: undefined as string | undefined, //last completion date in YYYY-MM-DD string
     },
   },
@@ -23,6 +24,7 @@ export default createStore({
     getScore: (state) => state.user.score, //get user score
     getDailyStreak: (state) => state.user.dailyStreak, //get user daily streak
     getTasksCompletedToday: (state) => state.user.tasksCompletedToday, //get user tasks completed in a day
+    getTotalTasksCompleted: (state) => state.user.totalTasksCompleted, //get user total tasks completed
     getLastCompletionDate: (state) => state.user.lastCompletionDate, //get user last completion date
   },
   mutations: {
@@ -38,12 +40,13 @@ export default createStore({
           Number(new Date().setHours(23, 59, 59, 999))) /
         (1000 * 60 * 60 * 24); //calculate number of days until the task is due
       const dateMultiplier: number =
-        daysToDue < 0 ? -2 / (daysToDue - 1) : 1 + 1 / (daysToDue + 1); //if task is overdue, XP multiplier is less than 1 that decreases over time when task is overdue, else XP multiplier bonus increases (more than 1) when task gets closer to due date
-      let streakMultiplier: number; //calculate task streak XP multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
-      let repeatMultiplier: number; //calculate task repetition XP multiplier based on task repetition occurrence and task repetition frequency
-      let dailyStreakMultiplier: number; //calculate daily streak XP multiplier based on daily streak
+        daysToDue < 0 ? -2 / (daysToDue - 1) : 1 + 1 / (daysToDue + 1); //if task is overdue, XP and score multiplier is less than 1 that decreases over time when task is overdue, else XP multiplier bonus increases (more than 1) when task gets closer to due date
+      let streakMultiplier: number; //calculate task streak XP and score multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
+      let repeatMultiplier: number; //calculate task repetition XP and score multiplier based on task repetition occurrence and task repetition frequency
+      let dailyStreakMultiplier: number; //calculate daily streak XP and score multiplier based on daily streak
       let levelMultiplier: number; //calculate level score multiplier based on user level
-      let dayTasksMultiplier: number; //calculate XP multiplier for tasks completed in a day
+      let dayTasksMultiplier: number; //calculate XP and score multiplier for tasks completed in a day
+      let tasksMultiplier: number; //calculate score multiplier for total number of tasks completed
       //calculate task repetition XP multiplier
       if (task.repeatFrequency === 1) {
         //if task repetition is daily
@@ -252,6 +255,55 @@ export default createStore({
       } else {
         levelMultiplier = 9.5; //9.5 level score multiplier from level 10000
       }
+      state.user.totalTasksCompleted++; //increase total tasks completed by 1
+      //calculate task score multiplier
+      if (state.user.totalTasksCompleted === 1) {
+        tasksMultiplier = 1; //1x task score multiplier for 1 task completed
+      } else if (state.user.totalTasksCompleted < 3) {
+        tasksMultiplier = 1 + 0.1 * (state.user.totalTasksCompleted - 1); //1x task score multiplier from 1 task plus 0.1x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 5) {
+        tasksMultiplier = 1.2 + 0.05 * (state.user.totalTasksCompleted - 3); //1.2x task score multiplier from 3 tasks plus 0.05x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 10) {
+        tasksMultiplier = 1.3 + 0.04 * (state.user.totalTasksCompleted - 5); //1.3x task score multiplier from 5 tasks plus 0.04x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 20) {
+        tasksMultiplier = 1.5 + 0.03 * (state.user.totalTasksCompleted - 10); //1.5x task score multiplier from 10 tasks plus 0.03x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 50) {
+        tasksMultiplier = 1.8 + 0.02 * (state.user.totalTasksCompleted - 20); //1.8x task score multiplier from 20 tasks plus 0.02x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 100) {
+        tasksMultiplier = 2.4 + 0.012 * (state.user.totalTasksCompleted - 50); //2.4x task score multiplier from 50 tasks plus 0.012x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 200) {
+        tasksMultiplier = 3 + 0.01 * (state.user.totalTasksCompleted - 100); //3x task score multiplier from 100 tasks plus 0.01x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 500) {
+        tasksMultiplier = 4 + 0.005 * (state.user.totalTasksCompleted - 200); //4x task score multiplier from 200 tasks plus 0.005x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 1000) {
+        tasksMultiplier = 5.5 + 0.003 * (state.user.totalTasksCompleted - 500); //5.5x task score multiplier from 500 tasks plus 0.003x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 2000) {
+        tasksMultiplier = 7 + 0.002 * (state.user.totalTasksCompleted - 1000); //7x task score multiplier from 1000 tasks plus 0.002x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 5000) {
+        tasksMultiplier = 9 + 0.001 * (state.user.totalTasksCompleted - 2000); //9x task score multiplier from 2000 tasks plus 0.001x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 10000) {
+        tasksMultiplier = 12 + 0.0005 * (state.user.totalTasksCompleted - 5000); //12x task score multiplier from 5000 tasks plus 0.0005x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 20000) {
+        tasksMultiplier =
+          14.5 + 0.0003 * (state.user.totalTasksCompleted - 10000); //14.5x task score multiplier from 10000 tasks plus 0.0003x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 50000) {
+        tasksMultiplier =
+          17.5 + 0.00025 * (state.user.totalTasksCompleted - 20000); //17.5x task score multiplier from 20000 tasks plus 0.00025x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 100000) {
+        tasksMultiplier =
+          25 + 0.0001 * (state.user.totalTasksCompleted - 50000); //25x task score multiplier from 50000 tasks plus 0.0001x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 200000) {
+        tasksMultiplier =
+          30 + 0.00006 * (state.user.totalTasksCompleted - 100000); //30x task score multiplier from 100000 tasks plus 0.00006x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 500000) {
+        tasksMultiplier =
+          36 + 0.00003 * (state.user.totalTasksCompleted - 200000); //36x task score multiplier from 200000 tasks plus 0.0000x task score multiplier for each task completed
+      } else if (state.user.totalTasksCompleted < 1000000) {
+        tasksMultiplier =
+          45 + 0.00002 * (state.user.totalTasksCompleted - 500000); //45x task score multiplier from 500000 tasks plus 0.05x task score multiplier for each task completed
+      } else {
+        tasksMultiplier = 55; //55x task score multiplier from 1000000 tasks
+      }
       //calculate amount of XP earned and points earned when task is completed
       const xp: number = Math.max(
         Math.floor(
@@ -275,7 +327,8 @@ export default createStore({
             streakMultiplier *
             dailyStreakMultiplier *
             dayTasksMultiplier *
-            levelMultiplier
+            levelMultiplier *
+            tasksMultiplier
         ),
         1
       ); //get at least 1 point when the task is completed

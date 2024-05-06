@@ -6,6 +6,9 @@
     <p>
       Tasks Completed Today: {{ tasksCompletedTodays.toLocaleString("en-US") }}
     </p>
+    <p>
+      Total Tasks Completed: {{ totalTasksCompletions.toLocaleString("en-US") }}
+    </p>
     <p>Score: {{ scores.toLocaleString("en-US") }}</p>
     <!--show circular progress bar filled with level progress--><ve-progress
       :progress="progresses"
@@ -92,7 +95,7 @@ export default defineComponent({
       //eslint-disable-next-line
       return store.getters.getTodos.sort((a: any, b: any) =>
         a.dueDate.localeCompare(b.dueDate)
-      ); //get todos and sort tasks by due date with the top one the oldest
+      ); //get tasks (todos) and sort tasks by task's due date with the top one the oldest
     },
     levels() {
       return store.getters.getLevel; //get current level
@@ -111,6 +114,9 @@ export default defineComponent({
     },
     tasksCompletedTodays() {
       return store.getters.getTasksCompletedToday; //get tasks completed in a day (today)
+    },
+    totalTasksCompletions() {
+      return store.getters.getTotalTasksCompleted; //get total tasks completed
     },
     lastCompletedDates() {
       return store.getters.getLastCompletionDate; //get current last completion date
