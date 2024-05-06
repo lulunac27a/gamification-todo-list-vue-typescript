@@ -218,26 +218,27 @@ export default createStore({
           2.5 + 0.025 * (state.user.tasksCompletedToday - 20); //2.5x multiplier plus 0.025x multiplier for each task completed in a day from 20 tasks
       } else if (state.user.tasksCompletedToday < 100) {
         dayTasksMultiplier =
-          3.25 + 0.015 * (state.user.tasksCompletedToday - 50); //3.25x multiplier plus 0.01x multiplier for each task completed in a day from 50 tasks
+          3.25 + 0.02 * (state.user.tasksCompletedToday - 50); //3.25x multiplier plus 0.02x multiplier for each task completed in a day from 50 tasks
       } else if (state.user.tasksCompletedToday < 200) {
-        dayTasksMultiplier = 4 + 0.005 * (state.user.tasksCompletedToday - 100); //4x multiplier plus 0.005x multiplier for each task completed in a day from 100 tasks
+        dayTasksMultiplier =
+          4.25 + 0.01 * (state.user.tasksCompletedToday - 100); //4.25x multiplier plus 0.01x multiplier for each task completed in a day from 100 tasks
       } else if (state.user.tasksCompletedToday < 500) {
         dayTasksMultiplier =
-          4.5 + 0.0025 * (state.user.tasksCompletedToday - 200); //4.5x multiplier plus 0.0025x multiplier for each task completed in a day from 200 tasks
+          5.25 + 0.005 * (state.user.tasksCompletedToday - 200); //5.25x multiplier plus 0.005x multiplier for each task completed in a day from 200 tasks
       } else if (state.user.tasksCompletedToday < 1000) {
         dayTasksMultiplier =
-          5.25 + 0.0015 * (state.user.tasksCompletedToday - 500); //5.25x multiplier plus 0.0015x multiplier for each task completed in a day from 500 tasks
+          6.75 + 0.0025 * (state.user.tasksCompletedToday - 500); //6.75x multiplier plus 0.0025x multiplier for each task completed in a day from 500 tasks
       } else if (state.user.tasksCompletedToday < 2000) {
         dayTasksMultiplier =
-          6 + 0.001 * (state.user.tasksCompletedToday - 1000); //6x multiplier plus 0.001x multiplier for each task completed in a day from 1000 tasks
+          8 + 0.002 * (state.user.tasksCompletedToday - 1000); //8x multiplier plus 0.002x multiplier for each task completed in a day from 1000 tasks
       } else if (state.user.tasksCompletedToday < 5000) {
         dayTasksMultiplier =
-          7 + 0.0005 * (state.user.tasksCompletedToday - 2000); //7x multiplier plus 0.0005x multiplier for each task completed in a day from 2000 tasks
+          10 + 0.001 * (state.user.tasksCompletedToday - 2000); //10x multiplier plus 0.001x multiplier for each task completed in a day from 2000 tasks
       } else if (state.user.tasksCompletedToday < 10000) {
         dayTasksMultiplier =
-          8.5 + 0.0003 * (state.user.tasksCompletedToday - 5000); //8.5x multiplier plus 0.000x multiplier for each task completed in a day from 5000 tasks
+          13 + 0.0006 * (state.user.tasksCompletedToday - 5000); //13x multiplier plus 0.0006x multiplier for each task completed in a day from 5000 tasks
       } else {
-        dayTasksMultiplier = 10; //10x multiplier from 10001 tasks
+        dayTasksMultiplier = 16; //16x multiplier from 10001 tasks completed in a day
       }
       //calculate level score multiplier based on user level
       if (state.user.level === 1) {
