@@ -40,15 +40,23 @@ export default createStore({
           Number(new Date().setHours(23, 59, 59, 999))) /
         (1000 * 60 * 60 * 24); //calculate number of days until the task is due
       const dateMultiplier: number =
-        daysToDue < 0 ? -2 / (daysToDue - 1) : 1 + 1 / (daysToDue + 1); //if task is overdue, XP and score multiplier is less than 1 that decreases over time when task is overdue, else XP multiplier bonus increases (more than 1) when task gets closer to due date
+        daysToDue < 0
+          ? -2 / (daysToDue - 1)
+          : daysToDue === 0
+          ? 4 /
+            (1 +
+              (Number(new Date().setHours(23, 59, 59, 999)) -
+                Number(new Date())) /
+                (1000 * 24 * 60 * 60))
+          : 1 + 1 / (daysToDue + 1); //if task is overdue, XP and score multiplier is less than 1 that decreases over time when task is overdue, else XP multiplier bonus increases (more than 1) when task gets closer to due date
       let streakMultiplier: number; //calculate task streak XP and score multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
       let repeatMultiplier: number; //calculate task repetition XP and score multiplier based on task repetition occurrence and task repetition frequency
       let dailyStreakMultiplier: number; //calculate daily streak XP and score multiplier based on daily streak
       let levelMultiplier: number; //calculate level score multiplier based on user level
-      let dayTasksMultiplier: number; //calculate XP and score multiplier for tasks completed in a day
+      let dayTasksMultiplier: number; //calculate XP and score multiplier for tasks completed in a day (today)
       let tasksMultiplier: number; //calculate score multiplier for total number of tasks completed
       //calculate task repetition XP multiplier
-      if (task.repeatFrequency === 1) {
+      if (Number(task.repeatFrequency) === 1) {
         //if task repetition is daily
         if (task.repeatOften < 7) {
           //7 days is 1 week
@@ -62,7 +70,7 @@ export default createStore({
         } else {
           repeatMultiplier = 5 - 365 / task.repeatOften; //4x XP multiplier for yearly tasks (approximately 365 days) to 5x XP multiplier for one-time tasks
         }
-      } else if (task.repeatFrequency === 2) {
+      } else if (Number(task.repeatFrequency) === 2) {
         //if task repetition is weekly
         if (task.repeatOften < 4) {
           //approximately 4 weeks is 1 month
@@ -73,7 +81,7 @@ export default createStore({
         } else {
           repeatMultiplier = 5 - 52 / task.repeatOften; //4x XP multiplier for yearly tasks (approximately 52 weeks) to 5x XP multiplier for one-time tasks
         }
-      } else if (task.repeatFrequency === 3) {
+      } else if (Number(task.repeatFrequency) === 3) {
         //if task repetition is monthly
         if (task.repeatOften < 12) {
           //12 months is 1 year
@@ -81,7 +89,7 @@ export default createStore({
         } else {
           repeatMultiplier = 5 - 12 / task.repeatOften; //4x XP multiplier for yearly tasks (12 months) to 5x XP multiplier for one-time tasks
         }
-      } else if (task.repeatFrequency === 4) {
+      } else if (Number(task.repeatFrequency) === 4) {
         //if task repetition is yearly
         repeatMultiplier = 5 - 1 / task.repeatOften; //4x XP multiplier for yearly tasks (1 year) to 5x XP multiplier for one-time tasks
       } else {
@@ -385,12 +393,12 @@ export default createStore({
       const item = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload
       );
-      if (item.repeatFrequency === 5) {
+      if (Number(item.repeatFrequency) === 5) {
         //if task is a one-time only
-        item.completed = !item.completed; //complete task item
+        item.completed = !item.completed; //complete task item (set completed task to true)
       } else {
         item.timesCompleted++; //increment number of times task has been completed by 1
-        if (item.repeatFrequency === 1) {
+        if (Number(item.repeatFrequency) === 1) {
           //if task repeat frequency is daily
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
@@ -404,7 +412,7 @@ export default createStore({
             )
           ); //convert to local timezone
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0]; //convert due date to YYYY-MM-DD string
-        } else if (item.repeatFrequency === 2) {
+        } else if (Number(item.repeatFrequency) === 2) {
           //if task repeat frequency is weekly
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
@@ -418,7 +426,7 @@ export default createStore({
             )
           );
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
-        } else if (item.repeatFrequency === 3) {
+        } else if (Number(item.repeatFrequency) === 3) {
           //if task repeat frequency is monthly
           const monthsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setMonth(
@@ -468,7 +476,7 @@ export default createStore({
             );
             item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
           }
-        } else if (item.repeatFrequency === 4) {
+        } else if (Number(item.repeatFrequency) === 4) {
           //if task repeat frequency is yearly
           const yearsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setFullYear(
