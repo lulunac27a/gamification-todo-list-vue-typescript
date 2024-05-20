@@ -1,5 +1,7 @@
+@use "sass:math";
+$margin: 10px;
 h3 {
-  margin: 10px 0 0;
+  margin: $margin 0 0;
 }
 
 ul {
@@ -9,7 +11,7 @@ ul {
 }
 
 li {
-  margin: 5px 10px; //add line spacing between tasks
+  margin: #{math.div($margin, 2)} $margin; //add line spacing between tasks
 }
 
 a {
