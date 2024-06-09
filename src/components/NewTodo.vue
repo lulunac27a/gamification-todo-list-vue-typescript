@@ -1,12 +1,13 @@
 <template>
   <form @submit.prevent="addTodo">
     <!--all fields are required-->
-    Name:<br />
+    Name:<br /><!--name up to 255 characters-->
     <input
       class="todo-input"
       id="name"
       type="text"
       placeholder="Enter task name"
+      maxlength="255"
       v-model="task"
       required
     /><br />
