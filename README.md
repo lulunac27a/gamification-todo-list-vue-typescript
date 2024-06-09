@@ -5,10 +5,14 @@ This application is a todo list with task repetition with level and experience p
 ## Contents
 
 `src`: Source for Vue, SCSS and TypeScript files.
-`src/components`: Vue components to render as HTML with SCSS style.
+`src/components`: Vue components to render as HTML with SCSS styles.
 `src/store`: Vuex store and store options.
 
+## Features
 
+- Gamification with levels and experience points (XP)
+- Task repetition for daily, weekly, monthly or yearly tasks
+- Different priorties and difficulties to choose from
 
 ## Setup the application
 
