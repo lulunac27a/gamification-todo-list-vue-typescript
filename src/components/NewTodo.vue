@@ -14,7 +14,7 @@
     Due date:<br /><!--task due date must be on or after today date-->
     <input
       class="todo-input"
-      id="dueDate"
+      id="due-date"
       type="date"
       placeholder="Enter due date"
       v-model="originalDueDate"
