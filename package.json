@@ -1,5 +1,5 @@
 {
-  "name": "Todo List Application using Vue, TypeScript and Vuex",
+  "name": "todo-list-application-typescript",
   "version": "1.10.0",
   "private": true,
   "scripts": {
