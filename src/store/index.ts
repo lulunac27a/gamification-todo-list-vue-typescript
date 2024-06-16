@@ -134,7 +134,7 @@ export default createStore({
         state.user.tasksCompletedToday++; //increase tasks completed in a day by 1
       }
       //calculate daily streak XP multiplier
-      if (state.user.dailyStreak === (0 || 1)) {
+      if (state.user.dailyStreak === 0 || state.user.dailyStreak === 1) {
         dailyStreakMultiplier = 1; //1x daily streak XP multiplier if daily streak is 0 or 1
       } else if (state.user.dailyStreak < 3) {
         dailyStreakMultiplier = 1 + 0.1 * (state.user.dailyStreak - 1); //1x daily streak XP multiplier from 1 streak plus 0.1x streak multiplier for each daily streak
@@ -181,8 +181,12 @@ export default createStore({
         .toISOString()
         .split("T")[0];
       //calculate task streak XP multiplier
-      if (task.streak === 0 || task.repeatFrequency === 5) {
-        streakMultiplier = 1; //1x task streak XP multiplier if task streak is 0 or completed a one-time task
+      if (
+        task.streak === 0 ||
+        task.streak === 1 ||
+        task.repeatFrequency === 5
+      ) {
+        streakMultiplier = 1; //1x task streak XP multiplier if task streak is 0 or 1 or completed a one-time task
       } else if (task.streak < 5) {
         streakMultiplier = 1.1 + 0.05 * (task.streak - 1); //1.1x task streak XP multiplier from 1 streak plus 0.05x streak multiplier for each task streak
       } else if (task.streak < 10) {
@@ -209,8 +213,11 @@ export default createStore({
         streakMultiplier = 6.1; //6.1x task streak XP multiplier from 10,000 task streak
       }
       //calculate multiplier based on tasks completed in a day
-      if (state.user.tasksCompletedToday === 1) {
-        dayTasksMultiplier = 1; //1x multiplier for 1 task completed in a day
+      if (
+        state.user.tasksCompletedToday === 0 ||
+        state.user.tasksCompletedToday === 1
+      ) {
+        dayTasksMultiplier = 1; //1x multiplier for 0 or 1 task completed in a day
       } else if (state.user.tasksCompletedToday < 5) {
         dayTasksMultiplier = 1 + 0.125 * (state.user.tasksCompletedToday - 1); //1x multiplier plus 0.125x multiplier for each task completed in a day from 1 task
       } else if (state.user.tasksCompletedToday < 10) {
@@ -245,8 +252,8 @@ export default createStore({
         dayTasksMultiplier = 16; //16x multiplier from 10,000 tasks completed in a day
       }
       //calculate level score multiplier based on user level
-      if (state.user.level === 1) {
-        levelMultiplier = 1; //1x level score multiplier if user level is 1
+      if (state.user.level === 0 || state.user.level === 1) {
+        levelMultiplier = 1; //1x level score multiplier if user level is 0 or 1
       } else if (state.user.level < 3) {
         levelMultiplier = 1 + 0.1 * (state.user.level - 1); //1x level score multiplier from level 1 plus 0.1x level score multiplier for each level
       } else if (state.user.level < 5) {
@@ -278,7 +285,10 @@ export default createStore({
       }
       state.user.totalTasksCompleted++; //increase total tasks completed by 1
       //calculate task score multiplier
-      if (state.user.totalTasksCompleted === 1) {
+      if (
+        state.user.totalTasksCompleted === 0 ||
+        state.user.totalTasksCompleted === 1
+      ) {
         tasksMultiplier = 1; //1x task score multiplier for 1 task completed
       } else if (state.user.totalTasksCompleted < 3) {
         tasksMultiplier = 1 + 0.1 * (state.user.totalTasksCompleted - 1); //1x task score multiplier from 1 task plus 0.1x task score multiplier for each task completed
@@ -326,7 +336,7 @@ export default createStore({
         tasksMultiplier = 55; //55x task score multiplier from 1,000,000 tasks
       }
       //calculate active task score multiplier
-      if (activeTasks === (0 || 1)) {
+      if (activeTasks === 0 || activeTasks === 1) {
         activeTasksMultiplier = 1; //1x active task score multiplier for 0 or 1 active task
       } else if (activeTasks < 3) {
         activeTasksMultiplier = 1 + 0.25 * (activeTasks - 1); //1x active task score multiplier from 1 active task plus 0.25x active task score multiplier for each active task
