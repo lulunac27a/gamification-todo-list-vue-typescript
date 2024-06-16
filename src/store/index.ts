@@ -55,6 +55,10 @@ export default createStore({
       let levelMultiplier: number; //calculate level score multiplier based on user level
       let dayTasksMultiplier: number; //calculate XP and score multiplier for tasks completed in a day (today)
       let tasksMultiplier: number; //calculate score multiplier for total number of tasks completed
+      const activeTasks: number = state.todos.filter(
+        (taskList) => !taskList.completed
+      ).length; //calculate number of active tasks (tasks that are not completed) using array.filter
+      let activeTasksMultiplier: number; //calculate score multiplier for number of active tasks (tasks that are not completed)
       //calculate task repetition XP multiplier
       if (Number(task.repeatFrequency) === 1) {
         //if task repetition is daily
@@ -321,6 +325,36 @@ export default createStore({
       } else {
         tasksMultiplier = 55; //55x task score multiplier from 1,000,000 tasks
       }
+      //calculate active task score multiplier
+      if (activeTasks === (0 || 1)) {
+        activeTasksMultiplier = 1; //1x active task score multiplier for 0 or 1 active task
+      } else if (activeTasks < 3) {
+        activeTasksMultiplier = 1 + 0.25 * (activeTasks - 1); //1x active task score multiplier from 1 active task plus 0.25x active task score multiplier for each active task
+      } else if (activeTasks < 5) {
+        activeTasksMultiplier = 1.5 + 0.2 * (activeTasks - 3); //1.5x active task score multiplier from 3 active tasks plus 0.2x active task score multiplier for each active task
+      } else if (activeTasks < 10) {
+        activeTasksMultiplier = 1.9 + 0.12 * (activeTasks - 5); //1.9x active task score multiplier from 5 active tasks plus 0.12x active task score multiplier for each active task
+      } else if (activeTasks < 20) {
+        activeTasksMultiplier = 2.5 + 0.05 * (activeTasks - 10); //2.5x active task score multiplier from 10 active tasks plus 0.05x active task score multiplier for each active task
+      } else if (activeTasks < 50) {
+        activeTasksMultiplier = 3 + 0.03 * (activeTasks - 20); //3x active task score multiplier from 20 active tasks plus 0.03x active task score multiplier for each active task
+      } else if (activeTasks < 100) {
+        activeTasksMultiplier = 3.9 + 0.022 * (activeTasks - 50); //3.9x active task score multiplier from 50 active tasks plus 0.022x active task score multiplier for each active task
+      } else if (activeTasks < 200) {
+        activeTasksMultiplier = 5 + 0.015 * (activeTasks - 100); //5x active task score multiplier from 100 active tasks plus 0.015x active task score multiplier for each active task
+      } else if (activeTasks < 500) {
+        activeTasksMultiplier = 6.5 + 0.01 * (activeTasks - 200); //6.5x active task score multiplier from 200 active tasks plus 0.01x active task score multiplier for each active task
+      } else if (activeTasks < 1000) {
+        activeTasksMultiplier = 9.5 + 0.005 * (activeTasks - 500); //9.5x active task score multiplier from 500 active tasks plus 0.005x active task score multiplier for each active task
+      } else if (activeTasks < 2000) {
+        activeTasksMultiplier = 12 + 0.004 * (activeTasks - 1000); //12x active task score multiplier from 1,000 active tasks plus 0.004x active task score multiplier for each active task
+      } else if (activeTasks < 5000) {
+        activeTasksMultiplier = 16 + 0.002 * (activeTasks - 2000); //16x active task score multiplier from 2,000 active tasks plus 0.002x active task score multiplier for each active task
+      } else if (activeTasks < 10000) {
+        activeTasksMultiplier = 22 + 0.001 * (activeTasks - 5000); //22x active task score multiplier from 5,000 active tasks plus 0.001x active task score multiplier for each active task
+      } else {
+        activeTasksMultiplier = 27; //27x active task score multiplier from 10,000 active tasks
+      }
       //calculate amount of XP earned and points earned when task is completed
       const xp: number = Math.max(
         Math.floor(
@@ -345,7 +379,8 @@ export default createStore({
             dailyStreakMultiplier *
             dayTasksMultiplier *
             levelMultiplier *
-            tasksMultiplier
+            tasksMultiplier *
+            activeTasksMultiplier
         ),
         1
       ); //get at least 1 point when the task is completed
