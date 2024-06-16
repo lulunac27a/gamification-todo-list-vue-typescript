@@ -121,6 +121,7 @@ export default createStore({
           Number(new Date(state.user.lastCompletionDate + " 23:59:59.999")) ===
         1000 * 60 * 60 * 24
       ) {
+        //if user last completion date is yesterday
         state.user.dailyStreak++; //increase daily streak
       }
       //calculate number of tasks completed in a day
@@ -129,6 +130,7 @@ export default createStore({
         Number(new Date(state.user.lastCompletionDate + " 23:59:59.999")) !==
           Number(new Date(new Date().setHours(23, 59, 59, 999)))
       ) {
+        //if new day has passed
         state.user.tasksCompletedToday = 1; //reset tasks completed in a day to 1
       } else {
         state.user.tasksCompletedToday++; //increase tasks completed in a day by 1
@@ -137,39 +139,39 @@ export default createStore({
       if (state.user.dailyStreak === 0 || state.user.dailyStreak === 1) {
         dailyStreakMultiplier = 1; //1x daily streak XP multiplier if daily streak is 0 or 1
       } else if (state.user.dailyStreak < 3) {
-        dailyStreakMultiplier = 1 + 0.1 * (state.user.dailyStreak - 1); //1x daily streak XP multiplier from 1 streak plus 0.1x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1 + 0.1 * (state.user.dailyStreak - 1); //1x daily streak XP multiplier from 1 daily streak plus 0.1x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 7) {
         //1 week is 7 days
-        dailyStreakMultiplier = 1.2 + 0.05 * (state.user.dailyStreak - 3); //1.2x daily streak XP multiplier from 3 streak plus 0.05x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.2 + 0.05 * (state.user.dailyStreak - 3); //1.2x daily streak XP multiplier from 3 daily streak plus 0.05x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 14) {
         //2 weeks is 14 days
-        dailyStreakMultiplier = 1.4 + 0.04 * (state.user.dailyStreak - 7); //1.4x daily streak XP multiplier from 7 streak plus 0.04x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.4 + 0.04 * (state.user.dailyStreak - 7); //1.4x daily streak XP multiplier from 7 daily streak (1 week) plus 0.04x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 30) {
         //1 month is approximately 30 days
-        dailyStreakMultiplier = 1.68 + 0.03 * (state.user.dailyStreak - 14); //1.68x daily streak XP multiplier from 14 streak plus 0.03x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.68 + 0.03 * (state.user.dailyStreak - 14); //1.68x daily streak XP multiplier from 14 daily streak (2 weeks) plus 0.03x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 60) {
         //2 months is approximately 60 days
-        dailyStreakMultiplier = 2.16 + 0.02 * (state.user.dailyStreak - 30); //2.16x daily streak XP multiplier from 30 streak plus 0.02x streak multiplier for each daily streak
+        dailyStreakMultiplier = 2.16 + 0.02 * (state.user.dailyStreak - 30); //2.16x daily streak XP multiplier from 30 daily streak (approximately 1 month) plus 0.02x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 90) {
         //3 months is approximately 90 days
-        dailyStreakMultiplier = 2.76 + 0.015 * (state.user.dailyStreak - 60); //2.76x daily streak XP multiplier from 60 streak plus 0.015x streak multiplier for each daily streak
+        dailyStreakMultiplier = 2.76 + 0.015 * (state.user.dailyStreak - 60); //2.76x daily streak XP multiplier from 60 daily streak (approximately 2 months) plus 0.015x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 180) {
         //6 months is approximately 180 days
-        dailyStreakMultiplier = 3.21 + 0.01 * (state.user.dailyStreak - 90); //3.21x daily streak XP multiplier from 90 streak plus 0.01x streak multiplier for each daily streak
+        dailyStreakMultiplier = 3.21 + 0.01 * (state.user.dailyStreak - 90); //3.21x daily streak XP multiplier from 90 daily streak (approximately 3 months) plus 0.01x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 365) {
         //1 year is approximately 365 days
-        dailyStreakMultiplier = 4.11 + 0.005 * (state.user.dailyStreak - 180); //4.11x daily streak XP multiplier from 180 streak plus 0.005x streak multiplier for each daily streak
+        dailyStreakMultiplier = 4.11 + 0.005 * (state.user.dailyStreak - 180); //4.11x daily streak XP multiplier from 180 daily streak (approximately 6 months) plus 0.005x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 730) {
         //2 years is approximately 730 days
-        dailyStreakMultiplier = 5.035 + 0.003 * (state.user.dailyStreak - 365); //5.035x daily streak XP multiplier from 365 streak plus 0.003x streak multiplier for each daily streak
+        dailyStreakMultiplier = 5.035 + 0.003 * (state.user.dailyStreak - 365); //5.035x daily streak XP multiplier from 365 daily streak (approximately 1 year) plus 0.003x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 1461) {
-        //4 years is approximately 1461 days
-        dailyStreakMultiplier = 6.13 + 0.002 * (state.user.dailyStreak - 730); //6.13x daily streak XP multiplier from 730 streak plus 0.002x streak multiplier for each daily streak
+        //4 years is approximately 1,461 days
+        dailyStreakMultiplier = 6.13 + 0.002 * (state.user.dailyStreak - 730); //6.13x daily streak XP multiplier from 730 daily streak (approximately 2 years) plus 0.002x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 3652) {
-        //10 years is approximately 3652 days
-        dailyStreakMultiplier = 7.592 + 0.001 * (state.user.dailyStreak - 1461); //7.592x daily streak XP multiplier from 1,461 streak plus 0.001x streak multiplier for each daily streak
+        //10 years is approximately 3,652 days
+        dailyStreakMultiplier = 7.592 + 0.001 * (state.user.dailyStreak - 1461); //7.592x daily streak XP multiplier from 1,461 daily (approximately 4 years) streak plus 0.001x streak multiplier for each daily streak
       } else {
-        dailyStreakMultiplier = 9.783; //9.783x daily streak XP multiplier from 3,652 daily streak
+        dailyStreakMultiplier = 9.783; //9.783x daily streak XP multiplier from 3,652 daily streak (approximately 10 years)
       }
 
       //set last completion date to today
@@ -188,19 +190,19 @@ export default createStore({
       ) {
         streakMultiplier = 1; //1x task streak XP multiplier if task streak is 0 or 1 or completed a one-time task
       } else if (task.streak < 5) {
-        streakMultiplier = 1.1 + 0.05 * (task.streak - 1); //1.1x task streak XP multiplier from 1 streak plus 0.05x streak multiplier for each task streak
+        streakMultiplier = 1.1 + 0.05 * (task.streak - 1); //1.1x task streak XP multiplier from 1 task streak plus 0.05x streak multiplier for each task streak
       } else if (task.streak < 10) {
-        streakMultiplier = 1.3 + 0.04 * (task.streak - 5); //1.3x task streak XP multiplier from 5 streak plus 0.04x streak multiplier for each task streak
+        streakMultiplier = 1.3 + 0.04 * (task.streak - 5); //1.3x task streak XP multiplier from 5 task streak plus 0.04x streak multiplier for each task streak
       } else if (task.streak < 20) {
-        streakMultiplier = 1.5 + 0.03 * (task.streak - 10); //1.5x task streak XP multiplier from 10 streak plus 0.03x streak multiplier for each task streak
+        streakMultiplier = 1.5 + 0.03 * (task.streak - 10); //1.5x task streak XP multiplier from 10 task streak plus 0.03x streak multiplier for each task streak
       } else if (task.streak < 50) {
-        streakMultiplier = 1.8 + 0.02 * (task.streak - 20); //1.8x task streak XP multiplier from 20 streak plus 0.02x streak multiplier for each task streak
+        streakMultiplier = 1.8 + 0.02 * (task.streak - 20); //1.8x task streak XP multiplier from 20 task streak plus 0.02x streak multiplier for each task streak
       } else if (task.streak < 100) {
-        streakMultiplier = 2.4 + 0.01 * (task.streak - 50); //2.4x task streak XP multiplier from 50 streak plus 0.01x streak multiplier for each task streak
+        streakMultiplier = 2.4 + 0.01 * (task.streak - 50); //2.4x task streak XP multiplier from 50 task streak plus 0.01x streak multiplier for each task streak
       } else if (task.streak < 200) {
-        streakMultiplier = 2.9 + 0.005 * (task.streak - 100); //2.9x task streak XP multiplier from 100 streak plus 0.005x streak multiplier for each task streak
+        streakMultiplier = 2.9 + 0.005 * (task.streak - 100); //2.9x task streak XP multiplier from 100 task streak plus 0.005x streak multiplier for each task streak
       } else if (task.streak < 500) {
-        streakMultiplier = 3.4 + 0.002 * (task.streak - 200); //3.4x task streak XP multiplier from 200 streak plus 0.002x streak multiplier for each task streak
+        streakMultiplier = 3.4 + 0.002 * (task.streak - 200); //3.4x task streak XP multiplier from 200 task streak plus 0.002x streak multiplier for each task streak
       } else if (task.streak < 1000) {
         streakMultiplier = 4 + 0.001 * (task.streak - 500); //4x task streak XP multiplier from 500 task streak plus 0.001x streak multiplier for each task streak
       } else if (task.streak < 2000) {
@@ -219,35 +221,35 @@ export default createStore({
       ) {
         dayTasksMultiplier = 1; //1x multiplier for 0 or 1 task completed in a day
       } else if (state.user.tasksCompletedToday < 5) {
-        dayTasksMultiplier = 1 + 0.125 * (state.user.tasksCompletedToday - 1); //1x multiplier plus 0.125x multiplier for each task completed in a day from 1 task
+        dayTasksMultiplier = 1 + 0.125 * (state.user.tasksCompletedToday - 1); //1x multiplier plus 0.125x multiplier for each task completed in a day from 1 task completed in a day
       } else if (state.user.tasksCompletedToday < 10) {
-        dayTasksMultiplier = 1.5 + 0.1 * (state.user.tasksCompletedToday - 5); //1.5x multiplier plus 0.1x multiplier for each task completed in a day from 5 tasks
+        dayTasksMultiplier = 1.5 + 0.1 * (state.user.tasksCompletedToday - 5); //1.5x multiplier plus 0.1x multiplier for each task completed in a day from 5 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 20) {
-        dayTasksMultiplier = 2 + 0.05 * (state.user.tasksCompletedToday - 10); //2x multiplier plus 0.05x multiplier for each task completed in a day from 10 tasks
+        dayTasksMultiplier = 2 + 0.05 * (state.user.tasksCompletedToday - 10); //2x multiplier plus 0.05x multiplier for each task completed in a day from 10 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 50) {
         dayTasksMultiplier =
-          2.5 + 0.025 * (state.user.tasksCompletedToday - 20); //2.5x multiplier plus 0.025x multiplier for each task completed in a day from 20 tasks
+          2.5 + 0.025 * (state.user.tasksCompletedToday - 20); //2.5x multiplier plus 0.025x multiplier for each task completed in a day from 20 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 100) {
         dayTasksMultiplier =
-          3.25 + 0.02 * (state.user.tasksCompletedToday - 50); //3.25x multiplier plus 0.02x multiplier for each task completed in a day from 50 tasks
+          3.25 + 0.02 * (state.user.tasksCompletedToday - 50); //3.25x multiplier plus 0.02x multiplier for each task completed in a day from 50 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 200) {
         dayTasksMultiplier =
-          4.25 + 0.01 * (state.user.tasksCompletedToday - 100); //4.25x multiplier plus 0.01x multiplier for each task completed in a day from 100 tasks
+          4.25 + 0.01 * (state.user.tasksCompletedToday - 100); //4.25x multiplier plus 0.01x multiplier for each task completed in a day from 100 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 500) {
         dayTasksMultiplier =
-          5.25 + 0.005 * (state.user.tasksCompletedToday - 200); //5.25x multiplier plus 0.005x multiplier for each task completed in a day from 200 tasks
+          5.25 + 0.005 * (state.user.tasksCompletedToday - 200); //5.25x multiplier plus 0.005x multiplier for each task completed in a day from 200 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 1000) {
         dayTasksMultiplier =
-          6.75 + 0.0025 * (state.user.tasksCompletedToday - 500); //6.75x multiplier plus 0.0025x multiplier for each task completed in a day from 500 tasks
+          6.75 + 0.0025 * (state.user.tasksCompletedToday - 500); //6.75x multiplier plus 0.0025x multiplier for each task completed in a day from 500 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 2000) {
         dayTasksMultiplier =
-          8 + 0.002 * (state.user.tasksCompletedToday - 1000); //8x multiplier plus 0.002x multiplier for each task completed in a day from 1,000 tasks
+          8 + 0.002 * (state.user.tasksCompletedToday - 1000); //8x multiplier plus 0.002x multiplier for each task completed in a day from 1,000 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 5000) {
         dayTasksMultiplier =
-          10 + 0.001 * (state.user.tasksCompletedToday - 2000); //10x multiplier plus 0.001x multiplier for each task completed in a day from 2,000 tasks
+          10 + 0.001 * (state.user.tasksCompletedToday - 2000); //10x multiplier plus 0.001x multiplier for each task completed in a day from 2,000 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 10000) {
         dayTasksMultiplier =
-          13 + 0.0006 * (state.user.tasksCompletedToday - 5000); //13x multiplier plus 0.0006x multiplier for each task completed in a day from 5,000 tasks
+          13 + 0.0006 * (state.user.tasksCompletedToday - 5000); //13x multiplier plus 0.0006x multiplier for each task completed in a day from 5,000 tasks completed in a day
       } else {
         dayTasksMultiplier = 16; //16x multiplier from 10,000 tasks completed in a day
       }
@@ -261,7 +263,7 @@ export default createStore({
       } else if (state.user.level < 10) {
         levelMultiplier = 1.3 + 0.04 * (state.user.level - 5); //1.3x level score multiplier from level 5 plus 0.04x level score multiplier for each level
       } else if (state.user.level < 20) {
-        levelMultiplier = 1.5 + 0.03 * (state.user.level - 10); //1.5x level score multiplier from level 1 plus 0.03x level score multiplier for each level
+        levelMultiplier = 1.5 + 0.03 * (state.user.level - 10); //1.5x level score multiplier from level 10 plus 0.03x level score multiplier for each level
       } else if (state.user.level < 50) {
         levelMultiplier = 1.8 + 0.02 * (state.user.level - 20); //1.8x level score multiplier from level 20 plus 0.02x level score multiplier for each level
       } else if (state.user.level < 100) {
@@ -291,49 +293,49 @@ export default createStore({
       ) {
         tasksMultiplier = 1; //1x task score multiplier for 1 task completed
       } else if (state.user.totalTasksCompleted < 3) {
-        tasksMultiplier = 1 + 0.1 * (state.user.totalTasksCompleted - 1); //1x task score multiplier from 1 task plus 0.1x task score multiplier for each task completed
+        tasksMultiplier = 1 + 0.1 * (state.user.totalTasksCompleted - 1); //1x task score multiplier from 1 total task completed plus 0.1x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 5) {
-        tasksMultiplier = 1.2 + 0.05 * (state.user.totalTasksCompleted - 3); //1.2x task score multiplier from 3 tasks plus 0.05x task score multiplier for each task completed
+        tasksMultiplier = 1.2 + 0.05 * (state.user.totalTasksCompleted - 3); //1.2x task score multiplier from 3 total tasks completed plus 0.05x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 10) {
-        tasksMultiplier = 1.3 + 0.04 * (state.user.totalTasksCompleted - 5); //1.3x task score multiplier from 5 tasks plus 0.04x task score multiplier for each task completed
+        tasksMultiplier = 1.3 + 0.04 * (state.user.totalTasksCompleted - 5); //1.3x task score multiplier from 5 total tasks completed plus 0.04x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 20) {
-        tasksMultiplier = 1.5 + 0.03 * (state.user.totalTasksCompleted - 10); //1.5x task score multiplier from 10 tasks plus 0.03x task score multiplier for each task completed
+        tasksMultiplier = 1.5 + 0.03 * (state.user.totalTasksCompleted - 10); //1.5x task score multiplier from 10 total tasks completed plus 0.03x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 50) {
-        tasksMultiplier = 1.8 + 0.02 * (state.user.totalTasksCompleted - 20); //1.8x task score multiplier from 20 tasks plus 0.02x task score multiplier for each task completed
+        tasksMultiplier = 1.8 + 0.02 * (state.user.totalTasksCompleted - 20); //1.8x task score multiplier from 20 total tasks completed plus 0.02x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 100) {
-        tasksMultiplier = 2.4 + 0.012 * (state.user.totalTasksCompleted - 50); //2.4x task score multiplier from 50 tasks plus 0.012x task score multiplier for each task completed
+        tasksMultiplier = 2.4 + 0.012 * (state.user.totalTasksCompleted - 50); //2.4x task score multiplier from 50 total tasks completed plus 0.012x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 200) {
-        tasksMultiplier = 3 + 0.01 * (state.user.totalTasksCompleted - 100); //3x task score multiplier from 100 tasks plus 0.01x task score multiplier for each task completed
+        tasksMultiplier = 3 + 0.01 * (state.user.totalTasksCompleted - 100); //3x task score multiplier from 100 total tasks completed plus 0.01x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 500) {
-        tasksMultiplier = 4 + 0.005 * (state.user.totalTasksCompleted - 200); //4x task score multiplier from 200 tasks plus 0.005x task score multiplier for each task completed
+        tasksMultiplier = 4 + 0.005 * (state.user.totalTasksCompleted - 200); //4x task score multiplier from 200 total tasks completed plus 0.005x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 1000) {
-        tasksMultiplier = 5.5 + 0.003 * (state.user.totalTasksCompleted - 500); //5.5x task score multiplier from 500 tasks plus 0.003x task score multiplier for each task completed
+        tasksMultiplier = 5.5 + 0.003 * (state.user.totalTasksCompleted - 500); //5.5x task score multiplier from 500 total tasks completed plus 0.003x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 2000) {
-        tasksMultiplier = 7 + 0.002 * (state.user.totalTasksCompleted - 1000); //7x task score multiplier from 1,000 tasks plus 0.002x task score multiplier for each task completed
+        tasksMultiplier = 7 + 0.002 * (state.user.totalTasksCompleted - 1000); //7x task score multiplier from 1,000 total tasks completed plus 0.002x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 5000) {
-        tasksMultiplier = 9 + 0.001 * (state.user.totalTasksCompleted - 2000); //9x task score multiplier from 2,000 tasks plus 0.001x task score multiplier for each task completed
+        tasksMultiplier = 9 + 0.001 * (state.user.totalTasksCompleted - 2000); //9x task score multiplier from 2,000 total tasks completed plus 0.001x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 10000) {
-        tasksMultiplier = 12 + 0.0005 * (state.user.totalTasksCompleted - 5000); //12x task score multiplier from 5,000 tasks plus 0.0005x task score multiplier for each task completed
+        tasksMultiplier = 12 + 0.0005 * (state.user.totalTasksCompleted - 5000); //12x task score multiplier from 5,000 total tasks completed plus 0.0005x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 20000) {
         tasksMultiplier =
-          14.5 + 0.0003 * (state.user.totalTasksCompleted - 10000); //14.5x task score multiplier from 10,000 tasks plus 0.0003x task score multiplier for each task completed
+          14.5 + 0.0003 * (state.user.totalTasksCompleted - 10000); //14.5x task score multiplier from 10,000 total tasks completed plus 0.0003x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 50000) {
         tasksMultiplier =
-          17.5 + 0.00025 * (state.user.totalTasksCompleted - 20000); //17.5x task score multiplier from 20,000 tasks plus 0.00025x task score multiplier for each task completed
+          17.5 + 0.00025 * (state.user.totalTasksCompleted - 20000); //17.5x task score multiplier from 20,000 total tasks completed plus 0.00025x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 100000) {
         tasksMultiplier =
-          25 + 0.0001 * (state.user.totalTasksCompleted - 50000); //25x task score multiplier from 50,000 tasks plus 0.0001x task score multiplier for each task completed
+          25 + 0.0001 * (state.user.totalTasksCompleted - 50000); //25x task score multiplier from 50,000 total tasks completed plus 0.0001x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 200000) {
         tasksMultiplier =
-          30 + 0.00006 * (state.user.totalTasksCompleted - 100000); //30x task score multiplier from 100,000 tasks plus 0.00006x task score multiplier for each task completed
+          30 + 0.00006 * (state.user.totalTasksCompleted - 100000); //30x task score multiplier from 100,000 total tasks completed plus 0.00006x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 500000) {
         tasksMultiplier =
-          36 + 0.00003 * (state.user.totalTasksCompleted - 200000); //36x task score multiplier from 200,000 tasks plus 0.0000x task score multiplier for each task completed
+          36 + 0.00003 * (state.user.totalTasksCompleted - 200000); //36x task score multiplier from 200,000 total tasks completed plus 0.00003x task score multiplier for each task completed
       } else if (state.user.totalTasksCompleted < 1000000) {
         tasksMultiplier =
-          45 + 0.00002 * (state.user.totalTasksCompleted - 500000); //45x task score multiplier from 500,000 tasks plus 0.05x task score multiplier for each task completed
+          45 + 0.00002 * (state.user.totalTasksCompleted - 500000); //45x task score multiplier from 500,000 total tasks completed plus 0.00002x task score multiplier for each task completed
       } else {
-        tasksMultiplier = 55; //55x task score multiplier from 1,000,000 tasks
+        tasksMultiplier = 55; //55x task score multiplier from 1,000,000 total tasks completed
       }
       //calculate active task score multiplier
       if (activeTasks === 0 || activeTasks === 1) {
