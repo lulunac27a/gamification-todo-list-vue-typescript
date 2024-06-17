@@ -432,7 +432,7 @@ export default createStore({
     },
     create_Todo: (state, payload) => {
       /**
-       * Create the task when user presses the Add Todo button.
+       * Create the task when user presses the Add Task button.
        */
       const createTask = {
         newId: payload.newId as number,
@@ -658,14 +658,14 @@ export default createStore({
        * Action to save task list data to local storage.
        * @param todos the task list data
        */
-      localStorage.setItem("todos", JSON.stringify(todos)); //save task list data
+      localStorage.setItem("todos", JSON.stringify(todos)); //save task list data as JSON
       context.commit("setTodos", todos);
     },
     loadTodos(context) {
       /**
        * Action to load task list data to local storage.
        */
-      const todos = JSON.parse(localStorage.getItem("todos") as string); //load task list data
+      const todos = JSON.parse(localStorage.getItem("todos") as string); //load task list data by parsing JSON string
       if (todos) {
         context.commit("setTodos", todos);
       }

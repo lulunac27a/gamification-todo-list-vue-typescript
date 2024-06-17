@@ -56,7 +56,7 @@
       <option value="4">Yearly</option>
       <option value="5">Once</option></select
     ><br />
-    <button type="submit">Add Todo</button>
+    <button type="submit">Add Task</button>
   </form>
 </template>
 
