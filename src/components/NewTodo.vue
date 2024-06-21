@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="addTodo">
     <!--all fields are required-->
-    Name:<br /><!--name up to 255 characters-->
+    Name:<br /><!--task name can be up to 255 characters in length-->
     <input
       class="todo-input"
       id="name"
@@ -74,7 +74,7 @@ export interface todoTask {
   repeatFrequency: number; //task repetition frequency
   newId: number; //task id
   completed: boolean; //task completed or not
-  timesCompleted: number; //times task has been completed
+  timesCompleted: number; //number of times tasks has been completed
   streak: number; //task completion streak
   originalDueDate: Date; //task original due date in YYYY-MM-DD string
 }
@@ -95,10 +95,10 @@ export default defineComponent({
       repeatOften: 1,
       repeatFrequency: repeatFrequency.Once, //set default task repetition to one-time
       newId: 0, //initial task id is 0
-      completed: false, //task not completed if task is created
+      completed: false, //task not completed if a task is created
       timesCompleted: 0,
       streak: 0, //set default task streak to 0
-      originalDueDate: currentLocalDate.toISOString().split("T")[0], //set default original task due date to today
+      originalDueDate: currentLocalDate.toISOString().split("T")[0], //set a default original task due date to today
     };
   },
   mounted() {

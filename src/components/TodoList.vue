@@ -123,7 +123,7 @@ export default defineComponent({
       return store.getters.getTotalTasksCompleted; //get total tasks completed
     },
     lastCompletedDates() {
-      return store.getters.getLastCompletionDate; //get current last completion date
+      return store.getters.getLastCompletionDate; //get the current last completion date
     },
     bestScoreEarneds() {
       return store.getters.getBestScoreEarned; //get best score earned

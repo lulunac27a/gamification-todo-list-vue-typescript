@@ -10,15 +10,15 @@ export default createStore({
       xp: 0 as number,
       progress: 0 as number,
       score: 0 as number, //set score to 0 when state is created
-      bestScoreEarned: 0 as number, //highest number of points earned achieved when task is completed
+      bestScoreEarned: 0 as number, //the highest number of points earned achieved when a task is completed
       dailyStreak: 0 as number, //set daily streak to 0 and last completion date to undefined when state is created
-      tasksCompletedToday: 0 as number, //set number of tasks completed in a day (today) to 0
-      totalTasksCompleted: 0 as number, //set total number of tasks completed to 0
+      tasksCompletedToday: 0 as number, //set the number of tasks completed in a day (today) to 0
+      totalTasksCompleted: 0 as number, //set the total number of tasks completed to 0
       lastCompletionDate: undefined as string | undefined, //last completion date in YYYY-MM-DD string
     },
   },
   getters: {
-    getTodos: (state) => state.todos, //get task list
+    getTodos: (state) => state.todos, //get a task list
     getXp: (state) => state.user.xp, //get user XP
     getLevel: (state) => state.user.level, //get user level
     getProgress: (state) => state.user.progress, //get user level progress
@@ -27,11 +27,11 @@ export default createStore({
     getTasksCompletedToday: (state) => state.user.tasksCompletedToday, //get user tasks completed in a day
     getTotalTasksCompleted: (state) => state.user.totalTasksCompleted, //get user total tasks completed
     getLastCompletionDate: (state) => state.user.lastCompletionDate, //get user last completion date
-    getBestScoreEarned: (state) => state.user.bestScoreEarned, //get user best score earned when task is completed
+    getBestScoreEarned: (state) => state.user.bestScoreEarned, //get the user best score earned when a task is completed
   },
   mutations: {
     /**
-     * Update user XP state when user presses Complete button to complete the task.
+     * Update user XP state when a user presses Complete button to complete the task.
      */
     updateXp: (state, payload) => {
       const task = state.todos.find(
@@ -40,7 +40,7 @@ export default createStore({
       const daysToDue: number =
         (Number(new Date(task.dueDate + " 23:59:59.999")) -
           Number(new Date().setHours(23, 59, 59, 999))) /
-        (1000 * 60 * 60 * 24); //calculate number of days until the task is due
+        (1000 * 60 * 60 * 24); //calculate the number of days until the task is due
       const dateMultiplier: number =
         daysToDue < 0
           ? -2 / (daysToDue - 1)
@@ -50,8 +50,8 @@ export default createStore({
               (Number(new Date().setHours(23, 59, 59, 999)) -
                 Number(new Date())) /
                 (1000 * 24 * 60 * 60))
-          : 1 + 1 / (daysToDue + 1); //if task is overdue, XP and score multiplier is less than 1 that decreases over time when task is overdue, else XP multiplier bonus increases (more than 1) when task gets closer to due date
-      let streakMultiplier: number; //calculate task streak XP and score multiplier based on task streak, if task is completed before the due date then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
+          : 1 + 1 / (daysToDue + 1); //if a task is overdue, XP and score multiplier is less than 1 that decreases over time when a task is overdue, else XP multiplier bonus increases (more than 1) when a task gets closer to due date
+      let streakMultiplier: number; //calculate task streak XP and score multiplier based on task streak, if a task is completed before the due date, then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
       let repeatMultiplier: number; //calculate task repetition XP and score multiplier based on task repetition occurrence and task repetition frequency
       let dailyStreakMultiplier: number; //calculate daily streak XP and score multiplier based on daily streak
       let levelMultiplier: number; //calculate level score multiplier based on user level
@@ -59,7 +59,7 @@ export default createStore({
       let tasksMultiplier: number; //calculate score multiplier for total number of tasks completed
       const activeTasks: number = state.todos.filter(
         (taskList) => !taskList.completed
-      ).length; //calculate number of active tasks (tasks that are not completed) using array.filter
+      ).length; //calculate the number of active tasks (tasks that are not completed) using array.filter
       let activeTasksMultiplier: number; //calculate score multiplier for number of active tasks (tasks that are not completed)
       //calculate task repetition XP multiplier
       if (Number(task.repeatFrequency) === 1) {
@@ -107,7 +107,7 @@ export default createStore({
         //if task is overdue
         task.streak = 0; //reset task streak to 0
       } else {
-        //if task is completed before due date (not overdue)
+        //if a task is completed before due date (not overdue)
         task.streak++; //increase task streak
       }
       //calculate daily streak
@@ -126,7 +126,7 @@ export default createStore({
         //if user last completion date is yesterday
         state.user.dailyStreak++; //increase daily streak
       }
-      //calculate number of tasks completed in a day
+      //calculate the number of tasks completed in a day
       if (
         state.user.lastCompletionDate === undefined ||
         Number(new Date(state.user.lastCompletionDate + " 23:59:59.999")) !==
@@ -144,39 +144,39 @@ export default createStore({
         dailyStreakMultiplier = 1 + 0.1 * (state.user.dailyStreak - 1); //1x daily streak XP multiplier from 1 daily streak plus 0.1x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 7) {
         //1 week is 7 days
-        dailyStreakMultiplier = 1.2 + 0.05 * (state.user.dailyStreak - 3); //1.2x daily streak XP multiplier from 3 daily streak plus 0.05x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.2 + 0.05 * (state.user.dailyStreak - 3); //1.2x daily streak XP multiplier from 3 daily streaks plus 0.05x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 14) {
-        //2 weeks is 14 days
-        dailyStreakMultiplier = 1.4 + 0.04 * (state.user.dailyStreak - 7); //1.4x daily streak XP multiplier from 7 daily streak (1 week) plus 0.04x streak multiplier for each daily streak
+        //2 weeks are 14 days
+        dailyStreakMultiplier = 1.4 + 0.04 * (state.user.dailyStreak - 7); //1.4x daily streak XP multiplier from 7 daily streaks (1 week) plus 0.04x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 30) {
         //1 month is approximately 30 days
-        dailyStreakMultiplier = 1.68 + 0.03 * (state.user.dailyStreak - 14); //1.68x daily streak XP multiplier from 14 daily streak (2 weeks) plus 0.03x streak multiplier for each daily streak
+        dailyStreakMultiplier = 1.68 + 0.03 * (state.user.dailyStreak - 14); //1.68x daily streak XP multiplier from 14 daily streaks (2 weeks) plus 0.03x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 60) {
-        //2 months is approximately 60 days
-        dailyStreakMultiplier = 2.16 + 0.02 * (state.user.dailyStreak - 30); //2.16x daily streak XP multiplier from 30 daily streak (approximately 1 month) plus 0.02x streak multiplier for each daily streak
+        //2 months are approximately 60 days
+        dailyStreakMultiplier = 2.16 + 0.02 * (state.user.dailyStreak - 30); //2.16x daily streak XP multiplier from 30 daily streaks (approximately 1 month) plus 0.02x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 90) {
-        //3 months is approximately 90 days
-        dailyStreakMultiplier = 2.76 + 0.015 * (state.user.dailyStreak - 60); //2.76x daily streak XP multiplier from 60 daily streak (approximately 2 months) plus 0.015x streak multiplier for each daily streak
+        //3 months are approximately 90 days
+        dailyStreakMultiplier = 2.76 + 0.015 * (state.user.dailyStreak - 60); //2.76x daily streak XP multiplier from 60 daily streaks (approximately 2 months) plus 0.015x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 180) {
-        //6 months is approximately 180 days
-        dailyStreakMultiplier = 3.21 + 0.01 * (state.user.dailyStreak - 90); //3.21x daily streak XP multiplier from 90 daily streak (approximately 3 months) plus 0.01x streak multiplier for each daily streak
+        //6 months are approximately 180 days
+        dailyStreakMultiplier = 3.21 + 0.01 * (state.user.dailyStreak - 90); //3.21x daily streak XP multiplier from 90 daily streaks (approximately 3 months) plus 0.01x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 365) {
         //1 year is approximately 365 days
-        dailyStreakMultiplier = 4.11 + 0.005 * (state.user.dailyStreak - 180); //4.11x daily streak XP multiplier from 180 daily streak (approximately 6 months) plus 0.005x streak multiplier for each daily streak
+        dailyStreakMultiplier = 4.11 + 0.005 * (state.user.dailyStreak - 180); //4.11x daily streak XP multiplier from 180 daily streaks (approximately 6 months) plus 0.005x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 730) {
-        //2 years is approximately 730 days
-        dailyStreakMultiplier = 5.035 + 0.003 * (state.user.dailyStreak - 365); //5.035x daily streak XP multiplier from 365 daily streak (approximately 1 year) plus 0.003x streak multiplier for each daily streak
+        //2 years are approximately 730 days
+        dailyStreakMultiplier = 5.035 + 0.003 * (state.user.dailyStreak - 365); //5.035x daily streak XP multiplier from 365 daily streaks (approximately 1 year) plus 0.003x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 1461) {
-        //4 years is approximately 1,461 days
-        dailyStreakMultiplier = 6.13 + 0.002 * (state.user.dailyStreak - 730); //6.13x daily streak XP multiplier from 730 daily streak (approximately 2 years) plus 0.002x streak multiplier for each daily streak
+        //4 years are approximately 1,461 days
+        dailyStreakMultiplier = 6.13 + 0.002 * (state.user.dailyStreak - 730); //6.13x daily streak XP multiplier from 730 daily streaks (approximately 2 years) plus 0.002x streak multiplier for each daily streak
       } else if (state.user.dailyStreak < 3652) {
-        //10 years is approximately 3,652 days
-        dailyStreakMultiplier = 7.592 + 0.001 * (state.user.dailyStreak - 1461); //7.592x daily streak XP multiplier from 1,461 daily (approximately 4 years) streak plus 0.001x streak multiplier for each daily streak
+        //10 years are approximately 3,652 days
+        dailyStreakMultiplier = 7.592 + 0.001 * (state.user.dailyStreak - 1461); //7.592x daily streak XP multiplier from 1,461 daily streaks (approximately 4 years) plus 0.001x streak multiplier for each daily streak
       } else {
-        dailyStreakMultiplier = 9.783; //9.783x daily streak XP multiplier from 3,652 daily streak (approximately 10 years)
+        dailyStreakMultiplier = 9.783; //9.783x daily streak XP multiplier from 3,652 daily streaks (approximately 10 years)
       }
 
-      //set last completion date to today
+      //set the last completion date to today
       state.user.lastCompletionDate = new Date(
         new Date().setMinutes(
           new Date().getMinutes() - new Date().getTimezoneOffset()
@@ -221,7 +221,7 @@ export default createStore({
         state.user.tasksCompletedToday === 0 ||
         state.user.tasksCompletedToday === 1
       ) {
-        dayTasksMultiplier = 1; //1x multiplier for 0 or 1 task completed in a day
+        dayTasksMultiplier = 1; //1x multiplier for 0 or 1 tasks completed in a day
       } else if (state.user.tasksCompletedToday < 5) {
         dayTasksMultiplier = 1 + 0.125 * (state.user.tasksCompletedToday - 1); //1x multiplier plus 0.125x multiplier for each task completed in a day from 1 task completed in a day
       } else if (state.user.tasksCompletedToday < 10) {
@@ -341,7 +341,7 @@ export default createStore({
       }
       //calculate active task score multiplier
       if (activeTasks === 0 || activeTasks === 1) {
-        activeTasksMultiplier = 1; //1x active task score multiplier for 0 or 1 active task
+        activeTasksMultiplier = 1; //1x active task score multiplier for 0 or 1 active tasks
       } else if (activeTasks < 3) {
         activeTasksMultiplier = 1 + 0.25 * (activeTasks - 1); //1x active task score multiplier from 1 active task plus 0.25x active task score multiplier for each active task
       } else if (activeTasks < 5) {
@@ -369,7 +369,7 @@ export default createStore({
       } else {
         activeTasksMultiplier = 27; //27x active task score multiplier from 10,000 active tasks
       }
-      //calculate amount of XP earned and points earned when task is completed
+      //calculate the amount of XP earned and points earned when a task is completed
       const xpEarned: number = Math.max(
         Math.floor(
           task.difficulty *
@@ -382,7 +382,7 @@ export default createStore({
         ),
         1
       ); //get at least 1 XP when the task is completed
-      state.user.xp += xpEarned; //get amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak and daily streak multipliers
+      state.user.xp += xpEarned; //get the amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak and daily streak multipliers
       const pointsEarned: number = Math.max(
         Math.floor(
           task.difficulty *
@@ -400,8 +400,8 @@ export default createStore({
       ); //get at least 1 point when the task is completed
       state.user.score += pointsEarned; //get amount of points earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and user level multipliers
       if (pointsEarned > state.user.bestScoreEarned) {
-        //if points earned is greaedr than best score earned
-        state.user.bestScoreEarned = pointsEarned; //set best score earned to points earned whan task is completed
+        //if points earned are greater than the best score earned
+        state.user.bestScoreEarned = pointsEarned; //set the best score earned to points earned when a task is completed
       }
       alert(
         `Task ${task.task} completed!\nYou earned ${xpEarned.toLocaleString(
@@ -432,7 +432,7 @@ export default createStore({
     },
     create_Todo: (state, payload) => {
       /**
-       * Create the task when user presses the Add Task button.
+       * Create the task when a user presses the Add Task button.
        */
       const createTask = {
         newId: payload.newId as number,
@@ -458,10 +458,10 @@ export default createStore({
         (todo: { newId: number }) => todo.newId === payload
       );
       if (Number(item.repeatFrequency) === 5) {
-        //if task is a one-time only
+        //if a task is a one-time only
         item.completed = !item.completed; //complete task item (set completed task to true)
       } else {
-        item.timesCompleted++; //increment number of times task has been completed by 1
+        item.timesCompleted++; //increment number of times tasks has been completed by 1
         if (Number(item.repeatFrequency) === 1) {
           //if task repeat frequency is daily
           const newDueDate: Date = new Date(
@@ -469,7 +469,7 @@ export default createStore({
               new Date(item.originalDueDate + " 23:59:59.999").getDate() +
                 item.timesCompleted * item.repeatOften
             )
-          ); //get new due date
+          ); //get a new due date
           const adjustedNewDueDate: Date = new Date(
             newDueDate.setMinutes(
               newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
@@ -592,7 +592,7 @@ export default createStore({
     },
     delete_Todo: (state, payload) => {
       /**
-       * Delete the task when user confirms task deletion alert after pressing the Delete button.
+       * Delete the task when a user confirms task deletion alert after pressing the Delete button.
        */
       const index = state.todos.findIndex(
         (todo: { newId: number }) => todo.newId === payload
@@ -605,7 +605,7 @@ export default createStore({
         ) as boolean; //ask user to confirm task deletion
       }
       if (deleteTask || state.todos[index].completed) {
-        //delete task if one-time task is completed when the delete button is clicked or when user confirms deletion alert
+        //delete task if one-time task is completed when the deleted button is clicked or when user confirms deletion alert
         state.todos.splice(index, 1); //delete task item
       }
     },
