@@ -10,7 +10,7 @@ export default createStore({
       xp: 0 as number,
       progress: 0 as number,
       score: 0 as number, //set score to 0 when state is created
-      bestScoreEarned: 0 as number, //the highest number of points earned achieved when a task is completed
+      bestScoreEarned: 0 as number, //the highest number of points earned achieved when the task is completed
       dailyStreak: 0 as number, //set daily streak to 0 and last completion date to undefined when state is created
       tasksCompletedToday: 0 as number, //set the number of tasks completed in a day (today) to 0
       totalTasksCompleted: 0 as number, //set the total number of tasks completed to 0
@@ -18,7 +18,7 @@ export default createStore({
     },
   },
   getters: {
-    getTodos: (state) => state.todos, //get a task list
+    getTodos: (state) => state.todos, //get the task list
     getXp: (state) => state.user.xp, //get user XP
     getLevel: (state) => state.user.level, //get user level
     getProgress: (state) => state.user.progress, //get user level progress
@@ -27,7 +27,7 @@ export default createStore({
     getTasksCompletedToday: (state) => state.user.tasksCompletedToday, //get user tasks completed in a day
     getTotalTasksCompleted: (state) => state.user.totalTasksCompleted, //get user total tasks completed
     getLastCompletionDate: (state) => state.user.lastCompletionDate, //get user last completion date
-    getBestScoreEarned: (state) => state.user.bestScoreEarned, //get the user best score earned when a task is completed
+    getBestScoreEarned: (state) => state.user.bestScoreEarned, //get the user best score earned when the task is completed
   },
   mutations: {
     /**
@@ -50,8 +50,8 @@ export default createStore({
               (Number(new Date().setHours(23, 59, 59, 999)) -
                 Number(new Date())) /
                 (1000 * 24 * 60 * 60))
-          : 1 + 1 / (daysToDue + 1); //if a task is overdue, XP and score multiplier is less than 1 that decreases over time when a task is overdue, else XP multiplier bonus increases (more than 1) when a task gets closer to due date
-      let streakMultiplier: number; //calculate task streak XP and score multiplier based on task streak, if a task is completed before the due date, then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
+          : 1 + 1 / (daysToDue + 1); //if the task is overdue, XP and score multiplier is less than 1 that decreases over time when the task is overdue, else XP multiplier bonus increases (more than 1) when the task gets closer to due date
+      let streakMultiplier: number; //calculate task streak XP and score multiplier based on task streak, if the task is completed before the due date, then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
       let repeatMultiplier: number; //calculate task repetition XP and score multiplier based on task repetition occurrence and task repetition frequency
       let dailyStreakMultiplier: number; //calculate daily streak XP and score multiplier based on daily streak
       let levelMultiplier: number; //calculate level score multiplier based on user level
@@ -107,7 +107,7 @@ export default createStore({
         //if task is overdue
         task.streak = 0; //reset task streak to 0
       } else {
-        //if a task is completed before due date (not overdue)
+        //if the task is completed before due date (not overdue)
         task.streak++; //increase task streak
       }
       //calculate daily streak
@@ -369,7 +369,7 @@ export default createStore({
       } else {
         activeTasksMultiplier = 27; //27x active task score multiplier from 10,000 active tasks
       }
-      //calculate the amount of XP earned and points earned when a task is completed
+      //calculate the amount of XP earned and points earned when the task is completed
       const xpEarned: number = Math.max(
         Math.floor(
           task.difficulty *
@@ -401,7 +401,7 @@ export default createStore({
       state.user.score += pointsEarned; //get amount of points earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and user level multipliers
       if (pointsEarned > state.user.bestScoreEarned) {
         //if points earned are greater than the best score earned
-        state.user.bestScoreEarned = pointsEarned; //set the best score earned to points earned when a task is completed
+        state.user.bestScoreEarned = pointsEarned; //set the best score earned to points earned when the task is completed
       }
       alert(
         `Task ${task.task} completed!\nYou earned ${xpEarned.toLocaleString(
@@ -458,7 +458,7 @@ export default createStore({
         (todo: { newId: number }) => todo.newId === payload
       );
       if (Number(item.repeatFrequency) === 5) {
-        //if a task is a one-time only
+        //if the task is a one-time only
         item.completed = !item.completed; //complete task item (set completed task to true)
       } else {
         item.timesCompleted++; //increment number of times tasks has been completed by 1
