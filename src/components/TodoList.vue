@@ -1,22 +1,24 @@
 <template>
   <div class="todo-app">
-    <p>Level: {{ levels.toLocaleString("en-US") }}</p>
-    <p>XP: {{ xps.toLocaleString("en-US") }}</p>
-    <p>Daily Streak: {{ dailyStreaks.toLocaleString("en-US") }}</p>
+    <p>Level: {{ getCurrentLevel.toLocaleString("en-US") }}</p>
+    <p>XP: {{ getCurrentXp.toLocaleString("en-US") }}</p>
+    <p>Daily Streak: {{ getCurrentDailyStreak.toLocaleString("en-US") }}</p>
     <p>
-      Tasks Completed Today: {{ tasksCompletedTodays.toLocaleString("en-US") }}
+      Tasks Completed Today:
+      {{ getCurrentTasksCompletedToday.toLocaleString("en-US") }}
     </p>
     <p>
-      Total Tasks Completed: {{ totalTasksCompletions.toLocaleString("en-US") }}
+      Total Tasks Completed:
+      {{ getCurrentTotalTasksCompleted.toLocaleString("en-US") }}
     </p>
-    <p>Score: {{ scores.toLocaleString("en-US") }}</p>
+    <p>Score: {{ getCurrentScore.toLocaleString("en-US") }}</p>
     <p>
       Best Points Earned After Completing the Task:
-      {{ bestScoreEarneds.toLocaleString("en-US") }}
+      {{ getCurrentBestScoreEarned.toLocaleString("en-US") }}
     </p>
     <!--show circular progress bar filled with level progress--><ve-progress
-      :progress="progresses"
-      >Level {{ levels.toLocaleString("en-US") }}</ve-progress
+      :progress="getCurrentProgress"
+      >Level {{ getCurrentLevel.toLocaleString("en-US") }}</ve-progress
     >
     <h3>Task list</h3>
     <ul class="todos">
@@ -98,34 +100,34 @@ export default defineComponent({
     todos() {
       //eslint-disable-next-line
       return store.getters.getTodos.sort((a: any, b: any) =>
-        a.dueDate.localeCompare(b.dueDate)
+        a.dueDate.localeCompare(b.dueDate),
       ); //get tasks (todos) and sort tasks by task's due date with the top one the oldest
     },
-    levels() {
+    getCurrentLevel() {
       return store.getters.getLevel; //get current level
     },
-    xps() {
+    getCurrentXp() {
       return store.getters.getXp; //get current XP
     },
-    progresses() {
+    getCurrentProgress() {
       return store.getters.getProgress; //get current progress
     },
-    scores() {
+    getCurrentScore() {
       return store.getters.getScore; //get current score
     },
-    dailyStreaks() {
+    getCurrentDailyStreak() {
       return store.getters.getDailyStreak; //get current daily streak
     },
-    tasksCompletedTodays() {
+    getCurrentTasksCompletedToday() {
       return store.getters.getTasksCompletedToday; //get tasks completed in a day (today)
     },
-    totalTasksCompletions() {
+    getCurrentTotalTasksCompleted() {
       return store.getters.getTotalTasksCompleted; //get total tasks completed
     },
-    lastCompletedDates() {
+    getCurrentLastCompletedDate() {
       return store.getters.getLastCompletionDate; //get the current last completion date
     },
-    bestScoreEarneds() {
+    getCurrentBestScoreEarned() {
       return store.getters.getBestScoreEarned; //get best score earned
     },
   },
