@@ -32,22 +32,22 @@
       <option value="2">Medium</option>
       <option value="3">Hard</option></select
     ><br />
-    Repeat often:<br />
+    Repeat every:<br />
     <input
       class="todo-input"
-      id="repeat-often"
+      id="repeat-every"
       type="number"
       placeholder="Enter number of days/weeks/months/years to repeat"
-      v-model="repeatOften"
+      v-model="repeatEvery"
       required
       min="1"
       step="1"
     /><br />
-    Repeat frequency:<br />
+    Repeat interval:<br />
     <select
       class="todo-input"
-      id="repeat-frequency"
-      v-model="repeatFrequency"
+      id="repeat-interval"
+      v-model="repeatInterval"
       required
     >
       <option value="1">Daily</option>
@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import store from "@/store";
-import { difficulty, priority, repeatFrequency } from "./TodoList.vue";
+import { difficulty, priority, repeatInterval } from "./TodoList.vue";
 import { defineComponent } from "vue";
 
 export interface todoTask {
@@ -70,8 +70,8 @@ export interface todoTask {
   dueDate: Date; //task due date
   priority: number; //task priority
   difficulty: number; //task difficulty
-  repeatOften: number; //task repetition number of days/weeks/months/years
-  repeatFrequency: number; //task repetition frequency
+  repeatEvery: number; //task repetition number of days/weeks/months/years
+  repeatInterval: number; //task repetition interval
   newId: number; //task id
   completed: boolean; //task completed or not
   timesCompleted: number; //number of times tasks has been completed
@@ -81,8 +81,8 @@ export interface todoTask {
 const currentUtcDate: Date = new Date();
 const currentLocalDate: Date = new Date(
   currentUtcDate.setMinutes(
-    currentUtcDate.getMinutes() - currentUtcDate.getTimezoneOffset()
-  )
+    currentUtcDate.getMinutes() - currentUtcDate.getTimezoneOffset(),
+  ),
 );
 
 export default defineComponent({
@@ -92,8 +92,8 @@ export default defineComponent({
       dueDate: currentLocalDate.toISOString().split("T")[0], //set default due date to today
       priority: priority.Low, //set default priority is low
       difficulty: difficulty.Easy, //set default difficulty is easy
-      repeatOften: 1,
-      repeatFrequency: repeatFrequency.Once, //set default task repetition to one-time
+      repeatEvery: 1, // set default task repetition number to 1
+      repeatInterval: repeatInterval.Once, //set default task repetition interval to one-time
       newId: 0, //initial task id is 0
       completed: false, //task not completed if a task is created
       timesCompleted: 0,
@@ -103,7 +103,7 @@ export default defineComponent({
   },
   mounted() {
     const dueDateInput = document.getElementById(
-      "due-date"
+      "due-date",
     ) as HTMLInputElement;
     dueDateInput.min = currentLocalDate.toISOString().split("T")[0]; //task minimum due date must be today
   },
@@ -119,8 +119,8 @@ export default defineComponent({
       this.dueDate = currentLocalDate.toISOString().split("T")[0];
       this.priority = priority.Low;
       this.difficulty = difficulty.Easy;
-      this.repeatOften = 1;
-      this.repeatFrequency = repeatFrequency.Once;
+      this.repeatEvery = 1;
+      this.repeatInterval = repeatInterval.Once;
       this.completed = false;
       this.timesCompleted = 0;
       this.streak = 0;

@@ -32,15 +32,15 @@
           {{ todo.streak.toLocaleString("en-US") }} <br />Due date:
           {{ todo.dueDate }} <br />Priority: {{ todo.priority }}
           <br />Difficulty: {{ todo.difficulty }} <br />Repeat:
-          <span v-if="todo.repeatFrequency != 5">{{
-            todo.repeatOften.toLocaleString("en-US")
+          <span v-if="todo.repeatInterval != 5">{{
+            todo.repeatEvery.toLocaleString("en-US")
           }}</span
-          >&nbsp;<span v-if="todo.repeatFrequency == 1">Day</span
-          ><span v-if="todo.repeatFrequency == 2">Week</span
-          ><span v-if="todo.repeatFrequency == 3">Month</span
-          ><span v-if="todo.repeatFrequency == 4">Year</span
-          ><span v-if="todo.repeatFrequency == 5">Once</span
-          ><span v-if="todo.repeatOften > 1 && todo.repeatFrequency != 5"
+          >&nbsp;<span v-if="todo.repeatInterval == 1">Day</span
+          ><span v-if="todo.repeatInterval == 2">Week</span
+          ><span v-if="todo.repeatInterval == 3">Month</span
+          ><span v-if="todo.repeatInterval == 4">Year</span
+          ><span v-if="todo.repeatInterval == 5">Once</span
+          ><span v-if="todo.repeatEvery > 1 && todo.repeatInterval != 5"
             >s</span
           ></span
         >
@@ -60,7 +60,7 @@
 import store from "@/store";
 import { defineComponent } from "vue";
 
-export enum repeatFrequency {
+export enum repeatInterval {
   Daily = 1, //daily gets 1x XP, weekly gets 2x XP, monthly gets 3x XP, yearly gets 4x XP, one-time gets 5x XP multiplier
   Weekly = 2,
   Monthly = 3,
@@ -86,8 +86,8 @@ export default defineComponent({
     dueDate: Date,
     priority: Number,
     difficulty: Number,
-    repeatFrequency: String,
-    repeatOften: Number,
+    repeatInterval: String,
+    repeatEvery: Number,
     level: Number,
     xp: Number,
     completed: Boolean,

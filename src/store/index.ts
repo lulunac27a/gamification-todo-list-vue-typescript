@@ -35,7 +35,7 @@ export default createStore({
      */
     updateXp: (state, payload) => {
       const task = state.todos.find(
-        (todo: { newId: number }) => todo.newId === payload
+        (todo: { newId: number }) => todo.newId === payload,
       );
       const daysToDue: number =
         (Number(new Date(task.dueDate + " 23:59:59.999")) -
@@ -45,61 +45,61 @@ export default createStore({
         daysToDue < 0
           ? -2 / (daysToDue - 1)
           : daysToDue === 0
-          ? 4 /
-            (1 +
-              (Number(new Date().setHours(23, 59, 59, 999)) -
-                Number(new Date())) /
-                (1000 * 24 * 60 * 60))
-          : 1 + 1 / (daysToDue + 1); //if the task is overdue, XP and score multiplier is less than 1 that decreases over time when the task is overdue, else XP multiplier bonus increases (more than 1) when the task gets closer to due date
+            ? 4 /
+              (1 +
+                (Number(new Date().setHours(23, 59, 59, 999)) -
+                  Number(new Date())) /
+                  (1000 * 24 * 60 * 60))
+            : 1 + 1 / (daysToDue + 1); //if the task is overdue, XP and score multiplier is less than 1 that decreases over time when the task is overdue, else XP multiplier bonus increases (more than 1) when the task gets closer to due date
       let streakMultiplier: number; //calculate task streak XP and score multiplier based on task streak, if the task is completed before the due date, then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
-      let repeatMultiplier: number; //calculate task repetition XP and score multiplier based on task repetition occurrence and task repetition frequency
+      let repeatMultiplier: number; //calculate task repetition XP and score multiplier based on task repetition occurrence and task repetition interval
       let dailyStreakMultiplier: number; //calculate daily streak XP and score multiplier based on daily streak
       let levelMultiplier: number; //calculate level score multiplier based on user level
       let dayTasksMultiplier: number; //calculate XP and score multiplier for tasks completed in a day (today)
       let tasksMultiplier: number; //calculate score multiplier for total number of tasks completed
       const activeTasks: number = state.todos.filter(
-        (taskList) => !taskList.completed
+        (taskList) => !taskList.completed,
       ).length; //calculate the number of active tasks (tasks that are not completed) using array.filter
       let activeTasksMultiplier: number; //calculate score multiplier for number of active tasks (tasks that are not completed)
       //calculate task repetition XP multiplier
-      if (Number(task.repeatFrequency) === 1) {
-        //if task repetition is daily
-        if (task.repeatOften < 7) {
+      if (Number(task.repeatInterval) === 1) {
+        //if task repetition interval is daily
+        if (task.repeatEvery < 7) {
           //7 days is 1 week
-          repeatMultiplier = 1 + (task.repeatOften - 1) / (7 - 1); //1x XP multiplier for daily tasks (1 day) to 2x XP multiplier for weekly tasks (7 days)
-        } else if (task.repeatOften < 30) {
+          repeatMultiplier = 1 + (task.repeatEvery - 1) / (7 - 1); //1x XP multiplier for daily tasks (1 day) to 2x XP multiplier for weekly tasks (7 days)
+        } else if (task.repeatEvery < 30) {
           //approximately 30 days is 1 month
-          repeatMultiplier = 2 + (task.repeatOften - 7) / (30 - 7); //2x XP multiplier for weekly tasks (7 days) to 3x XP multiplier for monthly tasks (approximately 30 days)
-        } else if (task.repeatOften < 365) {
+          repeatMultiplier = 2 + (task.repeatEvery - 7) / (30 - 7); //2x XP multiplier for weekly tasks (7 days) to 3x XP multiplier for monthly tasks (approximately 30 days)
+        } else if (task.repeatEvery < 365) {
           //approximately 365 days is 1 year
-          repeatMultiplier = 3 + (task.repeatOften - 30) / (365 - 30); //3x XP multiplier for monthly tasks (approximately 30 days) to 4x XP multiplier for yearly tasks (approximately 365 days)
+          repeatMultiplier = 3 + (task.repeatEvery - 30) / (365 - 30); //3x XP multiplier for monthly tasks (approximately 30 days) to 4x XP multiplier for yearly tasks (approximately 365 days)
         } else {
-          repeatMultiplier = 5 - 365 / task.repeatOften; //4x XP multiplier for yearly tasks (approximately 365 days) to 5x XP multiplier for one-time tasks
+          repeatMultiplier = 5 - 365 / task.repeatEvery; //4x XP multiplier for yearly tasks (approximately 365 days) to 5x XP multiplier for one-time tasks
         }
-      } else if (Number(task.repeatFrequency) === 2) {
-        //if task repetition is weekly
-        if (task.repeatOften < 4) {
+      } else if (Number(task.repeatInterval) === 2) {
+        //if task repetition interval is weekly
+        if (task.repeatEvery < 4) {
           //approximately 4 weeks is 1 month
-          repeatMultiplier = 2 + (task.repeatOften - 1) / (4 - 1); //2x XP multiplier for weekly tasks (1 week) to 3x XP multiplier for monthly tasks (approximately 4 weeks)
-        } else if (task.repeatOften < 52) {
+          repeatMultiplier = 2 + (task.repeatEvery - 1) / (4 - 1); //2x XP multiplier for weekly tasks (1 week) to 3x XP multiplier for monthly tasks (approximately 4 weeks)
+        } else if (task.repeatEvery < 52) {
           //approximately 52 weeks is 1 year
-          repeatMultiplier = 3 + (task.repeatOften - 4) / (52 - 4); //3x XP multiplier for monthly tasks (approximately 4 weeks) to 4x XP multiplier for yearly tasks (approximately 52 weeks)
+          repeatMultiplier = 3 + (task.repeatEvery - 4) / (52 - 4); //3x XP multiplier for monthly tasks (approximately 4 weeks) to 4x XP multiplier for yearly tasks (approximately 52 weeks)
         } else {
-          repeatMultiplier = 5 - 52 / task.repeatOften; //4x XP multiplier for yearly tasks (approximately 52 weeks) to 5x XP multiplier for one-time tasks
+          repeatMultiplier = 5 - 52 / task.repeatEvery; //4x XP multiplier for yearly tasks (approximately 52 weeks) to 5x XP multiplier for one-time tasks
         }
-      } else if (Number(task.repeatFrequency) === 3) {
-        //if task repetition is monthly
-        if (task.repeatOften < 12) {
+      } else if (Number(task.repeatInterval) === 3) {
+        //if task repetition interval is monthly
+        if (task.repeatEvery < 12) {
           //12 months is 1 year
-          repeatMultiplier = 3 + (task.repeatOften - 1) / (12 - 1); //3x XP multiplier for monthly tasks (1 month) to 4x XP multiplier for yearly tasks (12 months)
+          repeatMultiplier = 3 + (task.repeatEvery - 1) / (12 - 1); //3x XP multiplier for monthly tasks (1 month) to 4x XP multiplier for yearly tasks (12 months)
         } else {
-          repeatMultiplier = 5 - 12 / task.repeatOften; //4x XP multiplier for yearly tasks (12 months) to 5x XP multiplier for one-time tasks
+          repeatMultiplier = 5 - 12 / task.repeatEvery; //4x XP multiplier for yearly tasks (12 months) to 5x XP multiplier for one-time tasks
         }
-      } else if (Number(task.repeatFrequency) === 4) {
-        //if task repetition is yearly
-        repeatMultiplier = 5 - 1 / task.repeatOften; //4x XP multiplier for yearly tasks (1 year) to 5x XP multiplier for one-time tasks
+      } else if (Number(task.repeatInterval) === 4) {
+        //if task repetition interval is yearly
+        repeatMultiplier = 5 - 1 / task.repeatEvery; //4x XP multiplier for yearly tasks (1 year) to 5x XP multiplier for one-time tasks
       } else {
-        //if task repetition is one-time
+        //if task repetition interval is one-time
         repeatMultiplier = 5; //get 5x XP multiplier for one-time tasks
       }
       //calculate task streak
@@ -179,17 +179,13 @@ export default createStore({
       //set the last completion date to today
       state.user.lastCompletionDate = new Date(
         new Date().setMinutes(
-          new Date().getMinutes() - new Date().getTimezoneOffset()
-        )
+          new Date().getMinutes() - new Date().getTimezoneOffset(),
+        ),
       )
         .toISOString()
         .split("T")[0];
       //calculate task streak XP multiplier
-      if (
-        task.streak === 0 ||
-        task.streak === 1 ||
-        task.repeatFrequency === 5
-      ) {
+      if (task.streak === 0 || task.streak === 1 || task.repeatInterval === 5) {
         streakMultiplier = 1; //1x task streak XP multiplier if task streak is 0 or 1 or completed a one-time task
       } else if (task.streak < 5) {
         streakMultiplier = 1.1 + 0.05 * (task.streak - 1); //1.1x task streak XP multiplier from 1 task streak plus 0.05x streak multiplier for each task streak
@@ -378,9 +374,9 @@ export default createStore({
             repeatMultiplier *
             streakMultiplier *
             dailyStreakMultiplier *
-            dayTasksMultiplier
+            dayTasksMultiplier,
         ),
-        1
+        1,
       ); //get at least 1 XP when the task is completed
       state.user.xp += xpEarned; //get the amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak and daily streak multipliers
       const pointsEarned: number = Math.max(
@@ -394,9 +390,9 @@ export default createStore({
             dayTasksMultiplier *
             levelMultiplier *
             tasksMultiplier *
-            activeTasksMultiplier
+            activeTasksMultiplier,
         ),
-        1
+        1,
       ); //get at least 1 point when the task is completed
       state.user.score += pointsEarned; //get amount of points earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and user level multipliers
       if (pointsEarned > state.user.bestScoreEarned) {
@@ -404,23 +400,17 @@ export default createStore({
         state.user.bestScoreEarned = pointsEarned; //set the best score earned to points earned when the task is completed
       }
       alert(
-        `Task ${task.task} completed!\nYou earned ${xpEarned.toLocaleString(
-          "en-US"
-        )} XP!\nYou earned ${pointsEarned.toLocaleString("en-US")} point${
-          pointsEarned === 1 ? "" : "s"
-        }!`
+        `Task ${task.task} completed!\nYou earned ${xpEarned.toLocaleString("en-US")} XP!\nYou earned ${pointsEarned.toLocaleString("en-US")} point${pointsEarned === 1 ? "" : "s"}!`,
       ); //alert user to show how many XP they earned and points earned after completing the task
       //check if user has leveled up
       const userLevel: number = state.user.level; //set userLevel variable before calculating user level state
       state.user.level = Math.max(
         1,
-        Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16))
+        Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16)),
       ); //calculate level based on how many XP and set level to 1 if total XP is 0
       if (state.user.level > userLevel) {
         alert(
-          `Level Up!\nYou are now level ${state.user.level.toLocaleString(
-            "en-US"
-          )}!`
+          `Level Up!\nYou are now level ${state.user.level.toLocaleString("en-US")}!`,
         ); //alert user when user levels up
       }
       state.user.progress =
@@ -442,8 +432,8 @@ export default createStore({
         difficulty: payload.difficulty as number,
         xp: payload.xp as number,
         completed: payload.completed as boolean,
-        repeatOften: payload.repeatOften as number,
-        repeatFrequency: payload.repeatFrequency as number,
+        repeatEvery: payload.repeatEvery as number,
+        repeatInterval: payload.repeatInterval as number,
         timesCompleted: payload.timesCompleted as number,
         streak: payload.streak as number,
         originalDueDate: payload.originalDueDate as Date,
@@ -455,98 +445,98 @@ export default createStore({
        * Complete the task when user presses the Complete button.
        */
       const item = state.todos.find(
-        (todo: { newId: number }) => todo.newId === payload
+        (todo: { newId: number }) => todo.newId === payload,
       );
-      if (Number(item.repeatFrequency) === 5) {
+      if (Number(item.repeatInterval) === 5) {
         //if the task is a one-time only
         item.completed = !item.completed; //complete task item (set completed task to true)
       } else {
         item.timesCompleted++; //increment number of times tasks has been completed by 1
-        if (Number(item.repeatFrequency) === 1) {
-          //if task repeat frequency is daily
+        if (Number(item.repeatInterval) === 1) {
+          //if task repeat interval is daily
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
               new Date(item.originalDueDate + " 23:59:59.999").getDate() +
-                item.timesCompleted * item.repeatOften
-            )
+                item.timesCompleted * item.repeatEvery,
+            ),
           ); //get a new due date
           const adjustedNewDueDate: Date = new Date(
             newDueDate.setMinutes(
-              newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
-            )
+              newDueDate.getMinutes() - newDueDate.getTimezoneOffset(),
+            ),
           ); //convert to local timezone
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0]; //convert due date to YYYY-MM-DD string
-        } else if (Number(item.repeatFrequency) === 2) {
-          //if task repeat frequency is weekly
+        } else if (Number(item.repeatInterval) === 2) {
+          //if task repeat interval is weekly
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
               new Date(item.originalDueDate + " 23:59:59.999").getDate() +
-                item.timesCompleted * item.repeatOften * 7
-            )
+                item.timesCompleted * item.repeatEvery * 7,
+            ),
           );
           const adjustedNewDueDate: Date = new Date(
             newDueDate.setMinutes(
-              newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
-            )
+              newDueDate.getMinutes() - newDueDate.getTimezoneOffset(),
+            ),
           );
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
-        } else if (Number(item.repeatFrequency) === 3) {
-          //if task repeat frequency is monthly
+        } else if (Number(item.repeatInterval) === 3) {
+          //if task repeat interval is monthly
           const monthsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setMonth(
               new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
-                item.timesCompleted * item.repeatOften
-            )
+                item.timesCompleted * item.repeatEvery,
+            ),
           );
           if (
             monthsAfter.getMonth() !==
             (new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
-              item.timesCompleted * item.repeatOften) %
+              item.timesCompleted * item.repeatEvery) %
               12
           ) {
             //if task due date is more than days of the month, set to last day of month
             const newDueDate: Date = new Date(
               new Date(item.originalDueDate + " 23:59:59.999").getFullYear(),
               new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
-                item.timesCompleted * item.repeatOften +
+                item.timesCompleted * item.repeatEvery +
                 1,
               0,
               23,
               59,
               59,
-              999
+              999,
             );
             const adjustedNewDueDate: Date = new Date(
               newDueDate.setMinutes(
-                newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
-              )
+                newDueDate.getMinutes() - newDueDate.getTimezoneOffset(),
+              ),
             );
             item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
           } else {
             const newDueDate: Date = new Date(
               new Date(item.originalDueDate + " 23:59:59.999").getFullYear(),
               new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
-                item.timesCompleted * item.repeatOften,
+                item.timesCompleted * item.repeatEvery,
               new Date(item.originalDueDate + " 23:59:59.999").getDate(),
               23,
               59,
               59,
-              999
+              999,
             );
             const adjustedNewDueDate: Date = new Date(
               newDueDate.setMinutes(
-                newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
-              )
+                newDueDate.getMinutes() - newDueDate.getTimezoneOffset(),
+              ),
             );
             item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
           }
-        } else if (Number(item.repeatFrequency) === 4) {
-          //if task repeat frequency is yearly
+        } else if (Number(item.repeatInterval) === 4) {
+          //if task repeat interval is yearly
           const yearsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setFullYear(
               new Date(item.originalDueDate + " 23:59:59.999").getFullYear() +
-                item.timesCompleted * item.repeatOften
-            )
+                item.timesCompleted * item.repeatEvery,
+            ),
           );
           if (
             yearsAfter.getMonth() !==
@@ -555,35 +545,35 @@ export default createStore({
             //if task due date don't have leap year, set task due date to February 28
             const newDueDate: Date = new Date(
               new Date(item.originalDueDate + " 23:59:59.999").getFullYear() +
-                item.timesCompleted * item.repeatOften,
+                item.timesCompleted * item.repeatEvery,
               new Date(item.originalDueDate + " 23:59:59.999").getMonth() + 1,
               0,
               23,
               59,
               59,
-              999
+              999,
             );
             const adjustedNewDueDate: Date = new Date(
               newDueDate.setMinutes(
-                newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
-              )
+                newDueDate.getMinutes() - newDueDate.getTimezoneOffset(),
+              ),
             );
             item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
           } else {
             const newDueDate: Date = new Date(
               new Date(item.originalDueDate + " 23:59:59.999").getFullYear() +
-                item.timesCompleted * item.repeatOften,
+                item.timesCompleted * item.repeatEvery,
               new Date(item.originalDueDate + " 23:59:59.999").getMonth(),
               new Date(item.originalDueDate + " 23:59:59.999").getDate(),
               23,
               59,
               59,
-              999
+              999,
             );
             const adjustedNewDueDate: Date = new Date(
               newDueDate.setMinutes(
-                newDueDate.getMinutes() - newDueDate.getTimezoneOffset()
-              )
+                newDueDate.getMinutes() - newDueDate.getTimezoneOffset(),
+              ),
             );
             item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
           }
@@ -595,13 +585,13 @@ export default createStore({
        * Delete the task when a user confirms task deletion alert after pressing the Delete button.
        */
       const index = state.todos.findIndex(
-        (todo: { newId: number }) => todo.newId === payload
+        (todo: { newId: number }) => todo.newId === payload,
       );
       let deleteTask;
       if (!state.todos[index].completed) {
         //don't ask for confirmation when one-time task is completed
         deleteTask = confirm(
-          `Do you want to delete the task ${state.todos[index].task}?\nThis action cannot be undone.`
+          `Do you want to delete the task ${state.todos[index].task}?\nThis action cannot be undone.`,
         ) as boolean; //ask user to confirm task deletion
       }
       if (deleteTask || state.todos[index].completed) {
