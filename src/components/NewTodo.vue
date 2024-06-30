@@ -130,4 +130,11 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+form {
+  line-height: 150%;
+}
+button {
+  margin: 10px;
+}
+</style>
