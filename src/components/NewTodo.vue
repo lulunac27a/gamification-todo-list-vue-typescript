@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import store from "@/store";
-import { difficulty, priority, repeatInterval } from "./TodoList.vue";
+import { Difficulty, Priority, RepeatInterval } from "./TodoList.vue";
 import { defineComponent } from "vue";
 
 export interface todoTask {
@@ -90,10 +90,10 @@ export default defineComponent({
     return {
       task: "",
       dueDate: currentLocalDate.toISOString().split("T")[0], //set default due date to today
-      priority: priority.Low, //set default priority is low
-      difficulty: difficulty.Easy, //set default difficulty is easy
+      priority: Priority.Low, //set default priority is low
+      difficulty: Difficulty.Easy, //set default difficulty is easy
       repeatEvery: 1, // set default task repetition number to 1
-      repeatInterval: repeatInterval.Once, //set default task repetition interval to one-time
+      repeatInterval: RepeatInterval.Once, //set default task repetition interval to one-time
       newId: 0, //initial task id is 0
       completed: false, //task not completed if a task is created
       timesCompleted: 0,
@@ -117,10 +117,10 @@ export default defineComponent({
       this.newId++;
       this.task = "";
       this.dueDate = currentLocalDate.toISOString().split("T")[0];
-      this.priority = priority.Low;
-      this.difficulty = difficulty.Easy;
+      this.priority = Priority.Low;
+      this.difficulty = Difficulty.Easy;
       this.repeatEvery = 1;
-      this.repeatInterval = repeatInterval.Once;
+      this.repeatInterval = RepeatInterval.Once;
       this.completed = false;
       this.timesCompleted = 0;
       this.streak = 0;

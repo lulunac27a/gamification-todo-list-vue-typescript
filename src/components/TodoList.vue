@@ -60,19 +60,19 @@
 import store from "@/store";
 import { defineComponent } from "vue";
 
-export enum repeatInterval {
+export enum RepeatInterval {
   Daily = 1, //daily gets 1x XP, weekly gets 2x XP, monthly gets 3x XP, yearly gets 4x XP, one-time gets 5x XP multiplier
   Weekly = 2,
   Monthly = 3,
   Yearly = 4,
   Once = 5,
 }
-export enum difficulty {
+export enum Difficulty {
   Easy = 1, //easy gets 1x XP, medium gets 2x XP, hard gets 3x XP multiplier
   Medium = 2,
   Hard = 3,
 }
-export enum priority {
+export enum Priority {
   Low = 1, //low gets 1x XP, medium gets 2x XP, hard gets 3x XP multiplier
   Medium = 2,
   High = 3,
