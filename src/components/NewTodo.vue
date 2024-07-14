@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="addTodo">
-    <!--all fields are required-->
+    <!--all fields are required in order to add a task-->
     Name:<br /><!--task name can be up to 255 characters in length-->
     <input
       class="todo-input"
