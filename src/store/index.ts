@@ -186,6 +186,7 @@ export default createStore({
         .split("T")[0];
       //calculate task streak XP multiplier
       if (task.streak === 0 || task.streak === 1 || task.repeatInterval === 5) {
+        //if task streak is 0 or 1 or task repeat interval is one-time
         streakMultiplier = 1; //1x task streak XP multiplier if task streak is 0 or 1 or completed a one-time task
       } else if (task.streak < 5) {
         streakMultiplier = 1.1 + 0.05 * (task.streak - 1); //1.1x task streak XP multiplier from 1 task streak plus 0.05x streak multiplier for each task streak
@@ -404,10 +405,7 @@ export default createStore({
       ); //alert user to show how many XP they earned and points earned after completing the task
       //check if user has leveled up
       const userLevel: number = state.user.level; //set userLevel variable before calculating user level state
-      state.user.level = Math.max(
-        1,
-        Math.floor(Math.pow(state.user.xp, 1 / 3 + 5e-16)),
-      ); //calculate level based on how many XP and set level to 1 if total XP is 0
+      state.user.level = Math.max(1, Math.floor(Math.cbrt(state.user.xp))); //calculate level based on how many XP and set level to 1 if total XP is 0
       if (state.user.level > userLevel) {
         alert(
           `Level Up!\nYou are now level ${state.user.level.toLocaleString("en-US")}!`,
