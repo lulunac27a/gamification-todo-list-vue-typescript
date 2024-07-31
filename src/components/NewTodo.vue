@@ -73,7 +73,7 @@ export interface todoTask {
   repeatEvery: number; //task repetition number of days/weeks/months/years
   repeatInterval: number; //task repetition interval
   newId: number; //task id
-  completed: boolean; //task completed or not
+  isCompleted: boolean; //task completed or not
   timesCompleted: number; //number of times tasks has been completed
   streak: number; //task completion streak
   originalDueDate: Date; //task original due date in YYYY-MM-DD string
@@ -95,7 +95,7 @@ export default defineComponent({
       repeatEvery: 1, // set default task repetition number to 1
       repeatInterval: RepeatInterval.Once, //set default task repetition interval to one-time
       newId: 0, //initial task id is 0
-      completed: false, //task not completed if a task is created
+      isCompleted: false, //task not completed if a task is created
       timesCompleted: 0,
       streak: 0, //set default task streak to 0
       originalDueDate: currentLocalDate.toISOString().split("T")[0], //set a default original task due date to today
@@ -121,7 +121,7 @@ export default defineComponent({
       this.difficulty = Difficulty.Easy;
       this.repeatEvery = 1;
       this.repeatInterval = RepeatInterval.Once;
-      this.completed = false;
+      this.isCompleted = false;
       this.timesCompleted = 0;
       this.streak = 0;
       this.originalDueDate = currentLocalDate.toISOString().split("T")[0];

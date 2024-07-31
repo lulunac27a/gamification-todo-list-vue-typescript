@@ -1,10 +1,24 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
-
+interface Todo {
+  //todos task interface
+  newId: number;
+  task: string;
+  dueDate: string | Date;
+  priority: number;
+  difficulty: number;
+  xp: number;
+  isCompleted: boolean;
+  repeatEvery: number;
+  repeatInterval: number;
+  timesCompleted: number;
+  streak: number;
+  originalDueDate: string | Date;
+}
 export default createStore({
   state: {
     //eslint-disable-next-line
-    todos: [] as any[],
+    todos: [] as Todo[],
     user: {
       level: 1 as number, //set level to 1 as total XP is 0 when state is created
       xp: 0 as number,
@@ -34,9 +48,9 @@ export default createStore({
      * Update user XP state when a user presses Complete button to complete the task.
      */
     updateXp: (state, payload) => {
-      const task = state.todos.find(
+      const task: Todo = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload,
-      );
+      ) as Todo;
       const daysToDue: number =
         (Number(new Date(task.dueDate + " 23:59:59.999")) -
           Number(new Date().setHours(23, 59, 59, 999))) /
@@ -64,7 +78,7 @@ export default createStore({
       let dayTasksMultiplier: number; //calculate XP and score multiplier for tasks completed in a day (today)
       let tasksMultiplier: number; //calculate score multiplier for total number of tasks completed
       const activeTasks: number = state.todos.filter(
-        (taskList) => !taskList.completed,
+        (taskList) => !taskList.isCompleted,
       ).length; //calculate the number of active tasks (tasks that are not completed) using array.filter
       let activeTasksMultiplier: number; //calculate score multiplier for number of active tasks (tasks that are not completed)
       //calculate task repetition XP multiplier
@@ -435,7 +449,7 @@ export default createStore({
         priority: payload.priority as number,
         difficulty: payload.difficulty as number,
         xp: payload.xp as number,
-        completed: payload.completed as boolean,
+        isCompleted: payload.isCompleted as boolean,
         repeatEvery: payload.repeatEvery as number,
         repeatInterval: payload.repeatInterval as number,
         timesCompleted: payload.timesCompleted as number,
@@ -448,12 +462,12 @@ export default createStore({
       /**
        * Complete the task when user presses the Complete button.
        */
-      const item = state.todos.find(
+      const item: Todo = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload,
-      );
+      ) as Todo;
       if (Number(item.repeatInterval) === 5) {
         //if the task is a one-time only
-        item.completed = !item.completed; //complete task item (set completed task to true)
+        item.isCompleted = !item.isCompleted; //complete task item (set completed task to true)
       } else {
         item.timesCompleted++; //increment number of times tasks has been completed by 1
         if (Number(item.repeatInterval) === 1) {
@@ -592,13 +606,13 @@ export default createStore({
         (todo: { newId: number }) => todo.newId === payload,
       );
       let deleteTask;
-      if (!state.todos[index].completed) {
+      if (!state.todos[index].isCompleted) {
         //don't ask for confirmation when one-time task is completed
         deleteTask = confirm(
           `Do you want to delete the task ${state.todos[index].task}?\nThis action cannot be undone.`,
         ) as boolean; //ask user to confirm task deletion
       }
-      if (deleteTask || state.todos[index].completed) {
+      if (deleteTask || state.todos[index].isCompleted) {
         //delete task if one-time task is completed when the deleted button is clicked or when user confirms deletion alert
         state.todos.splice(index, 1); //delete task item
       }

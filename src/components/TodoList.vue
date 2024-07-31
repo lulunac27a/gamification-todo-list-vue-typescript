@@ -45,7 +45,7 @@
           ></span
         >
         <!--don't show complete button if one-time task is completed--><button
-          v-if="!todo.completed"
+          v-if="!todo.isCompleted"
           @click="completeTodo(todo.newId)"
         >
           Complete
@@ -90,7 +90,7 @@ export default defineComponent({
     repeatEvery: Number,
     level: Number,
     xp: Number,
-    completed: Boolean,
+    isCompleted: Boolean,
     timesCompleted: Number,
     streak: Number,
     dailyStreak: Number,
