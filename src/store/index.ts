@@ -41,16 +41,22 @@ export default createStore({
         (Number(new Date(task.dueDate + " 23:59:59.999")) -
           Number(new Date().setHours(23, 59, 59, 999))) /
         (1000 * 60 * 60 * 24); //calculate the number of days until the task is due
-      const dateMultiplier: number =
-        daysToDue < 0
-          ? -2 / (daysToDue - 1)
-          : daysToDue === 0
-            ? 4 /
-              (1 +
-                (Number(new Date().setHours(23, 59, 59, 999)) -
-                  Number(new Date())) /
-                  (1000 * 24 * 60 * 60))
-            : 1 + 1 / (daysToDue + 1); //if the task is overdue, XP and score multiplier is less than 1 that decreases over time when the task is overdue, else XP multiplier bonus increases (more than 1) when the task gets closer to due date
+      let dateMultiplier: number;
+      if (daysToDue < 0) {
+        //if the task is overdue, XP and score multiplier is less than 1 that decreases over time when the task is overdue
+        dateMultiplier = -2 / (daysToDue - 1);
+      } else if (daysToDue === 0) {
+        //if the task is due today, XP and score multiplier bonus increases more than 2 based on the time the task is completed
+        dateMultiplier =
+          4 /
+          (1 +
+            (Number(new Date().setHours(23, 59, 59, 999)) -
+              Number(new Date())) /
+              (1000 * 24 * 60 * 60));
+      } else {
+        //else XP and score multiplier bonus increases (more than 1) when the task gets closer to due date
+        dateMultiplier = 1 + 1 / (daysToDue + 1);
+      }
       let streakMultiplier: number; //calculate task streak XP and score multiplier based on task streak, if the task is completed before the due date, then the streak increases else if the task is completed overdue (after the due date) reset task streak to 0
       let repeatMultiplier: number; //calculate task repetition XP and score multiplier based on task repetition occurrence and task repetition interval
       let dailyStreakMultiplier: number; //calculate daily streak XP and score multiplier based on daily streak
