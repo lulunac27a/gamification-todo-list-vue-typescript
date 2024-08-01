@@ -17,7 +17,9 @@ interface Todo {
 }
 export default createStore({
   state: {
-    //eslint-disable-next-line
+    /**
+     * The task with todos and user state data.
+     */
     todos: [] as Todo[],
     user: {
       level: 1 as number, //set level to 1 as total XP is 0 when state is created
@@ -32,6 +34,9 @@ export default createStore({
     },
   },
   getters: {
+    /**
+     * Getter methods for tasks with todos and user data.
+     */
     getTodos: (state) => state.todos, //get the task list
     getXp: (state) => state.user.xp, //get user XP
     getLevel: (state) => state.user.level, //get user level
@@ -618,10 +623,16 @@ export default createStore({
       }
     },
     setUser: (state, user) => {
+      /**
+       * Sets the user data.
+       */
       state.user = user; //set user data
     },
     setTodos: (state, todos) => {
-      state.todos = todos; //set todos data
+      /**
+       * Sets the todos (tasks) data.
+       */
+      state.todos = todos; //set todos (tasks) data
     },
   },
   actions: {
