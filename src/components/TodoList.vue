@@ -1,24 +1,54 @@
 <template>
   <div class="todo-app">
-    <p>Level: {{ getCurrentLevel.toLocaleString("en-US") }}</p>
-    <p>XP: {{ getCurrentXp.toLocaleString("en-US") }}</p>
-    <p>Daily Streak: {{ getCurrentDailyStreak.toLocaleString("en-US") }}</p>
+    <!--task list app content-->
+    <p>
+      Level:
+      <span id="text-numeric-display">{{
+        getCurrentLevel.toLocaleString("en-US")
+      }}</span>
+    </p>
+    <p>
+      XP:
+      <span id="text-numeric-display">{{
+        getCurrentXp.toLocaleString("en-US")
+      }}</span>
+    </p>
+    <p>
+      Daily Streak:
+      <span id="text-numeric-display">{{
+        getCurrentDailyStreak.toLocaleString("en-US")
+      }}</span>
+    </p>
     <p>
       Tasks Completed Today:
-      {{ getCurrentTasksCompletedToday.toLocaleString("en-US") }}
+      <span id="text-numeric-display">{{
+        getCurrentTasksCompletedToday.toLocaleString("en-US")
+      }}</span>
     </p>
     <p>
       Total Tasks Completed:
-      {{ getCurrentTotalTasksCompleted.toLocaleString("en-US") }}
+      <span id="text-numeric-display">{{
+        getCurrentTotalTasksCompleted.toLocaleString("en-US")
+      }}</span>
     </p>
-    <p>Score: {{ getCurrentScore.toLocaleString("en-US") }}</p>
+    <p>
+      Score:
+      <span id="text-numeric-display">{{
+        getCurrentScore.toLocaleString("en-US")
+      }}</span>
+    </p>
     <p>
       Best Points Earned After Completing the Task:
-      {{ getCurrentBestScoreEarned.toLocaleString("en-US") }}
+      <span id="text-numeric-display">{{
+        getCurrentBestScoreEarned.toLocaleString("en-US")
+      }}</span>
     </p>
     <!--show circular progress bar filled with level progress--><ve-progress
       :progress="getCurrentProgress"
-      >Level {{ getCurrentLevel.toLocaleString("en-US") }}</ve-progress
+      >Level
+      <span id="text-numeric-display">{{
+        getCurrentLevel.toLocaleString("en-US")
+      }}</span></ve-progress
     >
     <h3>Task list</h3>
     <ul class="todos">
@@ -28,13 +58,26 @@
           v-bind:class="{
             overdue: new Date(todo.dueDate + ' 23:59:59.999') < new Date(),
           }"
-          >{{ todo.task }} <br />Streak:
-          {{ todo.streak.toLocaleString("en-US") }} <br />Due date:
-          {{ todo.dueDate }} <br />Priority: {{ todo.priority }}
-          <br />Difficulty: {{ todo.difficulty }} <br />Repeat:
-          <span v-if="todo.repeatInterval != 5">{{
-            todo.repeatEvery.toLocaleString("en-US")
-          }}</span
+          ><span id="text-numeric-display">{{ todo.task }}</span> <br />Streak:
+          <span id="text-numeric-display">{{
+            todo.streak.toLocaleString("en-US")
+          }}</span>
+          <br />Rank:
+          <span id="text-numeric-display">{{
+            todo.rank.toLocaleString("en-US")
+          }}</span>
+          <br /><progress max="100" :value="todo.rankProgress"></progress
+          ><br />Due date:
+          <span id="text-numeric-display">{{ todo.dueDate }}</span>
+          <br />Priority:
+          <span id="text-numeric-display">{{ todo.priority }}</span>
+          <br />Difficulty:
+          <span id="text-numeric-display">{{ todo.difficulty }}</span>
+          <br />Repeat:
+          <span v-if="todo.repeatInterval != 5"
+            ><span id="text-numeric-display">{{
+              todo.repeatEvery.toLocaleString("en-US")
+            }}</span></span
           >&nbsp;<span v-if="todo.repeatInterval == 1">Day</span
           ><span v-if="todo.repeatInterval == 2">Week</span
           ><span v-if="todo.repeatInterval == 3">Month</span
@@ -94,6 +137,9 @@ export default defineComponent({
     timesCompleted: Number,
     streak: Number,
     dailyStreak: Number,
+    rank: Number,
+    rankXp: Number,
+    rankProgress: Number,
     originalDueDate: Date,
   },
   computed: {
@@ -136,14 +182,14 @@ export default defineComponent({
      * Complete task based on task ID.
      * @param id task ID
      */
-    completeTodo: function (id: number) {
+    completeTodo: function (id: number): void {
       store.dispatch("completeTask", id);
     },
     /**
      * Delete task based on task ID.
      * @param id task ID
      */
-    deleteTodo: function (id: number) {
+    deleteTodo: function (id: number): void {
       store.dispatch("deleteTask", id);
     },
   },

@@ -2,18 +2,21 @@ import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 interface Todo {
   //todos task interface
-  newId: number;
-  task: string;
-  dueDate: string | Date;
-  priority: number;
-  difficulty: number;
-  xp: number;
-  isCompleted: boolean;
-  repeatEvery: number;
-  repeatInterval: number;
-  timesCompleted: number;
-  streak: number;
-  originalDueDate: string | Date;
+  newId: number; //task new id
+  task: string; //task name
+  dueDate: string | Date; //task due date
+  priority: number; //task priority
+  difficulty: number; //task difficulty
+  xp: number; //task XP
+  isCompleted: boolean; //is task completed for one-time tasks
+  repeatEvery: number; //task repeat every
+  repeatInterval: number; //task repeat interval
+  timesCompleted: number; //number of times the task is completed
+  streak: number; //task streak
+  rank: number; //task rank
+  rankXp: number; //task rank XP
+  rankProgress: number; //task rank progress
+  originalDueDate: string | Date; //task original due date
 }
 export default createStore({
   state: {
@@ -23,8 +26,8 @@ export default createStore({
     todos: [] as Todo[],
     user: {
       level: 1 as number, //set level to 1 as total XP is 0 when state is created
-      xp: 0 as number,
-      progress: 0 as number,
+      xp: 0 as number, //set xp to 0 when state is created
+      progress: 0 as number, //set level progress to 0 percent when state is created
       score: 0 as number, //set score to 0 when state is created
       bestScoreEarned: 0 as number, //the highest number of points earned achieved when the task is completed
       dailyStreak: 0 as number, //set daily streak to 0 and last completion date to undefined when state is created
@@ -392,6 +395,26 @@ export default createStore({
         activeTasksMultiplier = 27; //27x active task score multiplier from 10,000 active tasks
       }
       //calculate the amount of XP earned and points earned when the task is completed
+      const rankXpEarned: number = Math.max(
+        Math.floor(
+          (dateMultiplier - 1) ** 2 *
+            100 *
+            task.rank *
+            Math.max(task.streak, 1),
+        ),
+        1,
+      ); //get at least 1 rank XP when the task is completed
+      task.rankXp += rankXpEarned; //increase rank XP based on task due date, task streak and task rank
+      const rankLevel: number = Math.max(
+        Math.floor(Math.pow(task.rankXp / 100, 1 / 4)),
+        1,
+      ); //update rank level
+      task.rank = rankLevel; //set task rank level
+      task.rankProgress =
+        ((task.rankXp / 100 - Math.pow(task.rank === 1 ? 0 : task.rank, 4)) /
+          (Math.pow(task.rank + 1, 3) -
+            Math.pow(task.rank === 1 ? 0 : task.rank, 4))) *
+        100; //calculate rank level progress and if level is 1 set rank level at the start of level 1 to 0 XP
       const xpEarned: number = Math.max(
         Math.floor(
           task.difficulty *
@@ -416,7 +439,8 @@ export default createStore({
             dayTasksMultiplier *
             levelMultiplier *
             tasksMultiplier *
-            activeTasksMultiplier,
+            activeTasksMultiplier *
+            (1 + task.rank / 10),
         ),
         1,
       ); //get at least 1 point when the task is completed
@@ -459,6 +483,9 @@ export default createStore({
         repeatInterval: payload.repeatInterval as number,
         timesCompleted: payload.timesCompleted as number,
         streak: payload.streak as number,
+        rank: payload.rank as number,
+        rankXp: payload.rankXp as number,
+        rankProgress: payload.rankProgress as number,
         originalDueDate: payload.originalDueDate as Date,
       };
       state.todos.unshift(createTask);
