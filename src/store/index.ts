@@ -424,11 +424,12 @@ export default createStore({
             repeatMultiplier *
             streakMultiplier *
             dailyStreakMultiplier *
-            dayTasksMultiplier,
+            dayTasksMultiplier *
+            (1 + task.rank / 10),
         ),
         1,
       ); //get at least 1 XP when the task is completed
-      state.user.xp += xpEarned; //get the amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak and daily streak multipliers
+      state.user.xp += xpEarned; //get the amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and task rank multipliers
       const pointsEarned: number = Math.max(
         Math.floor(
           task.difficulty *
