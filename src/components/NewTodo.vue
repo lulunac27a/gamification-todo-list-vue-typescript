@@ -98,7 +98,7 @@ export default defineComponent({
       isCompleted: false, //task not completed if a task is created
       timesCompleted: 0, //set default task times completed to 0
       streak: 0, //set default task streak to 0
-      rank: 0, //set default task rank to 0
+      rank: 1, //set default task rank to 1
       rankXp: 0, //set default task rank XP to 0
       rankProgress: 0, //set default rank progress to 0
       originalDueDate: currentLocalDate.toISOString().split("T")[0], //set a default original task due date to today
@@ -127,7 +127,7 @@ export default defineComponent({
       this.isCompleted = false;
       this.timesCompleted = 0;
       this.streak = 0;
-      this.rank = 0;
+      this.rank = 1;
       this.rankXp = 0;
       this.rankProgress = 0;
       this.originalDueDate = currentLocalDate.toISOString().split("T")[0];

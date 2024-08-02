@@ -399,8 +399,9 @@ export default createStore({
         Math.floor(
           (dateMultiplier - 1) ** 2 *
             100 *
-            task.rank *
-            Math.max(task.streak, 1),
+            Math.max(task.rank, 1) *
+            Math.max(task.streak, 1) *
+            repeatMultiplier,
         ),
         1,
       ); //get at least 1 rank XP when the task is completed
