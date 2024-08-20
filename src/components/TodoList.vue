@@ -43,6 +43,15 @@
         getCurrentBestScoreEarned.toLocaleString("en-US")
       }}</span>
     </p>
+    <p>
+      Rating:
+      <span id="text-numeric-display">{{
+        getCurrentRating.toLocaleString("en-US", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        })
+      }}</span>
+    </p>
     <!--show circular progress bar filled with level progress--><ve-progress
       :progress="getCurrentProgress"
       >Level
@@ -160,6 +169,9 @@ export default defineComponent({
     },
     getCurrentScore() {
       return store.getters.getScore; //get current score
+    },
+    getCurrentRating() {
+      return store.getters.getRating; //get current rating
     },
     getCurrentDailyStreak() {
       return store.getters.getDailyStreak; //get current daily streak
