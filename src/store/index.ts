@@ -29,6 +29,7 @@ export default createStore({
       xp: 0 as number, //set xp to 0 when state is created
       progress: 0 as number, //set level progress to 0 percent when state is created
       score: 0 as number, //set score to 0 when state is created
+      rating: 0 as number, //set rating to 0 when state is created
       bestScoreEarned: 0 as number, //the highest number of points earned achieved when the task is completed
       dailyStreak: 0 as number, //set daily streak to 0 and last completion date to undefined when state is created
       tasksCompletedToday: 0 as number, //set the number of tasks completed in a day (today) to 0
@@ -45,6 +46,7 @@ export default createStore({
     getLevel: (state) => state.user.level, //get user level
     getProgress: (state) => state.user.progress, //get user level progress
     getScore: (state) => state.user.score, //get user score
+    getRating: (state) => state.user.rating, //get user rating
     getDailyStreak: (state) => state.user.dailyStreak, //get user daily streak
     getTasksCompletedToday: (state) => state.user.tasksCompletedToday, //get user tasks completed in a day
     getTotalTasksCompleted: (state) => state.user.totalTasksCompleted, //get user total tasks completed
@@ -85,6 +87,7 @@ export default createStore({
       let levelMultiplier: number; //calculate level score multiplier based on user level
       let dayTasksMultiplier: number; //calculate XP and score multiplier for tasks completed in a day (today)
       let tasksMultiplier: number; //calculate score multiplier for total number of tasks completed
+      let rankMultiplier: number; //calculate rank multiplier based on current user rating score
       const activeTasks: number = state.todos.filter(
         (taskList) => !taskList.isCompleted,
       ).length; //calculate the number of active tasks (tasks that are not completed) using array.filter
@@ -203,7 +206,8 @@ export default createStore({
       } else {
         dailyStreakMultiplier = 9.783; //9.783x daily streak XP multiplier from 3,652 daily streaks (approximately 10 years)
       }
-
+      const previousCompletionDate: string | undefined =
+        state.user.lastCompletionDate; //set previous completion date to last completion date
       //set the last completion date to today
       state.user.lastCompletionDate = new Date(
         new Date().setMinutes(
@@ -212,6 +216,23 @@ export default createStore({
       )
         .toISOString()
         .split("T")[0];
+      const daysSinceLastCompletion: number = Math.round(
+        (Number(new Date(state.user.lastCompletionDate + "23:59:59.999")) -
+          Number(new Date(previousCompletionDate + "23:59:59.999"))) /
+          (1000 * 60 * 60 * 24),
+      ); //calculate days since task last completion (inactivity)
+      //check if at least 1 day of inactivity
+      if (daysSinceLastCompletion >= 1) {
+        //repeat for each day of inactivity
+        for (let i = 0; i < daysSinceLastCompletion; i++) {
+          state.user.rating = Math.max(
+            state.user.rating -
+              Math.sqrt(Math.max(state.user.rating, 0)) *
+                Math.log(Math.max(i + 1, 1)),
+            0,
+          ); //decrease user rating for each day of inactivity
+        }
+      }
       //calculate task streak XP multiplier
       if (task.streak === 0 || task.streak === 1 || task.repeatInterval === 5) {
         //if task streak is 0 or 1 or task repeat interval is one-time
@@ -394,6 +415,70 @@ export default createStore({
       } else {
         activeTasksMultiplier = 27; //27x active task score multiplier from 10,000 active tasks
       }
+      //calculate rank multiplier bonus based on user rating score
+      if (state.user.rating < 10) {
+        rankMultiplier = 0; //0 rank multiplier for rating under 10
+      } else if (state.user.rating < 50) {
+        rankMultiplier = 1; //1 rank multiplier for rating from 10 to under 50
+      } else if (state.user.rating < 100) {
+        rankMultiplier = 2; //2 rank multiplier for rating from 50 to under 100
+      } else if (state.user.rating < 250) {
+        rankMultiplier = 3; //3 rank multiplier for rating from 100 to under 250
+      } else if (state.user.rating < 500) {
+        rankMultiplier = 4; //4 rank multiplier for rating from 250 to under 500
+      } else if (state.user.rating < 1000) {
+        rankMultiplier = 5; //5 rank multiplier for rating from 500 to under 1,000
+      } else if (state.user.rating < 2000) {
+        rankMultiplier = 6; //6 rank multiplier for rating from 1,000 to under 2,000
+      } else if (state.user.rating < 3000) {
+        rankMultiplier = 7; //7 rank multiplier for rating from 2,000 to under 3,000
+      } else if (state.user.rating < 5000) {
+        rankMultiplier = 8; //8 rank multiplier for rating from 3,000 to under 5,000
+      } else if (state.user.rating < 7500) {
+        rankMultiplier = 9; //9 rank multiplier for rating from 5,000 to under 7,500
+      } else if (state.user.rating < 10000) {
+        rankMultiplier = 10; //10 rank multiplier for rating from 7,500 to under 10,000
+      } else if (state.user.rating < 15000) {
+        rankMultiplier = 11; //11 rank multiplier for rating from 10,000 to under 15,000
+      } else if (state.user.rating < 20000) {
+        rankMultiplier = 12; //12 rank multiplier for rating from 15,000 to under 20,000
+      } else if (state.user.rating < 25000) {
+        rankMultiplier = 13; //13 rank multiplier for rating from 20,000 to under 25,000
+      } else if (state.user.rating < 30000) {
+        rankMultiplier = 14; //14 rank multiplier for rating from 25,000 to under 30,000
+      } else if (state.user.rating < 40000) {
+        rankMultiplier = 15; //15 rank multiplier for rating from 30,000 to under 40,000
+      } else if (state.user.rating < 50000) {
+        rankMultiplier = 16; //16 rank multiplier for rating from 40,000 to under 50,000
+      } else if (state.user.rating < 60000) {
+        rankMultiplier = 17; //17 rank multiplier for rating from 50,000 to under 60,000
+      } else if (state.user.rating < 75000) {
+        rankMultiplier = 18; //18 rank multiplier for rating from 60,000 to under 75,000
+      } else if (state.user.rating < 100000) {
+        rankMultiplier = 19; //19 rank multiplier for rating from 75,000 to under 100,000
+      } else if (state.user.rating < 125000) {
+        rankMultiplier = 20; //20 rank multiplier for rating from 100,000 to under 125,000
+      } else if (state.user.rating < 150000) {
+        rankMultiplier = 21; //21 rank multiplier for rating from 125,000 to under 150,000
+      } else if (state.user.rating < 200000) {
+        rankMultiplier = 22; //22 rank multiplier for rating from 150,000 to under 200,000
+      } else if (state.user.rating < 250000) {
+        rankMultiplier = 23; //23 rank multiplier for rating from 200,000 to under 250,000
+      } else if (state.user.rating < 300000) {
+        rankMultiplier = 24; //24 rank multiplier for rating from 250,000 to under 300,000
+      } else if (state.user.rating < 400000) {
+        rankMultiplier = 25; //25 rank multiplier for rating from 300,000 to under 400,000
+      } else if (state.user.rating < 500000) {
+        rankMultiplier = 26; //26 rank multiplier for rating from 400,000 to under 500,000
+      } else if (state.user.rating < 600000) {
+        rankMultiplier = 27; //27 rank multiplier for rating from 500,000 to under 600,000
+      } else if (state.user.rating < 750000) {
+        rankMultiplier = 28; //28 rank multiplier for rating from 600,000 to under 750,000
+      } else if (state.user.rating < 1000000) {
+        rankMultiplier = 29; //29 rank multiplier for rating from 750,000 to under 1,000,000
+      } else {
+        rankMultiplier = 30; //30 rank multiplier for rating from 1,000,000
+      }
       //calculate the amount of XP earned and points earned when the task is completed
       const rankXpEarned: number = Math.max(
         Math.floor(
@@ -401,7 +486,8 @@ export default createStore({
             100 *
             Math.max(task.rank, 1) *
             Math.max(task.streak, 1) *
-            repeatMultiplier,
+            repeatMultiplier *
+            (1 + rankMultiplier / 10),
         ),
         1,
       ); //get at least 1 rank XP when the task is completed
@@ -425,11 +511,15 @@ export default createStore({
             streakMultiplier *
             dailyStreakMultiplier *
             dayTasksMultiplier *
-            (1 + task.rank / 10),
+            (1 + task.rank / 10) *
+            (1 + rankMultiplier / 10),
         ),
         1,
       ); //get at least 1 XP when the task is completed
       state.user.xp += xpEarned; //get the amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and task rank multipliers
+      state.user.rating +=
+        ((10 + Math.log(state.user.rating + 1) ** 2) * repeatMultiplier) /
+        Math.max(state.user.tasksCompletedToday, 1); //get the amount of rating poings earned based on user rating, task repeat multiplier and number of tasks completed today
       const pointsEarned: number = Math.max(
         Math.floor(
           task.difficulty *
@@ -442,11 +532,12 @@ export default createStore({
             levelMultiplier *
             tasksMultiplier *
             activeTasksMultiplier *
-            (1 + task.rank / 10),
+            (1 + task.rank / 10) *
+            (1 + rankMultiplier / 10),
         ),
         1,
       ); //get at least 1 point when the task is completed
-      state.user.score += pointsEarned; //get amount of points earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and user level multipliers
+      state.user.score += pointsEarned; //get amount of points earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak, user level and rank multipliers
       if (pointsEarned > state.user.bestScoreEarned) {
         //if points earned are greater than the best score earned
         state.user.bestScoreEarned = pointsEarned; //set the best score earned to points earned when the task is completed
