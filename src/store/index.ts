@@ -228,7 +228,7 @@ export default createStore({
           state.user.rating = Math.max(
             state.user.rating -
               Math.sqrt(Math.max(state.user.rating, 0)) *
-                Math.log(Math.max(i + 1, 1)),
+                (1 + Math.log(Math.max(i + 1, 1))),
             0,
           ); //decrease user rating for each day of inactivity
         }
