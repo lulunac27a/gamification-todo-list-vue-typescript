@@ -476,8 +476,90 @@ export default createStore({
         rankMultiplier = 28; //28 rank multiplier for rating from 600,000 to under 750,000
       } else if (state.user.rating < 1000000) {
         rankMultiplier = 29; //29 rank multiplier for rating from 750,000 to under 1,000,000
+      } else if (state.user.rating < 1250000) {
+        rankMultiplier = 30; //30 rank multiplier for rating from 1,000,000 to under 1,250,000
+      } else if (state.user.rating < 1500000) {
+        rankMultiplier = 31; //31 rank multiplier for rating from 1,250,000 to under 1,500,000
+      } else if (state.user.rating < 2000000) {
+        rankMultiplier = 32; //32 rank multiplier for rating from 1,500,000 to under 2,000,000
+      } else if (state.user.rating < 2500000) {
+        rankMultiplier = 33; //33 rank multiplier for rating from 2,000,000 to under 2,500,000
+      } else if (state.user.rating < 3000000) {
+        rankMultiplier = 34; //34 rank multiplier for rating from 2,500,000 to under 3,000,000
+      } else if (state.user.rating < 4000000) {
+        rankMultiplier = 35; //35 rank multiplier for rating from 3,000,000 to under 4,000,000
+      } else if (state.user.rating < 5000000) {
+        rankMultiplier = 36; //36 rank multiplier for rating from 4,000,000 to under 5,000,000
+      } else if (state.user.rating < 6000000) {
+        rankMultiplier = 37; //37 rank multiplier for rating from 5,000,000 to under 6,000,000
+      } else if (state.user.rating < 8000000) {
+        rankMultiplier = 38; //38 rank multiplier for rating from 6,000,000 to under 8,000,000
+      } else if (state.user.rating < 10000000) {
+        rankMultiplier = 39; //39 rank multiplier for rating from 8,000,000 to under 10,000,000
+      } else if (state.user.rating < 12500000) {
+        rankMultiplier = 40; //40 rank multiplier for rating from 10,000,000 to under 12,500,000
+      } else if (state.user.rating < 15000000) {
+        rankMultiplier = 41; //41 rank multiplier for rating from 12,500,000 to under 15,000,000
+      } else if (state.user.rating < 17500000) {
+        rankMultiplier = 42; //42 rank multiplier for rating from 15,000,000 to under 17,500,000
+      } else if (state.user.rating < 20000000) {
+        rankMultiplier = 43; //43 rank multiplier for rating from 17,500,000 to under 20,000,000
+      } else if (state.user.rating < 25000000) {
+        rankMultiplier = 44; //44 rank multiplier for rating from 20,000,000 to under 25,000,000
+      } else if (state.user.rating < 30000000) {
+        rankMultiplier = 45; //45 rank multiplier for rating from 25,000,000 to under 30,000,000
+      } else if (state.user.rating < 35000000) {
+        rankMultiplier = 46; //46 rank multiplier for rating from 30,000,000 to under 35,000,000
+      } else if (state.user.rating < 40000000) {
+        rankMultiplier = 47; //47 rank multiplier for rating from 35,000,000 to under 40,000,000
+      } else if (state.user.rating < 45000000) {
+        rankMultiplier = 48; //48 rank multiplier for rating from 40,000,000 to under 45,000,000
+      } else if (state.user.rating < 50000000) {
+        rankMultiplier = 49; //49 rank multiplier for rating from 45,000,000 to under 50,000,000
+      } else if (state.user.rating < 60000000) {
+        rankMultiplier = 50; //50 rank multiplier for rating from 50,000,000 to under 60,000,000
+      } else if (state.user.rating < 70000000) {
+        rankMultiplier = 51; //51 rank multiplier for rating from 60,000,000 to under 70,000,000
+      } else if (state.user.rating < 80000000) {
+        rankMultiplier = 52; //52 rank multiplier for rating from 70,000,000 to under 80,000,000
+      } else if (state.user.rating < 90000000) {
+        rankMultiplier = 53; //53 rank multiplier for rating from 80,000,000 to under 90,000,000
+      } else if (state.user.rating < 100000000) {
+        rankMultiplier = 54; //54 rank multiplier for rating from 90,000,000 to under 100,000,000
+      } else if (state.user.rating < 125000000) {
+        rankMultiplier = 55; //55 rank multiplier for rating from 100,000,000 to under 125,000,000
+      } else if (state.user.rating < 150000000) {
+        rankMultiplier = 56; //56 rank multiplier for rating from 125,000,000 to under 150,000,000
+      } else if (state.user.rating < 175000000) {
+        rankMultiplier = 57; //57 rank multiplier for rating from 150,000,000 to under 17,500,000
+      } else if (state.user.rating < 200000000) {
+        rankMultiplier = 58; //58 rank multiplier for rating from 175,000,000 to under 200,000,000
+      } else if (state.user.rating < 225000000) {
+        rankMultiplier = 59; //59 rank multiplier for rating from 200,000,000 to under 225,000,000
+      } else if (state.user.rating < 250000000) {
+        rankMultiplier = 60; //60 rank multiplier for rating from 225,000,000 to under 250,000,000
+      } else if (state.user.rating < 300000000) {
+        rankMultiplier = 61; //61 rank multiplier for rating from 250,000,000 to under 300,000,000
+      } else if (state.user.rating < 350000000) {
+        rankMultiplier = 62; //62 rank multiplier for rating from 300,000,000 to under 350,000,000
+      } else if (state.user.rating < 400000000) {
+        rankMultiplier = 63; //63 rank multiplier for rating from 350,000,000 to under 400,000,000
+      } else if (state.user.rating < 450000000) {
+        rankMultiplier = 64; //64 rank multiplier for rating from 400,000,000 to under 450,000,000
+      } else if (state.user.rating < 500000000) {
+        rankMultiplier = 65; //65 rank multiplier for rating from 450,000,000 to under 500,000,000
+      } else if (state.user.rating < 600000000) {
+        rankMultiplier = 66; //66 rank multiplier for rating from 500,000,000 to under 600,000,000
+      } else if (state.user.rating < 700000000) {
+        rankMultiplier = 67; //67 rank multiplier for rating from 600,000,000 to under 700,000,000
+      } else if (state.user.rating < 800000000) {
+        rankMultiplier = 68; //68 rank multiplier for rating from 700,000,000 to under 800,000,000
+      } else if (state.user.rating < 900000000) {
+        rankMultiplier = 69; //69 rank multiplier for rating from 800,000,000 to under 900,000,000
+      } else if (state.user.rating < 1000000000) {
+        rankMultiplier = 70; //70 rank multiplier for rating from 900,000,000 to under 1,000,000,000
       } else {
-        rankMultiplier = 30; //30 rank multiplier for rating from 1,000,000
+        rankMultiplier = 71; //71 rank multiplier for rating from 1,000,000,000
       }
       //calculate the amount of XP earned and points earned when the task is completed
       const rankXpEarned: number = Math.max(
@@ -518,8 +600,13 @@ export default createStore({
       ); //get at least 1 XP when the task is completed
       state.user.xp += xpEarned; //get the amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and task rank multipliers
       state.user.rating +=
-        ((10 + Math.log(state.user.rating + 1) ** 2) * repeatMultiplier) /
-        Math.max(state.user.tasksCompletedToday, 1); //get the amount of rating poings earned based on user rating, task repeat multiplier and number of tasks completed today
+        (10 + Math.log(Math.max(state.user.rating + 100, 100)) ** 2) *
+          repeatMultiplier *
+          dateMultiplier <
+        1
+          ? 1 - dateMultiplier
+          : (dateMultiplier - 1) / Math.max(state.user.tasksCompletedToday, 1); //get the amount of rating poings earned based on user rating, task repeat multiplier and number of tasks completed today
+      state.user.rating = Math.max(state.user.rating, 0); //make sure user rating is not below 0
       const pointsEarned: number = Math.max(
         Math.floor(
           task.difficulty *
