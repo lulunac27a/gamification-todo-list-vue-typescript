@@ -61,10 +61,11 @@ export default createStore({
       const task: Todo = state.todos.find(
         (todo: { newId: number }) => todo.newId === payload,
       ) as Todo;
-      const daysToDue: number =
+      const daysToDue: number = Math.round(
         (Number(new Date(task.dueDate + " 23:59:59.999")) -
           Number(new Date().setHours(23, 59, 59, 999))) /
-        (1000 * 60 * 60 * 24); //calculate the number of days until the task is due
+          (1000 * 60 * 60 * 24),
+      ); //calculate the number of days until the task is due
       let dateMultiplier: number;
       if (daysToDue < 0) {
         //if the task is overdue, XP and score multiplier is less than 1 that decreases over time when the task is overdue
@@ -90,7 +91,19 @@ export default createStore({
       let rankMultiplier: number; //calculate rank multiplier based on current user rating score
       const activeTasks: number = state.todos.filter(
         (taskList) => !taskList.isCompleted,
-      ).length; //calculate the number of active tasks (tasks that are not completed) using array.filter
+      ).length; //calculate the number of active tasks (tasks that are not completed) using Array.filter
+      const overdueTasks: number = state.todos.filter(
+        (taskList) =>
+          new Date(
+            new Date(
+              new Date().setMinutes(
+                new Date().getMinutes() - new Date().getTimezoneOffset(),
+              ),
+            )
+              .toISOString()
+              .split("T")[0] + " 23:59:59.999",
+          ) >= new Date(taskList.dueDate + " 23:59:59.999"),
+      ).length; //calculate the number of overdue tasks (tasks after the due date)
       let activeTasksMultiplier: number; //calculate score multiplier for number of active tasks (tasks that are not completed)
       //calculate task repetition XP multiplier
       if (Number(task.repeatInterval) === 1) {
@@ -228,7 +241,8 @@ export default createStore({
           state.user.rating = Math.max(
             state.user.rating -
               Math.sqrt(Math.max(state.user.rating, 0)) *
-                (1 + Math.log(Math.max(i + 1, 1))),
+                (1 + Math.log(Math.max(i + 1, 1))) *
+                (1 + Math.log(Math.max(overdueTasks + 1, 1))),
             0,
           ); //decrease user rating for each day of inactivity
         }
