@@ -238,13 +238,11 @@ export default createStore({
       if (daysSinceLastCompletion >= 1) {
         //repeat for each day of inactivity
         for (let i = 0; i < daysSinceLastCompletion; i++) {
-          state.user.rating = Math.max(
-            state.user.rating -
-              Math.sqrt(Math.max(state.user.rating, 0)) *
-                (1 + Math.log(Math.max(i + 1, 1))) *
-                (1 + Math.log(Math.max(overdueTasks + 1, 1))),
-            0,
-          ); //decrease user rating for each day of inactivity
+          state.user.rating -=
+            Math.sqrt(Math.max(state.user.rating, 0)) *
+            (1 + Math.log(Math.max(i + 1, 1))) *
+            (1 + Math.log(Math.max(overdueTasks + 1, 1))); //decrease user rating for each day of inactivity
+          state.user.rating = Math.max(state.user.rating, 0); //make sure rating is not below 0
         }
       }
       //calculate task streak XP multiplier
