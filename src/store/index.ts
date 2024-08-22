@@ -589,7 +589,7 @@ export default createStore({
       ); //get at least 1 rank XP when the task is completed
       task.rankXp += rankXpEarned; //increase rank XP based on task due date, task streak and task rank
       const rankLevel: number = Math.max(
-        Math.floor(Math.pow(task.rankXp / 100, 1 / 4)),
+        Math.floor(Math.pow((task.rankXp + 0.5) / 100, 1 / 4)),
         1,
       ); //update rank level
       task.rank = rankLevel; //set task rank level
@@ -650,7 +650,10 @@ export default createStore({
       ); //alert user to show how many XP they earned and points earned after completing the task
       //check if user has leveled up
       const userLevel: number = state.user.level; //set userLevel variable before calculating user level state
-      state.user.level = Math.max(1, Math.floor(Math.cbrt(state.user.xp))); //calculate level based on how many XP and set level to 1 if total XP is 0
+      state.user.level = Math.max(
+        1,
+        Math.floor(Math.cbrt(state.user.xp + 0.5)),
+      ); //calculate level based on how many XP and set level to 1 if total XP is 0
       if (state.user.level > userLevel) {
         alert(
           `Level Up!\nYou are now level ${state.user.level.toLocaleString("en-US")}!`,
