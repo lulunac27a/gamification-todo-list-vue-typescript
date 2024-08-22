@@ -238,10 +238,12 @@ export default createStore({
       if (daysSinceLastCompletion >= 1) {
         //repeat for each day of inactivity
         for (let i = 0; i < daysSinceLastCompletion; i++) {
-          state.user.rating -=
+          state.user.rating -= Math.max(
             Math.sqrt(Math.max(state.user.rating, 0)) *
-            (1 + Math.log(Math.max(i + 1, 1))) *
-            (1 + Math.log(Math.max(overdueTasks + 1, 1))); //decrease user rating for each day of inactivity
+              (1 + Math.log(Math.max(i + 1, 1))) *
+              (1 + Math.log(Math.max(overdueTasks + 1, 1))),
+            0,
+          ); //decrease user rating for each day of inactivity
           state.user.rating = Math.max(state.user.rating, 0); //make sure rating is not below 0
         }
       }
@@ -611,13 +613,15 @@ export default createStore({
         1,
       ); //get at least 1 XP when the task is completed
       state.user.xp += xpEarned; //get the amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and task rank multipliers
-      state.user.rating +=
+      state.user.rating += Math.max(
         (10 + Math.log(Math.max(state.user.rating + 100, 100)) ** 2) *
           repeatMultiplier *
           dateMultiplier <
-        1
+          1
           ? 1 - dateMultiplier
-          : (dateMultiplier - 1) / Math.max(state.user.tasksCompletedToday, 1); //get the amount of rating poings earned based on user rating, task repeat multiplier and number of tasks completed today
+          : (dateMultiplier - 1) / Math.max(state.user.tasksCompletedToday, 1),
+        0,
+      ); //get the amount of rating poings earned based on user rating, task repeat multiplier and number of tasks completed today
       state.user.rating = Math.max(state.user.rating, 0); //make sure user rating is not below 0
       const pointsEarned: number = Math.max(
         Math.floor(
