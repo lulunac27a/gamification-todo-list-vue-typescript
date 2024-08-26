@@ -67,7 +67,15 @@
           v-bind:class="{
             overdue: new Date(todo.dueDate + ' 23:59:59.999') < new Date(),
           }"
-          ><span id="text-numeric-display">{{ todo.task }}</span> <br />Streak:
+          ><span id="text-numeric-display"
+            >{{ todo.task
+            }}<span
+              v-if="new Date(todo.dueDate + ' 23:59:59.999') < new Date()"
+            >
+              (Overdue)</span
+            ></span
+          >
+          <br />Streak:
           <span id="text-numeric-display">{{
             todo.streak.toLocaleString("en-US")
           }}</span>

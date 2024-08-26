@@ -65,7 +65,7 @@ import store from "@/store";
 import { Difficulty, Priority, RepeatInterval } from "./TodoList.vue";
 import { defineComponent } from "vue";
 
-export interface todoTask {
+export interface TodoTask {
   task: string; //task name
   dueDate: Date; //task due date
   priority: number; //task priority
@@ -112,9 +112,9 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Add task to todo list when user presses the Add Todo button.
+     * Add task to todo list when user presses the Add Task button.
      */
-    addTodo: function (): void | todoTask[] {
+    addTodo: function (): void | TodoTask[] {
       this.dueDate = this.originalDueDate; //set task due date to entered task original due date
       store.dispatch("createTask", this);
       this.newId++;
