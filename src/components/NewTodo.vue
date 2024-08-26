@@ -66,6 +66,7 @@ import { Difficulty, Priority, RepeatInterval } from "./TodoList.vue";
 import { defineComponent } from "vue";
 
 export interface TodoTask {
+  //todo task interface
   task: string; //task name
   dueDate: Date; //task due date
   priority: number; //task priority
@@ -78,14 +79,15 @@ export interface TodoTask {
   streak: number; //task completion streak
   originalDueDate: Date; //task original due date in YYYY-MM-DD string
 }
-const currentUtcDate: Date = new Date();
+const currentUtcDate: Date = new Date(); //current UTC date
 const currentLocalDate: Date = new Date(
   currentUtcDate.setMinutes(
     currentUtcDate.getMinutes() - currentUtcDate.getTimezoneOffset(),
   ),
-);
+); //currect date in local time zone
 
 export default defineComponent({
+  //define component to default values when task is created
   data() {
     return {
       task: "",
@@ -107,7 +109,7 @@ export default defineComponent({
   mounted() {
     const dueDateInput = document.getElementById(
       "due-date",
-    ) as HTMLInputElement;
+    ) as HTMLInputElement; //get due date value as input element
     dueDateInput.min = currentLocalDate.toISOString().split("T")[0]; //task minimum due date must be today
   },
   methods: {
