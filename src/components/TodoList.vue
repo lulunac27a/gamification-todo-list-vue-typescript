@@ -64,7 +64,7 @@
       <!--repeat for each tasks-->
       <li v-for="todo in todos" :key="todo.newId" class="todo">
         <span
-          v-bind:class="{
+          :class="{
             overdue: new Date(todo.dueDate + ' 23:59:59.999') < new Date(),
           }"
           ><span id="text-numeric-display"
