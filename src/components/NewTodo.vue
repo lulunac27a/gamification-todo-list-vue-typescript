@@ -94,8 +94,8 @@ export default defineComponent({
       dueDate: currentLocalDate.toISOString().split("T")[0], //set default due date to today
       priority: Priority.Low, //set default priority is low
       difficulty: Difficulty.Easy, //set default difficulty is easy
-      repeatEvery: 1, // set default task repetition number to 1
-      repeatInterval: RepeatInterval.Once, //set default task repetition interval to one-time
+      repeatEvery: 1, //set default task repetition number to 1
+      repeatInterval: RepeatInterval?.Once, //set default task repetition interval to one-time
       newId: 0, //initial task id is 0
       isCompleted: false, //task not completed if a task is created
       timesCompleted: 0, //set default task times completed to 0
