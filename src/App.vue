@@ -1,13 +1,12 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <img alt="Vue logo" src="./assets/logo.png"/>
   <div>
     <h1>Todo List Application using Vue, TypeScript and Vuex</h1>
     <p>
-      This is a task list application using Vue, TypeScript, and Vuex with SCSS
-      styles. It supports gamification like levels and experience points (XP).
+      This is a task list application using Vue, TypeScript, and Vuex with SCSS styles. It supports gamification like levels and experience points (XP).
     </p>
-    <NewTodo />
-    <TodoList />
+    <NewTodo/>
+    <TodoList/>
   </div>
 </template>
 
@@ -25,4 +24,4 @@ export default defineComponent({
 });
 </script>
 
-<link rel="stylesheet" lang="scss" src="./App.scss" />
+<link rel="stylesheet" lang="scss" src="./App.scss"/>

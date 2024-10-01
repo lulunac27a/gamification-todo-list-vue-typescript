@@ -1,61 +1,28 @@
 <template>
-  <form @submit.prevent="addTodo">
-    <!--all fields are required in order to add a task-->
-    Name:<br /><!--task name can be up to 255 characters in length-->
-    <input
-      class="todo-input"
-      id="name"
-      type="text"
-      placeholder="Enter task name"
-      maxlength="255"
-      v-model="task"
-      required
-    /><br />
-    Due date:<br /><!--task due date must be on or after today date-->
-    <input
-      class="todo-input"
-      id="due-date"
-      type="date"
-      placeholder="Enter due date"
-      v-model="originalDueDate"
-      required
-    /><br />
-    Priority:<br />
+  <form @submit.prevent="addTodo"><!--all fields are required in order to add a task-->
+    Name:<br><!--task name can be up to 255 characters in length-->
+    <input class="todo-input" id="name" type="text" placeholder="Enter task name" maxlength="255" v-model="task" required/><br>
+    Due date:<br><!--task due date must be on or after today date-->
+    <input class="todo-input" id="due-date" type="date" placeholder="Enter due date" v-model="originalDueDate" required/><br>
+    Priority:<br>
     <select class="todo-input" id="priority" v-model="priority" required>
       <option value="1">Low</option>
       <option value="2">Medium</option>
-      <option value="3">High</option></select
-    ><br />
-    Difficulty:<br />
+      <option value="3">High</option></select><br>
+    Difficulty:<br>
     <select class="todo-input" id="difficulty" v-model="difficulty" required>
       <option value="1">Easy</option>
       <option value="2">Medium</option>
-      <option value="3">Hard</option></select
-    ><br />
-    Repeat every:<br />
-    <input
-      class="todo-input"
-      id="repeat-every"
-      type="number"
-      placeholder="Enter number of days/weeks/months/years to repeat"
-      v-model="repeatEvery"
-      required
-      min="1"
-      step="1"
-    /><br />
-    Repeat interval:<br />
-    <select
-      class="todo-input"
-      id="repeat-interval"
-      v-model="repeatInterval"
-      required
-    >
+      <option value="3">Hard</option></select><br>
+    Repeat every:<br>
+    <input class="todo-input" id="repeat-every" type="number" placeholder="Enter number of days/weeks/months/years to repeat" v-model="repeatEvery" required min="1" step="1"/><br>
+    Repeat interval:<br>
+    <select class="todo-input" id="repeat-interval" v-model="repeatInterval" required>
       <option value="1">Daily</option>
       <option value="2">Weekly</option>
       <option value="3">Monthly</option>
       <option value="4">Yearly</option>
-      <option value="5">Once</option></select
-    ><br />
+      <option value="5">Once</option></select><br>
     <button type="submit">Add Task</button>
   </form>
 </template>
@@ -65,29 +32,23 @@ import store from "@/store";
 import { Difficulty, Priority, RepeatInterval } from "./TodoList.vue";
 import { defineComponent } from "vue";
 
-export interface TodoTask {
-  //todo task interface
-  task: string; //task name
-  dueDate: Date; //task due date
-  priority: number; //task priority
-  difficulty: number; //task difficulty
-  repeatEvery: number; //task repetition number of days/weeks/months/years
-  repeatInterval: number; //task repetition interval
-  newId: number; //task id
-  isCompleted: boolean; //task completed or not
-  timesCompleted: number; //number of times tasks has been completed
-  streak: number; //task completion streak
-  originalDueDate: Date; //task original due date in YYYY-MM-DD string
+export interface TodoTask {//todo task interface
+  task: string;//task name
+  dueDate: Date;//task due date
+  priority: number;//task priority
+  difficulty: number;//task difficulty
+  repeatEvery: number;//task repetition number of days/weeks/months/years
+  repeatInterval: number;//task repetition interval
+  newId: number;//task id
+  isCompleted: boolean;//task completed or not
+  timesCompleted: number;//number of times tasks has been completed
+  streak: number;//task completion streak
+  originalDueDate: Date;//task original due date in YYYY-MM-DD string
 }
-const currentUtcDate: Date = new Date(); //current UTC date
-const currentLocalDate: Date = new Date(
-  currentUtcDate.setMinutes(
-    currentUtcDate.getMinutes() - currentUtcDate.getTimezoneOffset(),
-  ),
-); //currect date in local time zone
+const currentUtcDate: Date = new Date();//current UTC date
+const currentLocalDate: Date = new Date(currentUtcDate.setMinutes(currentUtcDate.getMinutes() - currentUtcDate.getTimezoneOffset()));//currect date in local time zone
 
-export default defineComponent({
-  //define component to default values when task is created
+export default defineComponent({//define component to default values when task is created
   data() {
     return {
       task: "",
@@ -98,18 +59,16 @@ export default defineComponent({
       repeatInterval: RepeatInterval?.Once, //set default task repetition interval to one-time
       newId: 0, //initial task id is 0
       isCompleted: false, //task not completed if a task is created
-      timesCompleted: 0, //set default task times completed to 0
-      streak: 0, //set default task streak to 0
-      rank: 1, //set default task rank to 1
-      rankXp: 0, //set default task rank XP to 0
-      rankProgress: 0, //set default rank progress to 0
-      originalDueDate: currentLocalDate.toISOString().split("T")[0], //set a default original task due date to today
+      timesCompleted: 0,//set default task times completed to 0
+      streak: 0,//set default task streak to 0
+      rank: 1,//set default task rank to 1
+      rankXp: 0,//set default task rank XP to 0
+      rankProgress: 0,//set default rank progress to 0
+      originalDueDate: currentLocalDate.toISOString().split("T")[0] //set a default original task due date to today
     };
   },
   mounted() {
-    const dueDateInput = document.getElementById(
-      "due-date",
-    ) as HTMLInputElement; //get due date value as input element
+    const dueDateInput = document.getElementById("due-date") as HTMLInputElement;//get due date value as input element
     dueDateInput.min = currentLocalDate.toISOString().split("T")[0]; //task minimum due date must be today
   },
   methods: {

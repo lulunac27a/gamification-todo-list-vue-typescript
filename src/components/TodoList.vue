@@ -1,116 +1,20 @@
 <template>
-  <div class="todo-app">
-    <!--task list app content-->
-    <p>
-      Level:
-      <span id="text-numeric-display">{{
-        getCurrentLevel.toLocaleString("en-US")
-      }}</span>
-    </p>
-    <p>
-      XP:
-      <span id="text-numeric-display">{{
-        getCurrentXp.toLocaleString("en-US")
-      }}</span>
-    </p>
-    <p>
-      Daily Streak:
-      <span id="text-numeric-display">{{
-        getCurrentDailyStreak.toLocaleString("en-US")
-      }}</span>
-    </p>
-    <p>
-      Tasks Completed Today:
-      <span id="text-numeric-display">{{
-        getCurrentTasksCompletedToday.toLocaleString("en-US")
-      }}</span>
-    </p>
-    <p>
-      Total Tasks Completed:
-      <span id="text-numeric-display">{{
-        getCurrentTotalTasksCompleted.toLocaleString("en-US")
-      }}</span>
-    </p>
-    <p>
-      Score:
-      <span id="text-numeric-display">{{
-        getCurrentScore.toLocaleString("en-US")
-      }}</span>
-    </p>
-    <p>
-      Best Points Earned After Completing the Task:
-      <span id="text-numeric-display">{{
-        getCurrentBestScoreEarned.toLocaleString("en-US")
-      }}</span>
-    </p>
-    <p>
-      Rating:
-      <span id="text-numeric-display">{{
-        getCurrentRating.toLocaleString("en-US", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        })
-      }}</span>
-    </p>
-    <!--show circular progress bar filled with level progress--><ve-progress
-      :progress="getCurrentProgress"
-      >Level
-      <span id="text-numeric-display">{{
-        getCurrentLevel.toLocaleString("en-US")
-      }}</span></ve-progress
-    >
+  <div class="todo-app"><!--task list app content-->
+    <p>Level: <span id="text-numeric-display">{{ getCurrentLevel.toLocaleString("en-US") }}</span></p>
+    <p>XP: <span id="text-numeric-display">{{ getCurrentXp.toLocaleString("en-US") }}</span></p>
+    <p>Daily Streak: <span id="text-numeric-display">{{ getCurrentDailyStreak.toLocaleString("en-US") }}</span></p>
+    <p>Tasks Completed Today: <span id="text-numeric-display">{{ getCurrentTasksCompletedToday.toLocaleString("en-US") }}</span></p>
+    <p>Total Tasks Completed: <span id="text-numeric-display">{{ getCurrentTotalTasksCompleted.toLocaleString("en-US") }}</span></p>
+    <p>Score: <span id="text-numeric-display">{{ getCurrentScore.toLocaleString("en-US") }}</span></p>
+    <p>Best Points Earned After Completing the Task: <span id="text-numeric-display">{{ getCurrentBestScoreEarned.toLocaleString("en-US") }}</span></p>
+    <p>Rating: <span id="text-numeric-display">{{ getCurrentRating.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</span></p>
+    <!--show circular progress bar filled with level progress--><ve-progress :progress="getCurrentProgress">Level <span id="text-numeric-display">{{ getCurrentLevel.toLocaleString("en-US") }}</span></ve-progress>
     <h3>Task list</h3>
-    <ul class="todos">
-      <!--repeat for each tasks-->
+    <ul class="todos"><!--repeat for each tasks-->
       <li v-for="todo in todos" :key="todo.newId" class="todo">
-        <span
-          :class="{
-            overdue: new Date(todo.dueDate + ' 23:59:59.999') < new Date(),
-          }"
-          ><span id="text-numeric-display"
-            >{{ todo.task
-            }}<span
-              v-if="new Date(todo.dueDate + ' 23:59:59.999') < new Date()"
-            >
-              (Overdue)</span
-            ></span
-          >
-          <br />Streak:
-          <span id="text-numeric-display">{{
-            todo.streak.toLocaleString("en-US")
-          }}</span>
-          <br />Rank:
-          <span id="text-numeric-display">{{
-            todo.rank.toLocaleString("en-US")
-          }}</span>
-          <br /><progress max="100" :value="todo.rankProgress"></progress
-          ><br />Due date:
-          <span id="text-numeric-display">{{ todo.dueDate }}</span>
-          <br />Priority:
-          <span id="text-numeric-display">{{ todo.priority }}</span>
-          <br />Difficulty:
-          <span id="text-numeric-display">{{ todo.difficulty }}</span>
-          <br />Repeat:
-          <span v-if="todo.repeatInterval != 5"
-            ><span id="text-numeric-display">{{
-              todo.repeatEvery.toLocaleString("en-US")
-            }}</span></span
-          >&nbsp;<span v-if="todo.repeatInterval == 1">Day</span
-          ><span v-if="todo.repeatInterval == 2">Week</span
-          ><span v-if="todo.repeatInterval == 3">Month</span
-          ><span v-if="todo.repeatInterval == 4">Year</span
-          ><span v-if="todo.repeatInterval == 5">Once</span
-          ><span v-if="todo.repeatEvery > 1 && todo.repeatInterval != 5"
-            >s</span
-          ></span
-        >
-        <!--don't show complete button if one-time task is completed--><button
-          v-if="!todo.isCompleted"
-          @click="completeTodo(todo.newId)"
-        >
-          Complete
-        </button>
-        <button @click="deleteTodo(todo.newId)">Delete</button><br />
+        <span :class="{overdue: new Date(todo.dueDate + ' 23:59:59.999') < new Date()}"><span id="text-numeric-display">{{ todo.task }}<span v-if="new Date(todo.dueDate + ' 23:59:59.999') < new Date()"> (Overdue)</span></span> <br/>Streak: <span id="text-numeric-display">{{ todo.streak.toLocaleString("en-US") }}</span> <br/>Rank: <span id="text-numeric-display">{{ todo.rank.toLocaleString("en-US") }}</span> <br/><progress max="100" :value="todo.rankProgress"></progress><br/>Due date: <span id="text-numeric-display">{{ todo.dueDate }}</span> <br/>Priority: <span id="text-numeric-display">{{ todo.priority }}</span> <br/>Difficulty: <span id="text-numeric-display">{{ todo.difficulty }}</span> <br/>Repeat: <span v-if="todo.repeatInterval != 5"><span id="text-numeric-display">{{ todo.repeatEvery.toLocaleString("en-US") }}</span></span>&nbsp;<span v-if="todo.repeatInterval == 1">Day</span><span v-if="todo.repeatInterval == 2">Week</span><span v-if="todo.repeatInterval == 3">Month</span><span v-if="todo.repeatInterval == 4">Year</span><span v-if="todo.repeatInterval == 5">Once</span><span v-if="todo.repeatEvery > 1 && todo.repeatInterval != 5">s</span></span>
+        <!--don't show complete button if one-time task is completed--><button v-if="!todo.isCompleted" @click="completeTodo(todo.newId)">Complete</button>
+        <button @click="deleteTodo(todo.newId)">Delete</button><br/>
       </li>
     </ul>
   </div>
@@ -157,14 +61,12 @@ export default defineComponent({
     rank: Number,
     rankXp: Number,
     rankProgress: Number,
-    originalDueDate: Date,
+    originalDueDate: Date
   },
   computed: {
     todos() {
       //eslint-disable-next-line
-      return store.getters.getTodos.sort((a: any, b: any) =>
-        a.dueDate.localeCompare(b.dueDate),
-      ); //get tasks (todos) and sort tasks by task's due date with the top one the oldest
+      return store.getters.getTodos.sort((a: any, b: any) => a.dueDate.localeCompare(b.dueDate)); //get tasks (todos) and sort tasks by task's due date with the top one the oldest
     },
     getCurrentLevel() {
       return store.getters.getLevel; //get current level
@@ -176,26 +78,26 @@ export default defineComponent({
       return store.getters.getProgress; //get current progress
     },
     getCurrentScore() {
-      return store.getters.getScore; //get current score
+      return store.getters.getScore;//get current score
     },
     getCurrentRating() {
-      return store.getters.getRating; //get current rating
+      return store.getters.getRating;//get current rating
     },
     getCurrentDailyStreak() {
-      return store.getters.getDailyStreak; //get current daily streak
+      return store.getters.getDailyStreak;//get current daily streak
     },
     getCurrentTasksCompletedToday() {
-      return store.getters.getTasksCompletedToday; //get tasks completed in a day (today)
+      return store.getters.getTasksCompletedToday;//get tasks completed in a day (today)
     },
     getCurrentTotalTasksCompleted() {
-      return store.getters.getTotalTasksCompleted; //get total tasks completed
+      return store.getters.getTotalTasksCompleted;//get total tasks completed
     },
     getCurrentLastCompletedDate() {
-      return store.getters.getLastCompletionDate; //get the current last completion date
+      return store.getters.getLastCompletionDate;//get the current last completion date
     },
     getCurrentBestScoreEarned() {
-      return store.getters.getBestScoreEarned; //get best score earned
-    },
+      return store.getters.getBestScoreEarned;//get best score earned
+    }
   },
   methods: {
     /**
