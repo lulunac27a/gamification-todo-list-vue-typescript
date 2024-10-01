@@ -7,14 +7,14 @@ createApp({ render: () => h(App) })
   .use(store)
   .use(veProgress)
   .mount("#app");
-/*eslint-disable*/
+/* eslint-disable */
 store.dispatch("loadUser").then(
   (success) => {
     console.log("User data loaded successfully!");
   },
   (error) => {
     console.log("User data failed to load.");
-  }
+  },
 ); //load user data
 store.dispatch("loadTodos").then(
   (success) => {
@@ -22,6 +22,6 @@ store.dispatch("loadTodos").then(
   },
   (error) => {
     console.log("Task list data failed to load.");
-  }
+  },
 ); //load task list data
-/*eslint-enable*/
+/* eslint-enable */
