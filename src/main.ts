@@ -14,7 +14,7 @@ store.dispatch("loadUser").then(
   },
   (error) => {
     console.log("User data failed to load.");
-  }
+  },
 ); //load user data
 store.dispatch("loadTodos").then(
   (success) => {
@@ -22,6 +22,6 @@ store.dispatch("loadTodos").then(
   },
   (error) => {
     console.log("Task list data failed to load.");
-  }
+  },
 ); //load task list data
 /* eslint-enable */

@@ -1,13 +1,16 @@
-# Vue gamification todo list app with Vuex, SCSS and TypeScript
+# Vue gamification todo list app with Vuex, SCSS, and TypeScript
 
 This application is a todo list with task repetition with level and experience points,
 and it stores to local storage using `vuex-persistedstate`.
+Try it on Netlify: https://gamification-todo-list-vue-typescript.netlify.app/
 
 ## Contents
 
-`src`: Source for Vue, SCSS and TypeScript files.
-`src/components`: Vue components to render as HTML with SCSS styles.
-`src/store`: Vuex store and store options.
+- `src`: Source for Vue, SCSS, and TypeScript files.
+- `src/components`: Vue components to render as HTML with SCSS styles.
+- `src/store`: Vuex store and store options.
+
+Try it on Netlify: https://gamification-todo-list-vue-typescript.netlify.app/
 
 ## Features
 
