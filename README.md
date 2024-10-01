@@ -5,9 +5,9 @@ and it stores to local storage using `vuex-persistedstate`.
 
 ## Contents
 
-`src`: Source for Vue, SCSS and TypeScript files.
-`src/components`: Vue components to render as HTML with SCSS styles.
-`src/store`: Vuex store and store options.
+- `src`: Source for Vue, SCSS and TypeScript files.
+- `src/components`: Vue components to render as HTML with SCSS styles.
+- `src/store`: Vuex store and store options.
 
 ## Features
 
