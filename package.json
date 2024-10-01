@@ -14,8 +14,7 @@
     "vue": "^3.4.15",
     "vue-ellipse-progress": "^2.1.2",
     "vuex": "^4.1.0",
-    "vuex-persistedstate": "^4.1.0",
-    "@vue/cli-service": "^5.0.8"
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.8.0",
