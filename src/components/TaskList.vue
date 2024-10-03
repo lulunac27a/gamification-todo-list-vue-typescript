@@ -119,6 +119,7 @@
 <script lang="ts">
 import store from "@/store";
 import { defineComponent } from "vue";
+import { TodoTask } from "./NewTask.vue";
 
 export enum RepeatInterval {
   Daily = 1, //daily gets 1x XP, weekly gets 2x XP, monthly gets 3x XP, yearly gets 4x XP, one-time gets 5x XP multiplier
@@ -161,9 +162,10 @@ export default defineComponent({
   },
   computed: {
     getTasks() {
-      //eslint-disable-next-line
-      return store.getters.getTasks.sort((a: any, b: any) =>
-        a.dueDate.localeCompare(b.dueDate),
+      return store.getters.getTasks.sort(
+        (a: TodoTask, b: TodoTask) =>
+          Number(new Date(a.dueDate + " 23:59:59.999")) -
+          Number(new Date(b.dueDate + " 23:59:59.999")),
       ); //get list of tasks (todos) and sort tasks by task's due date with the top one the oldest
     },
     getCurrentLevel() {
