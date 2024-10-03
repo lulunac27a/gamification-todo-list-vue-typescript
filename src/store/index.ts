@@ -614,12 +614,10 @@ export default createStore({
       ); //get at least 1 XP when the task is completed
       state.user.xp += xpEarned; //get the amount of XP earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak and task rank multipliers
       state.user.rating += Math.max(
-        (10 + Math.log(Math.max(state.user.rating + 100, 100)) ** 2) *
+        ((10 + Math.log(Math.max(state.user.rating + 100, 100)) ** 2) *
           repeatMultiplier *
-          dateMultiplier <
-          1
-          ? 1 - dateMultiplier
-          : (dateMultiplier - 1) / Math.max(state.user.tasksCompletedToday, 1),
+          (dateMultiplier < 1 ? 1 - dateMultiplier : dateMultiplier - 1)) /
+          Math.max(state.user.tasksCompletedToday, 1),
         0,
       ); //get the amount of rating poings earned based on user rating, task repeat multiplier and number of tasks completed today
       state.user.rating = Math.max(state.user.rating, 0); //make sure user rating is not below 0
