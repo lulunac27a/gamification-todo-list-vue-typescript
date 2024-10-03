@@ -595,7 +595,7 @@ export default createStore({
       task.rank = rankLevel; //set task rank level
       task.rankProgress =
         ((task.rankXp / 100 - Math.pow(task.rank === 1 ? 0 : task.rank, 4)) /
-          (Math.pow(task.rank + 1, 3) -
+          (Math.pow(task.rank + 1, 4) -
             Math.pow(task.rank === 1 ? 0 : task.rank, 4))) *
         100; //calculate rank level progress and if level is 1 set rank level at the start of level 1 to 0 XP
       const xpEarned: number = Math.max(
