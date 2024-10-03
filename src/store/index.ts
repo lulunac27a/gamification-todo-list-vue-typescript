@@ -619,7 +619,7 @@ export default createStore({
           (dateMultiplier < 1 ? 1 - dateMultiplier : dateMultiplier - 1)) /
           Math.max(state.user.tasksCompletedToday, 1),
         0,
-      ); //get the amount of rating poings earned based on user rating, task repeat multiplier and number of tasks completed today
+      ); //get the amount of rating points earned based on user rating, task repeat multiplier and number of tasks completed today
       state.user.rating = Math.max(state.user.rating, 0); //make sure user rating is not below 0
       const pointsEarned: number = Math.max(
         Math.floor(
