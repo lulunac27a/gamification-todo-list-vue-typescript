@@ -84,26 +84,26 @@ const currentLocalDate: Date = new Date(
   currentUtcDate.setMinutes(
     currentUtcDate.getMinutes() - currentUtcDate.getTimezoneOffset(),
   ),
-); //currect date in local time zone
+); //current date in local time zone
 
 export default defineComponent({
-  //define component to default values when task is created
+  //define component to default values when the task is created
   data() {
     return {
       task: "",
-      dueDate: currentLocalDate.toISOString().split("T")[0], //set default due date to today
-      priority: Priority.Low, //set default priority is low
-      difficulty: Difficulty.Easy, //set default difficulty is easy
-      repeatEvery: 1, //set default task repetition number to 1
-      repeatInterval: RepeatInterval?.Once, //set default task repetition interval to one-time
+      dueDate: currentLocalDate.toISOString().split("T")[0], //set the default due date to today
+      priority: Priority.Low, //set the default priority is low
+      difficulty: Difficulty.Easy, //set the default difficulty is easy
+      repeatEvery: 1, //set the default task repetition number to 1
+      repeatInterval: RepeatInterval?.Once, //set the default task repetition interval to one-time
       newId: 0, //initial task id is 0
       isCompleted: false, //task not completed if a task is created
-      timesCompleted: 0, //set default task times completed to 0
-      streak: 0, //set default task streak to 0
-      rank: 1, //set default task rank to 1
-      rankXp: 0, //set default task rank XP to 0
-      rankProgress: 0, //set default rank progress to 0
-      originalDueDate: currentLocalDate.toISOString().split("T")[0], //set a default original task due date to today
+      timesCompleted: 0, //set the default task times completed to 0
+      streak: 0, //set the default task streak to 0
+      rank: 1, //set the default task rank to 1
+      rankXp: 0, //set the default task rank XP to 0
+      rankProgress: 0, //set the default rank progress to 0
+      originalDueDate: currentLocalDate.toISOString().split("T")[0], //set the default original task due date to today
     };
   },
   mounted() {

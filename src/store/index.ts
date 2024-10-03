@@ -25,16 +25,16 @@ export default createStore({
      */
     tasks: [] as Task[],
     user: {
-      level: 1 as number, //set level to 1 as total XP is 0 when state is created
-      xp: 0 as number, //set xp to 0 when state is created
-      progress: 0 as number, //set level progress to 0 percent when state is created
-      score: 0 as number, //set score to 0 when state is created
-      rating: 0 as number, //set rating to 0 when state is created
+      level: 1 as number, //set the level to 1 as total XP is 0 when state is created
+      xp: 0 as number, //set the xp to 0 when state is created
+      progress: 0 as number, //set the level progress to 0 percent when state is created
+      score: 0 as number, //set the score to 0 when state is created
+      rating: 0 as number, //set the rating to 0 when state is created
       bestScoreEarned: 0 as number, //the highest number of points earned achieved when the task is completed
       dailyStreak: 0 as number, //set daily streak to 0 and last completion date to undefined when state is created
       tasksCompletedToday: 0 as number, //set the number of tasks completed in a day (today) to 0
       totalTasksCompleted: 0 as number, //set the total number of tasks completed to 0
-      lastCompletionDate: undefined as string | undefined, //last completion date in YYYY-MM-DD string
+      lastCompletionDate: undefined as string | undefined, //task last completion date in YYYY-MM-DD string
     },
   },
   getters: {
@@ -42,16 +42,16 @@ export default createStore({
      * Getter methods for tasks with tasks and user data.
      */
     getTasks: (state) => state.tasks, //get the task list
-    getXp: (state) => state.user.xp, //get user XP
-    getLevel: (state) => state.user.level, //get user level
-    getProgress: (state) => state.user.progress, //get user level progress
-    getScore: (state) => state.user.score, //get user score
-    getRating: (state) => state.user.rating, //get user rating
-    getDailyStreak: (state) => state.user.dailyStreak, //get user daily streak
-    getTasksCompletedToday: (state) => state.user.tasksCompletedToday, //get user tasks completed in a day
-    getTotalTasksCompleted: (state) => state.user.totalTasksCompleted, //get user total tasks completed
-    getLastCompletionDate: (state) => state.user.lastCompletionDate, //get user last completion date
-    getBestScoreEarned: (state) => state.user.bestScoreEarned, //get the user best score earned when the task is completed
+    getXp: (state) => state.user.xp, //get the user XP
+    getLevel: (state) => state.user.level, //get the user level
+    getProgress: (state) => state.user.progress, //get the user level progress
+    getScore: (state) => state.user.score, //get the user score
+    getRating: (state) => state.user.rating, //get the user rating
+    getDailyStreak: (state) => state.user.dailyStreak, //get the user daily streak
+    getTasksCompletedToday: (state) => state.user.tasksCompletedToday, //get the user tasks completed in a day
+    getTotalTasksCompleted: (state) => state.user.totalTasksCompleted, //get the user total tasks completed
+    getLastCompletionDate: (state) => state.user.lastCompletionDate, //get the user last completion date
+    getBestScoreEarned: (state) => state.user.bestScoreEarned, //get the user the best score earned when the task is completed
   },
   mutations: {
     /**
@@ -68,7 +68,7 @@ export default createStore({
       ); //calculate the number of days until the task is due
       let dateMultiplier: number;
       if (daysToDue < 0) {
-        //if the task is overdue, XP and score multiplier is less than 1 that decreases over time when the task is overdue
+        //if the task is overdue, XP and score multiplier are less than 1 that decreases over time when the task is overdue
         dateMultiplier = -2 / (daysToDue - 1);
       } else if (daysToDue === 0) {
         //if the task is due today, XP and score multiplier bonus increases more than 2 based on the time the task is completed
@@ -107,7 +107,7 @@ export default createStore({
       let activeTasksMultiplier: number; //calculate score multiplier for number of active tasks (tasks that are not completed)
       //calculate task repetition XP multiplier
       if (Number(task.repeatInterval) === 1) {
-        //if task repetition interval is daily
+        //if the task repetition interval is daily
         if (task.repeatEvery < 7) {
           //7 days is 1 week
           repeatMultiplier = 1 + (task.repeatEvery - 1) / (7 - 1); //1x XP multiplier for daily tasks (1 day) to 2x XP multiplier for weekly tasks (7 days)
@@ -121,7 +121,7 @@ export default createStore({
           repeatMultiplier = 5 - 365 / task.repeatEvery; //4x XP multiplier for yearly tasks (approximately 365 days) to 5x XP multiplier for one-time tasks
         }
       } else if (Number(task.repeatInterval) === 2) {
-        //if task repetition interval is weekly
+        //if the task repetition interval is weekly
         if (task.repeatEvery < 4) {
           //approximately 4 weeks is 1 month
           repeatMultiplier = 2 + (task.repeatEvery - 1) / (4 - 1); //2x XP multiplier for weekly tasks (1 week) to 3x XP multiplier for monthly tasks (approximately 4 weeks)
@@ -132,7 +132,7 @@ export default createStore({
           repeatMultiplier = 5 - 52 / task.repeatEvery; //4x XP multiplier for yearly tasks (approximately 52 weeks) to 5x XP multiplier for one-time tasks
         }
       } else if (Number(task.repeatInterval) === 3) {
-        //if task repetition interval is monthly
+        //if the task repetition interval is monthly
         if (task.repeatEvery < 12) {
           //12 months is 1 year
           repeatMultiplier = 3 + (task.repeatEvery - 1) / (12 - 1); //3x XP multiplier for monthly tasks (1 month) to 4x XP multiplier for yearly tasks (12 months)
@@ -140,10 +140,10 @@ export default createStore({
           repeatMultiplier = 5 - 12 / task.repeatEvery; //4x XP multiplier for yearly tasks (12 months) to 5x XP multiplier for one-time tasks
         }
       } else if (Number(task.repeatInterval) === 4) {
-        //if task repetition interval is yearly
+        //if the task repetition interval is yearly
         repeatMultiplier = 5 - 1 / task.repeatEvery; //4x XP multiplier for yearly tasks (1 year) to 5x XP multiplier for one-time tasks
       } else {
-        //if task repetition interval is one-time
+        //if the task repetition interval is one-time
         repeatMultiplier = 5; //get 5x XP multiplier for one-time tasks
       }
       //calculate task streak
@@ -220,7 +220,7 @@ export default createStore({
         dailyStreakMultiplier = 9.783; //9.783x daily streak XP multiplier from 3,652 daily streaks (approximately 10 years)
       }
       const previousCompletionDate: string | undefined =
-        state.user.lastCompletionDate; //set previous completion date to last completion date
+        state.user.lastCompletionDate; //set the previous completion date to last completion date
       //set the last completion date to today
       state.user.lastCompletionDate = new Date(
         new Date().setMinutes(
@@ -244,7 +244,7 @@ export default createStore({
               (1 + Math.log(Math.max(overdueTasks + 1, 1))),
             0,
           ); //decrease user rating for each day of inactivity
-          state.user.rating = Math.max(state.user.rating, 0); //make sure rating is not below 0
+          state.user.rating = Math.max(state.user.rating, 0); //make sure the rating is not below 0
         }
       }
       //calculate task streak XP multiplier
@@ -638,7 +638,7 @@ export default createStore({
         ),
         1,
       ); //get at least 1 point when the task is completed
-      state.user.score += pointsEarned; //get amount of points earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak, user level and rank multipliers
+      state.user.score += pointsEarned; //get the amount of points earned based on task difficulty, task priority, task due date, task repetition, task streak, daily streak, user level and rank multipliers
       if (pointsEarned > state.user.bestScoreEarned) {
         //if points earned are greater than the best score earned
         state.user.bestScoreEarned = pointsEarned; //set the best score earned to points earned when the task is completed
@@ -700,7 +700,7 @@ export default createStore({
       } else {
         item.timesCompleted++; //increment number of times tasks has been completed by 1
         if (Number(item.repeatInterval) === 1) {
-          //if task repeat interval is daily
+          //if the task repeat interval is daily
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
               new Date(item.originalDueDate + " 23:59:59.999").getDate() +
@@ -714,7 +714,7 @@ export default createStore({
           ); //convert to local timezone
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0]; //convert due date to YYYY-MM-DD string
         } else if (Number(item.repeatInterval) === 2) {
-          //if task repeat interval is weekly
+          //if the task repeat interval is weekly
           const newDueDate: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setDate(
               new Date(item.originalDueDate + " 23:59:59.999").getDate() +
@@ -728,7 +728,7 @@ export default createStore({
           );
           item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
         } else if (Number(item.repeatInterval) === 3) {
-          //if task repeat interval is monthly
+          //if the task repeat interval is monthly
           const monthsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setMonth(
               new Date(item.originalDueDate + " 23:59:59.999").getMonth() +
@@ -778,7 +778,7 @@ export default createStore({
             item.dueDate = adjustedNewDueDate.toISOString().split("T")[0];
           }
         } else if (Number(item.repeatInterval) === 4) {
-          //if task repeat interval is yearly
+          //if the task repeat interval is yearly
           const yearsAfter: Date = new Date(
             new Date(item.originalDueDate + " 23:59:59.999").setFullYear(
               new Date(item.originalDueDate + " 23:59:59.999").getFullYear() +
