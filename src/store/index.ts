@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
-interface Todo {
-  //todos task interface
+interface Task {
+  //task list interface
   newId: number; //task new id
   task: string; //task name
   dueDate: string | Date; //task due date
@@ -21,9 +21,9 @@ interface Todo {
 export default createStore({
   state: {
     /**
-     * The task with todos and user state data.
+     * The task with list of tasks and user state data.
      */
-    todos: [] as Todo[],
+    tasks: [] as Task[],
     user: {
       level: 1 as number, //set level to 1 as total XP is 0 when state is created
       xp: 0 as number, //set xp to 0 when state is created
@@ -39,9 +39,9 @@ export default createStore({
   },
   getters: {
     /**
-     * Getter methods for tasks with todos and user data.
+     * Getter methods for tasks with tasks and user data.
      */
-    getTodos: (state) => state.todos, //get the task list
+    getTasks: (state) => state.tasks, //get the task list
     getXp: (state) => state.user.xp, //get user XP
     getLevel: (state) => state.user.level, //get user level
     getProgress: (state) => state.user.progress, //get user level progress
@@ -58,9 +58,9 @@ export default createStore({
      * Update user XP state when a user presses Complete button to complete the task.
      */
     updateXp: (state, payload) => {
-      const task: Todo = state.todos.find(
-        (todo: { newId: number }) => todo.newId === payload,
-      ) as Todo;
+      const task: Task = state.tasks.find(
+        (task: { newId: number }) => task.newId === payload,
+      ) as Task;
       const daysToDue: number = Math.round(
         (Number(new Date(task.dueDate + " 23:59:59.999")) -
           Number(new Date().setHours(23, 59, 59, 999))) /
@@ -89,10 +89,10 @@ export default createStore({
       let dayTasksMultiplier: number; //calculate XP and score multiplier for tasks completed in a day (today)
       let tasksMultiplier: number; //calculate score multiplier for total number of tasks completed
       let rankMultiplier: number; //calculate rank multiplier based on current user rating score
-      const activeTasks: number = state.todos.filter(
+      const activeTasks: number = state.tasks.filter(
         (taskList) => !taskList.isCompleted,
       ).length; //calculate the number of active tasks (tasks that are not completed) using Array.filter
-      const overdueTasks: number = state.todos.filter(
+      const overdueTasks: number = state.tasks.filter(
         (taskList) =>
           new Date(
             new Date(
@@ -666,7 +666,7 @@ export default createStore({
             Math.pow(state.user.level === 1 ? 0 : state.user.level, 3))) *
         100; //calculate level progress and if level is 1 set total XP at the start of level 1 to 0 XP
     },
-    create_Todo: (state, payload) => {
+    create_Task: (state, payload) => {
       /**
        * Create the task when a user presses the Add Task button.
        */
@@ -687,15 +687,15 @@ export default createStore({
         rankProgress: payload.rankProgress as number,
         originalDueDate: payload.originalDueDate as Date,
       };
-      state.todos.unshift(createTask);
+      state.tasks.unshift(createTask);
     },
-    complete_Todo: (state, payload) => {
+    complete_Task: (state, payload) => {
       /**
        * Complete the task when user presses the Complete button.
        */
-      const item: Todo = state.todos.find(
-        (todo: { newId: number }) => todo.newId === payload,
-      ) as Todo;
+      const item: Task = state.tasks.find(
+        (task: { newId: number }) => task.newId === payload,
+      ) as Task;
       if (Number(item.repeatInterval) === 5) {
         //if the task is a one-time only
         item.isCompleted = !item.isCompleted; //complete task item (set completed task to true)
@@ -829,23 +829,23 @@ export default createStore({
         }
       }
     },
-    delete_Todo: (state, payload) => {
+    delete_Task: (state, payload) => {
       /**
        * Delete the task when a user confirms task deletion alert after pressing the Delete button.
        */
-      const index = state.todos.findIndex(
-        (todo: { newId: number }) => todo.newId === payload,
+      const index = state.tasks.findIndex(
+        (task: { newId: number }) => task.newId === payload,
       );
       let deleteTask;
-      if (!state.todos[index].isCompleted) {
+      if (!state.tasks[index].isCompleted) {
         //don't ask for confirmation when one-time task is completed
         deleteTask = confirm(
-          `Do you want to delete the task ${state.todos[index].task}?\nThis action cannot be undone.`,
+          `Do you want to delete the task ${state.tasks[index].task}?\nThis action cannot be undone.`,
         ) as boolean; //ask user to confirm task deletion
       }
-      if (deleteTask || state.todos[index].isCompleted) {
+      if (deleteTask || state.tasks[index].isCompleted) {
         //delete task if one-time task is completed when the deleted button is clicked or when user confirms deletion alert
-        state.todos.splice(index, 1); //delete task item
+        state.tasks.splice(index, 1); //delete task item
       }
     },
     setUser: (state, user) => {
@@ -854,11 +854,11 @@ export default createStore({
        */
       state.user = user; //set user data
     },
-    setTodos: (state, todos) => {
+    setTasks: (state, tasks) => {
       /**
-       * Sets the todos (tasks) data.
+       * Sets the task list data.
        */
-      state.todos = todos; //set todos (tasks) data
+      state.tasks = tasks; //set task list data
     },
   },
   actions: {
@@ -866,20 +866,20 @@ export default createStore({
       /**
        * Action to create the task.
        */
-      context.commit("create_Todo", payload);
+      context.commit("create_Task", payload);
     },
     completeTask: (context, payload) => {
       /**
        * Action to complete the task.
        */
       context.commit("updateXp", payload);
-      context.commit("complete_Todo", payload);
+      context.commit("complete_Task", payload);
     },
     deleteTask: (context, payload) => {
       /**
        * Action to delete the task.
        */
-      context.commit("delete_Todo", payload);
+      context.commit("delete_Task", payload);
     },
     saveUser(context, user) {
       /**
@@ -898,21 +898,21 @@ export default createStore({
         context.commit("setUser", user);
       }
     },
-    saveTodos(context, todos) {
+    saveTasks(context, tasks) {
       /**
        * Action to save task list data to local storage.
-       * @param todos the task list data
+       * @param tasks the task list data
        */
-      localStorage.setItem("todos", JSON.stringify(todos)); //save task list data as JSON
-      context.commit("setTodos", todos);
+      localStorage.setItem("tasks", JSON.stringify(tasks)); //save task list data as JSON
+      context.commit("setTasks", tasks);
     },
-    loadTodos(context) {
+    loadTasks(context) {
       /**
        * Action to load task list data to local storage.
        */
-      const todos = JSON.parse(localStorage.getItem("todos") as string); //load task list data by parsing JSON string
-      if (todos) {
-        context.commit("setTodos", todos);
+      const tasks = JSON.parse(localStorage.getItem("tasks") as string); //load task list data by parsing JSON string
+      if (tasks) {
+        context.commit("setTasks", tasks);
       }
     },
   },

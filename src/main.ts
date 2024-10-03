@@ -18,7 +18,7 @@ store.dispatch("loadUser").then(
     console.log("User data failed to load.");
   },
 ); //load user data
-store.dispatch("loadTodos").then(
+store.dispatch("loadTasks").then(
   (success) => {
     //if task list data is loaded successfully
     console.log("Task list data loaded successfully!");

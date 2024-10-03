@@ -1,9 +1,9 @@
 <template>
-  <form @submit.prevent="addTodo">
+  <form @submit.prevent="addTask">
     <!--all fields are required in order to add a task-->
     Name:<br /><!--task name can be up to 255 characters in length-->
     <input
-      class="todo-input"
+      class="task-input"
       id="name"
       type="text"
       placeholder="Enter task name"
@@ -13,7 +13,7 @@
     /><br />
     Due date:<br /><!--task due date must be on or after today date-->
     <input
-      class="todo-input"
+      class="task-input"
       id="due-date"
       type="date"
       placeholder="Enter due date"
@@ -21,20 +21,20 @@
       required
     /><br />
     Priority:<br />
-    <select class="todo-input" id="priority" v-model="priority" required>
+    <select class="task-input" id="priority" v-model="priority" required>
       <option value="1">Low</option>
       <option value="2">Medium</option>
       <option value="3">High</option></select
     ><br />
     Difficulty:<br />
-    <select class="todo-input" id="difficulty" v-model="difficulty" required>
+    <select class="task-input" id="difficulty" v-model="difficulty" required>
       <option value="1">Easy</option>
       <option value="2">Medium</option>
       <option value="3">Hard</option></select
     ><br />
     Repeat every:<br />
     <input
-      class="todo-input"
+      class="task-input"
       id="repeat-every"
       type="number"
       placeholder="Enter number of days/weeks/months/years to repeat"
@@ -45,7 +45,7 @@
     /><br />
     Repeat interval:<br />
     <select
-      class="todo-input"
+      class="task-input"
       id="repeat-interval"
       v-model="repeatInterval"
       required
@@ -62,11 +62,11 @@
 
 <script lang="ts">
 import store from "@/store";
-import { Difficulty, Priority, RepeatInterval } from "./TodoList.vue";
+import { Difficulty, Priority, RepeatInterval } from "./TaskList.vue";
 import { defineComponent } from "vue";
 
 export interface TodoTask {
-  //todo task interface
+  //todo task list interface
   task: string; //task name
   dueDate: Date; //task due date
   priority: number; //task priority
@@ -114,9 +114,9 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Add task to todo list when user presses the Add Task button.
+     * Add task to task list when user presses the Add Task button.
      */
-    addTodo: function (): void | TodoTask[] {
+    addTask: function (): void | TodoTask[] {
       this.dueDate = this.originalDueDate; //set task due date to entered task original due date
       store.dispatch("createTask", this);
       this.newId++;

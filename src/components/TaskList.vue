@@ -1,5 +1,5 @@
 <template>
-  <div class="todo-app">
+  <div class="task-list-app">
     <!--task list app content-->
     <p>
       Level:
@@ -60,57 +60,57 @@
       }}</span></ve-progress
     >
     <h3>Task list</h3>
-    <ul class="todos">
+    <ul class="tasks">
       <!--repeat for each tasks-->
-      <li v-for="todo in todos" :key="todo.newId" class="todo">
+      <li v-for="task in getTasks" :key="task.newId" class="task">
         <span
           :class="{
-            overdue: new Date(todo.dueDate + ' 23:59:59.999') < new Date(),
+            overdue: new Date(task.dueDate + ' 23:59:59.999') < new Date(),
           }"
           ><span id="text-numeric-display"
-            >{{ todo.task
+            >{{ task.task
             }}<span
-              v-if="new Date(todo.dueDate + ' 23:59:59.999') < new Date()"
+              v-if="new Date(task.dueDate + ' 23:59:59.999') < new Date()"
             >
               (Overdue)</span
             ></span
           >
           <br />Streak:
           <span id="text-numeric-display">{{
-            todo.streak.toLocaleString("en-US")
+            task.streak.toLocaleString("en-US")
           }}</span>
           <br />Rank:
           <span id="text-numeric-display">{{
-            todo.rank.toLocaleString("en-US")
+            task.rank.toLocaleString("en-US")
           }}</span>
-          <br /><progress max="100" :value="todo.rankProgress"></progress
+          <br /><progress max="100" :value="task.rankProgress"></progress
           ><br />Due date:
-          <span id="text-numeric-display">{{ todo.dueDate }}</span>
+          <span id="text-numeric-display">{{ task.dueDate }}</span>
           <br />Priority:
-          <span id="text-numeric-display">{{ todo.priority }}</span>
+          <span id="text-numeric-display">{{ task.priority }}</span>
           <br />Difficulty:
-          <span id="text-numeric-display">{{ todo.difficulty }}</span>
+          <span id="text-numeric-display">{{ task.difficulty }}</span>
           <br />Repeat:
-          <span v-if="todo.repeatInterval != 5"
+          <span v-if="task.repeatInterval != 5"
             ><span id="text-numeric-display">{{
-              todo.repeatEvery.toLocaleString("en-US")
+              task.repeatEvery.toLocaleString("en-US")
             }}</span></span
-          >&nbsp;<span v-if="todo.repeatInterval == 1">Day</span
-          ><span v-if="todo.repeatInterval == 2">Week</span
-          ><span v-if="todo.repeatInterval == 3">Month</span
-          ><span v-if="todo.repeatInterval == 4">Year</span
-          ><span v-if="todo.repeatInterval == 5">Once</span
-          ><span v-if="todo.repeatEvery > 1 && todo.repeatInterval != 5"
+          >&nbsp;<span v-if="task.repeatInterval == 1">Day</span
+          ><span v-if="task.repeatInterval == 2">Week</span
+          ><span v-if="task.repeatInterval == 3">Month</span
+          ><span v-if="task.repeatInterval == 4">Year</span
+          ><span v-if="task.repeatInterval == 5">Once</span
+          ><span v-if="task.repeatEvery > 1 && task.repeatInterval != 5"
             >s</span
           ></span
         >
         <!--don't show complete button if one-time task is completed--><button
-          v-if="!todo.isCompleted"
-          @click="completeTodo(todo.newId)"
+          v-if="!task.isCompleted"
+          @click="completeTask(task.newId)"
         >
           Complete
         </button>
-        <button @click="deleteTodo(todo.newId)">Delete</button><br />
+        <button @click="deleteTask(task.newId)">Delete</button><br />
       </li>
     </ul>
   </div>
@@ -138,7 +138,7 @@ export enum Priority {
   High = 3,
 }
 export default defineComponent({
-  name: "TodoList",
+  name: "TaskList",
   props: {
     newId: Number,
     tasks: Array,
@@ -160,11 +160,11 @@ export default defineComponent({
     originalDueDate: Date,
   },
   computed: {
-    todos() {
+    getTasks() {
       //eslint-disable-next-line
-      return store.getters.getTodos.sort((a: any, b: any) =>
+      return store.getters.getTasks.sort((a: any, b: any) =>
         a.dueDate.localeCompare(b.dueDate),
-      ); //get tasks (todos) and sort tasks by task's due date with the top one the oldest
+      ); //get list of tasks (todos) and sort tasks by task's due date with the top one the oldest
     },
     getCurrentLevel() {
       return store.getters.getLevel; //get current level
@@ -202,14 +202,14 @@ export default defineComponent({
      * Complete task based on task ID.
      * @param id task ID
      */
-    completeTodo: function (id: number): void {
+    completeTask: function (id: number): void {
       store.dispatch("completeTask", id);
     },
     /**
      * Delete task based on task ID.
      * @param id task ID
      */
-    deleteTodo: function (id: number): void {
+    deleteTask: function (id: number): void {
       store.dispatch("deleteTask", id);
     },
   },
@@ -217,4 +217,4 @@ export default defineComponent({
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<link scoped lang="scss" src="./TodoList.scss" />
+<link scoped lang="scss" src="./TaskList.scss" />
